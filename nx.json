@@ -1,0 +1,42 @@
+{
+  "npmScope": "trivia",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "workspace.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.base.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "www": {
+      "tags": []
+    },
+    "www-e2e": {
+      "tags": [],
+      "implicitDependencies": ["www"]
+    },
+    "functions": {
+      "tags": []
+    },
+    "db": {
+      "tags": []
+    },
+    "storage": {
+      "tags": []
+    }
+  }
+}

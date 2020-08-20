@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "trivia-dev-49cb8",
+    "production": "trivia-93420",
+    "dev": "trivia-dev-49cb8",
+    "develop": "trivia-dev-49cb8"
+  }
+}

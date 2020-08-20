@@ -1,0 +1,41 @@
+{
+  "firestore": {
+    "rules": "apps/db/firestore.rules",
+    "indexes": "apps/db/firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "dist/apps/www",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "predeploy": ["npm run build -- www --prod"]
+  },
+  "storage": {
+    "rules": "apps/storage/storage.rules"
+  },
+  "functions": {
+    "source": "dist/apps/functions",
+    "predeploy": [
+      "npm run build -- functions --prod",
+      "node tools/scripts/build-firebase-functions-package-json.js"
+    ]
+  },
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "functions": {
+      "port": 5001
+    }
+  }
+}
