@@ -17,14 +17,14 @@ La aplicacion esta construida (principalmente) y funciona con:
 Para crear una nueva instancia de Cuarentrivia es necesario [crear un proyecto de Firebase](https://firebase.google.com/docs/web/setup) (Pasos 1 y 2)
 Luego de crear el proyecto de Firebase es necesario _habilitar Autenticacion, Firestore, Functions, Storage y Hosting_ desde la consola de administracion de tu proyecto.
 
-_NO TE OLVIDES DE OBTENER EL OBJETO DE CONFIGURACION DE TU PROYECTO QUE LO VAS A NECESITAR MAS ADELANTE_ (Mas info [aca](https://firebase.google.com/docs/web/setup#config-object))
+**NO TE OLVIDES DE OBTENER EL OBJETO DE CONFIGURACION DE TU PROYECTO QUE LO VAS A NECESITAR MAS ADELANTE** (Mas info [aca](https://firebase.google.com/docs/web/setup#config-object))
 
 ## Como uso la plataforma en desarrollo?
 
 Dado que la aplicacion necesita acceder a la base de datos para poder funcionar es necesario hacer un deployment de algunas partes de la plataforma hacia Firebase.
 
 1- Crea un archivo en el repositorio con el nombre `.firebase.env`, abrilo y pone los valores del objeto de configuracion de Firebase.
-Los valores son especificos para tu proyecto y los conseguis aca https://console.firebase.google.com/project/<tu-proyecto>/settings/general/web y yendo a tu app, seccion `Config`
+Los valores son especificos para tu proyecto y los conseguis aca `https://console.firebase.google.com/project/<TU_PROYECTO>/settings/general/web` y yendo a tu app, seccion `Config`
 
 ```
 FIREBASE_APP_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx # apiKey
