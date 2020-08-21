@@ -51,10 +51,11 @@ FIREBASE_TOKEN=xxx # Aca va el token para hacer el deployment. Este valor solo n
 ```
 
 3- Inicia una terminal y ejecuta los siguientes comandos
-4- `npm install`
-5- `npm run deploy`
-6- `npm run start`
-7- Abri un navegador en [http://localhost:4200] y deberias ver la aplicacion funcionando 🎉
+4- `npm run firebase -- login` y segui las instrucciones para que tu entorno este conectado a tu cuenta de firebase.
+5 `npm install`
+6 `npm run deploy`
+7 `npm run start`
+8 Abri un navegador en [http://localhost:4200] y deberias ver la aplicacion funcionando 🎉
 
 ## Como uso la plataforma en produccion?
 

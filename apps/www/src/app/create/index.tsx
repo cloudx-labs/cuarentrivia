@@ -4,8 +4,6 @@ import useTitle from '../shared/use-title.hook';
 import { User } from 'firebase/app';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
-
-import './index.scss';
 import { buildQuestion, Question } from '../shared/question';
 import generateFriendlyName from '../shared/generate-friendly-name';
 import { createTrivia } from '../shared/trivias.service';
@@ -13,8 +11,10 @@ import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from './created-trivia-modal';
 import SubmitError from './submit-error';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import QuestionForm from './question-form';
+
+import './index.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

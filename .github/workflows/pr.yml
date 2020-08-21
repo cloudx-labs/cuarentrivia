@@ -8,6 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+      FIREBASE_APP_API_KEY: ${{secrets.PR_FIREBASE_APP_API_KEY}}
+      FIREBASE_APP_AUTH_DOMAIN: ${{secrets.PR_FIREBASE_APP_AUTH_DOMAIN}}
+      FIREBASE_APP_DATABASE_URL: ${{secrets.PR_FIREBASE_APP_DATABASE_URL}}
+      FIREBASE_APP_PROJECT_ID: ${{secrets.PR_FIREBASE_APP_PROJECT_ID}}
+      FIREBASE_APP_STORAGE_BUCKET: ${{secrets.PR_FIREBASE_APP_STORAGE_BUCKET}}
+      FIREBASE_APP_MESSAGING_SENDER_ID: ${{secrets.PR_FIREBASE_APP_MESSAGING_SENDER_ID}}
+      FIREBASE_APP_APP_ID: ${{secrets.PR_FIREBASE_APP_APP_ID}}
+      FIREBASE_APP_MEASUREMENT_ID: ${{secrets.PR_FIREBASE_APP_MEASUREMENT_ID}}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -30,6 +38,16 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Setup env
+        run: |
+          echo "FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
+          echo "FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
+          echo "FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
+          echo "FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
+          echo "FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
+          echo "FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
+          echo "FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
+          echo "FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
       - name: Install dependencies
         run: npm ci
       - name: Lint
