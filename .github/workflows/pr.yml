@@ -40,14 +40,14 @@ jobs:
             ${{ runner.os }}-
       - name: Setup env
         run: |
-          echo "FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
-          echo "FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
-          echo "FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
-          echo "FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
-          echo "FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
-          echo "FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
-          echo "FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
-          echo "FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
+          echo "NX_FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
+          echo "NX_FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
+          echo "NX_FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
+          echo "NX_FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
+          echo "NX_FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
+          echo "NX_FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
+          echo "NX_FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
+          echo "NX_FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
       - name: Install dependencies
         run: npm ci
       - name: Lint
