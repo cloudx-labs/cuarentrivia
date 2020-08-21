@@ -25,6 +25,14 @@ export const joinTrivia = async (triviaId: string, user: User) => {
     triviaRef = matchedTrivias.docs[0].ref;
   }
 
+  const triviaSnapshot = await triviaRef.get();
+
+  const trivia: Trivia = triviaSnapshot.data() as Trivia;
+
+  if (trivia.createdBy === user.uid) {
+    return;
+  }
+
   const participantRef = triviaRef.collection('participants').doc(user.uid);
 
   const participant = await participantRef.get();
@@ -33,17 +41,26 @@ export const joinTrivia = async (triviaId: string, user: User) => {
     return;
   }
 
-  await participantRef.set({ displayName: user.displayName, score: 0 });
+  await participantRef.set({
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    score: 0,
+  });
 };
 
 export const createTrivia = async (
   trivia: Trivia
 ): Promise<[Trivia, string]> => {
   const db = getDb();
-  const { friendlyName, createdBy, createdByDisplayName, questions } = trivia;
-  const createdTriviaRef = await db
-    .collection('trivias')
-    .add({ friendlyName, createdBy, createdByDisplayName });
+  const baseTrivia: Omit<Trivia, 'questions' | 'participants'> = {
+    friendlyName: trivia.friendlyName,
+    createdBy: trivia.createdBy,
+    createdByDisplayName: trivia.createdByDisplayName,
+    status: trivia.status,
+    currentQuestionIndex: null,
+  };
+  const { questions } = trivia;
+  const createdTriviaRef = await db.collection('trivias').add(baseTrivia);
 
   const writeBatch = db.batch();
 
@@ -63,4 +80,41 @@ export const createTrivia = async (
   await writeBatch.commit();
 
   return [trivia, createdTriviaRef.id];
+};
+
+export const answerQuestion = async (
+  triviaId: string,
+  questionIndex: number,
+  user: User,
+  selectedAnswerIndex: number,
+  time: number
+) => {
+  const db = getDb();
+  await db
+    .doc(
+      `/trivias/${triviaId}/questions/${questionIndex}/participantsAnswers/${user.uid}`
+    )
+    .set({ selectedAnswerIndex, time });
+};
+
+export const finishCurrentQuestion = async (triviaId: string) => {
+  const db = getDb();
+  await db.doc(`/trivias/${triviaId}`).update({ status: 'intermission' });
+};
+
+export const goToNextQuestion = async (triviaId: string, trivia: Trivia) => {
+  const db = getDb();
+  const triviaRef = db.doc(`/trivias/${triviaId}`);
+  const nextCurrentQuestionIndex =
+    (trivia.currentQuestionIndex === null ? -1 : trivia.currentQuestionIndex) +
+    1;
+
+  if (nextCurrentQuestionIndex < trivia.questions.length) {
+    await triviaRef.update({
+      currentQuestionIndex: nextCurrentQuestionIndex,
+      status: 'inProgress',
+    });
+  } else {
+    await triviaRef.update({ currentQuestionIndex: null, status: 'completed' });
+  }
 };

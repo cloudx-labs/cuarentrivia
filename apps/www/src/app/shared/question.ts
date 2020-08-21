@@ -1,7 +1,12 @@
 import { buildObject } from './build-object';
 
+export interface Answer {
+  selectedAnswerIndex: number;
+  time: number;
+}
+
 export interface ParticipantAnswer {
-  [key: string]: number;
+  [key: string]: Answer;
 }
 
 export interface Question {

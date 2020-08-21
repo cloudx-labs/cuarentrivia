@@ -1,0 +1,16 @@
+{
+  "name": "Cuarentrivia",
+  "short_name": "Trivia",
+  "description": "Una app para hacer trivias.",
+  "icons": [
+    {
+      "src": "assets/icons/app-icon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "fullscreen",
+  "theme_color": "#ff6600",
+  "background_color": "#ff6600"
+}

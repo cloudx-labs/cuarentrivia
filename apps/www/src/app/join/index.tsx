@@ -4,9 +4,9 @@ import { useHistory, Link } from 'react-router-dom';
 import Authenticate from '../shared/authenticate';
 import { useQuery } from '../shared/use-query.hook';
 import { joinTrivia } from '../shared/trivias.service';
+import useTitle from '../shared/use-title.hook';
 
 import './index.scss';
-import useTitle from '../shared/use-title.hook';
 
 export interface JoinGameContentProps {
   user: firebase.User;
