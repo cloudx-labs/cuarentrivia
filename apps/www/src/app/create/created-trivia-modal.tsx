@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -8,7 +8,8 @@ import {
   Button,
 } from '@material-ui/core';
 import { Trivia } from '../shared/trivia';
-import useCopyToClipboard from '../shared/use-copy-to-clipboard';
+import useTriviaUrl from '../shared/use-trivia-url.hook';
+import CopyUrlButton from '../shared/copy-url-button';
 
 export interface CreatedTriviaModalProps {
   trivia: Trivia;
@@ -17,39 +18,13 @@ export interface CreatedTriviaModalProps {
   handleDismissed: () => void;
 }
 
-const CopyUrlButton = ({ url }: { url: string }) => {
-  const [isUrlCopied, handleCopyUrl] = useCopyToClipboard();
-
-  const handleClick = () => handleCopyUrl(url);
-
-  if (isUrlCopied) {
-    return (
-      <Button variant="contained" color="secondary" onClick={handleClick}>
-        Copied!
-      </Button>
-    );
-  } else {
-    return (
-      <Button variant="contained" color="primary" onClick={handleClick}>
-        Copy URL
-      </Button>
-    );
-  }
-};
-
 const CreatedTriviaModal = ({
   trivia,
   triviaId,
   visible,
   handleDismissed,
 }: CreatedTriviaModalProps) => {
-  const [url, setUrl] = useState<string>('');
-
-  useEffect(() => {
-    setUrl(
-      `${window.location.protocol}//${window.location.host}?triviaId=${triviaId}`
-    );
-  }, [triviaId]);
+  const url = useTriviaUrl(triviaId);
 
   if (!trivia) {
     return null;

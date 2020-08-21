@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import QuestionForm from './question-form';
 
 import './index.scss';
+import { buildTrivia, Trivia } from '../shared/trivia';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,13 +71,13 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
     event.preventDefault();
     try {
       const friendlyName = await generateFriendlyName();
-      const [trivia, triviaId] = await createTrivia({
+      const triviaToCreate: Trivia = buildTrivia({
         friendlyName,
         createdBy: user.uid,
         createdByDisplayName: user.displayName,
         questions,
-        participants: {},
       });
+      const [trivia, triviaId] = await createTrivia(triviaToCreate);
       setModalData({ trivia, triviaId, visible: true });
     } catch (error) {
       setError(error);

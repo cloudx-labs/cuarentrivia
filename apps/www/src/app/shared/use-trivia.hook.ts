@@ -35,18 +35,22 @@ const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
   let trivia: Trivia | undefined;
 
   if (
-    triviaBaseLoading ||
-    !!triviaBaseError ||
-    questionsLoading ||
-    !!questionsError ||
-    triviaParticipantsLoading ||
-    !!triviaParticipantsError
+    !!triviaBase &&
+    !triviaBaseLoading &&
+    !triviaBaseError &&
+    !!questions &&
+    !questionsLoading &&
+    !questionsError &&
+    !!triviaParticipants &&
+    !triviaParticipantsLoading &&
+    !triviaParticipantsError
   ) {
     const participants: Participants = triviaParticipants.docs.reduce(
       (prev, curr) => {
         const data = curr.data();
         const triviaParticipant: TriviaParticipant = {
           displayName: data.displayName,
+          photoURL: data.photoURL,
           score: data.score,
         };
         return { ...prev, [curr.id]: triviaParticipant };

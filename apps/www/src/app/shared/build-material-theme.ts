@@ -1,7 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+// eslint-disable-next-line @typescript-eslint/camelcase
+import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
 
 const buildMaterialTheme = () => {
-  const theme = createMuiTheme({
+  const theme = unstable_createMuiStrictModeTheme({
     typography: { fontFamily: `"Montserrat Alternates", sans-serif` },
     palette: {
       primary: {
