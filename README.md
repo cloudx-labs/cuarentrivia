@@ -24,7 +24,7 @@ Luego de crear el proyecto de Firebase es necesario _habilitar Autenticacion, Fi
 Dado que la aplicacion necesita acceder a la base de datos para poder funcionar es necesario hacer un deployment de algunas partes de la plataforma hacia Firebase.
 
 1- Crea un archivo en el repositorio con el nombre `.firebase.env`, abrilo y pone los valores del objeto de configuracion de Firebase.
-Los valores son especificos para tu proyecto y los conseguis aca https://console.firebase.google.com/project/<tu-proyecto>/settings/general/web y yendo a tu app, seccion `Config`
+Los valores son especificos para tu proyecto y los conseguis aca `https://console.firebase.google.com/project/<TU_PROYECTO>/settings/general/web` y yendo a tu app, seccion `Config`
 
 ```
 FIREBASE_APP_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx # apiKey
