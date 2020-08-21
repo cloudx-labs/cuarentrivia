@@ -11,18 +11,14 @@
         "source": "**",
         "destination": "/index.html"
       }
-    ],
-    "predeploy": ["npm run build -- www --prod"]
+    ]
   },
   "storage": {
     "rules": "apps/storage/storage.rules"
   },
   "functions": {
     "source": "dist/apps/functions",
-    "predeploy": [
-      "npm run build -- functions --prod",
-      "node tools/scripts/build-firebase-functions-package-json.js"
-    ]
+    "predeploy": ["node tools/scripts/build-firebase-functions-package-json.js"]
   },
   "emulators": {
     "firestore": {

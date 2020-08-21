@@ -44,3 +44,4 @@ firestore-debug.log
 ui-debug.log
 .firebase.env
 .firebase/
+.firebaserc

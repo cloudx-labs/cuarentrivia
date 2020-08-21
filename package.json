@@ -30,7 +30,9 @@
     "dep-graph": "nx dep-graph",
     "help": "nx help",
     "firebase": "firebase",
-    "workbox": "workbox"
+    "workbox": "workbox",
+    "deploy": "nx run-many --target=deploy --all",
+    "deploy:prod": "nx run-many --target=deploy --all --configuration=production"
   },
   "private": true,
   "firebase-functions-dependencies": [

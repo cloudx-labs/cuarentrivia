@@ -1,90 +1,65 @@
-# Trivia
+# Cuarentrivia
 
-This project was generated using [Nx](https://nx.dev).
+Este proyecto esta pensado para crear trivias y jugar en tiempo real con colegas o en comunidades.
 
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Tecnologias
 
-🔎 **Nx is a set of Extensible Dev Tools for Monorepos.**
+La aplicacion esta construida (principalmente) y funciona con:
 
-## Adding capabilities to your workspace
+- [NodeJS](https://nodejs.org/)
+- [ReactJS](https://reactjs.org/)
+- [Firebase](https://firebase.google.com/)
+- [Typescript](https://www.typescriptlang.org/)
+- [Nx](https://nx.dev/)
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Que necesito antes de poder usar la aplicacion?
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+Para crear una nueva instancia de Cuarentrivia es necesario [crear un proyecto de Firebase](https://firebase.google.com/docs/web/setup) (Pasos 1 y 2)
+Luego de crear el proyecto de Firebase es necesario _habilitar Autenticacion, Firestore, Functions, Storage y Hosting_ desde la consola de administracion de tu proyecto.
 
-Below are our core plugins:
+_NO TE OLVIDES DE OBTENER EL OBJETO DE CONFIGURACION DE TU PROYECTO QUE LO VAS A NECESITAR MAS ADELANTE_ (Mas info [aca](https://firebase.google.com/docs/web/setup#config-object))
 
-- [React](https://reactjs.org)
-  - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-  - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-  - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-  - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-  - `npm install --save-dev @nrwl/node`
+## Como uso la plataforma en desarrollo?
 
-There are also many [community plugins](https://nx.dev/nx-community) you could add.
+Dado que la aplicacion necesita acceder a la base de datos para poder funcionar es necesario hacer un deployment de algunas partes de la plataforma hacia Firebase.
 
-## Generate an application
+1- Crea un archivo en el repositorio con el nombre `.firebase.env`, abrilo y pone los valores del objeto de configuracion de Firebase.
+Los valores son especificos para tu proyecto y los conseguis aca https://console.firebase.google.com/project/<tu-proyecto>/settings/general/web y yendo a tu app, seccion `Config`
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+```
+FIREBASE_APP_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxx # apiKey
+FIREBASE_APP_AUTH_DOMAIN=xxx.firebaseapp.com # authDomain
+FIREBASE_APP_DATABASE_URL=https://xxxx.firebaseio.com # databaseUrl
+FIREBASE_APP_PROJECT_ID=xxx # projectId
+FIREBASE_APP_STORAGE_BUCKET=xxx.appspot.com # storageBucket
+FIREBASE_APP_MESSAGING_SENDER_ID=xxx # messagingSenderId
+FIREBASE_APP_APP_ID=xxx # appId
+FIREBASE_APP_MEASUREMENT_ID=xxx # measurementId
 
-> You can use any of the plugins above to generate applications as well.
+FIREBASE_TOKEN=xxx # Aca va el token para hacer el deployment. Este valor solo necesario si queres deployar con Continous Integration
+```
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+2- Crea otro archivo con el nombre `.firebaserc`, abrilo y pone el contenido en funcion de tu proyecto:
 
-## Generate a library
+```
+{
+  "projects": {
+    "default": "<aca va el nombre de tu proyecto de firebase para desarrollo>",
+    "production": "<aca va el nombre de tu proyecto de firebase para produccion. Si no vas a usarlo en produccion podes no poner esta linea>"
+  }
+}
+```
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+3- Inicia una terminal y ejecuta los siguientes comandos
+4- `npm install`
+5- `npm run deploy`
+6- `npm run start`
+7- Abri un navegador en [http://localhost:4200] y deberias ver la aplicacion funcionando 🎉
 
-> You can also use any of the plugins above to generate libraries as well.
+## Como uso la plataforma en produccion?
 
-Libraries are sharable across libraries and applications. They can be imported from `@trivia/mylib`.
+Para tener la aplicacion productiva necesitas tener un proyecto de firebase que sepas que es el final y vas a realizar lo siguiente:
 
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx dep-graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
-
-## ☁ Nx Cloud
-
-### Computation Memoization in the Cloud
-
-<p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+1- Edita el archivo `.firebase.env` y ponele los datos de tu proyecto de firebase productivo.
+2- Asegurate de tener el atributo `production` configurado correctamente en el archivo `.firebaserc`.
+3- Habiendo ejecutado los comandos de la seccion anterior, abri una terminal y ejecuta `npm run deploy:prod`
