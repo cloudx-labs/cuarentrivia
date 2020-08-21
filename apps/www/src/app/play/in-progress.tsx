@@ -4,7 +4,9 @@ import { TriviaComponentProps } from './symbols';
 import './in-progress.scss';
 
 const InProgress = (props: TriviaComponentProps) => {
-  const selectOption = (index: number) => {};
+  const selectOption = (index: number) => {
+    console.log('do something');
+  };
 
   return (
     <main className="question">
