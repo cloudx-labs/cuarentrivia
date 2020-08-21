@@ -61,4 +61,4 @@ jobs:
       - name: Run e2e tests
         run: npm run affected:e2e -- --base=HEAD~1
       - name: Deploy
-        run: npm run nx -- affected --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
+        run: npm run nx -- affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
