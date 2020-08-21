@@ -15,7 +15,11 @@
             "main": "apps/www/src/main.tsx",
             "polyfills": "apps/www/src/polyfills.ts",
             "tsConfig": "apps/www/tsconfig.app.json",
-            "assets": ["apps/www/src/favicon.ico", "apps/www/src/assets"],
+            "assets": [
+              "apps/www/src/favicon.ico",
+              "apps/www/src/assets",
+              "apps/www/src/cuarentrivia.webmanifest"
+            ],
             "styles": ["apps/www/src/styles.scss"],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
