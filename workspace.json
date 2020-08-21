@@ -83,7 +83,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "envFile": ".firebase.env",
+            "envFile": ".env",
             "args": "--configuration=default",
             "commands": [
               "npm run build -- www --configuration={args.configuration}",
@@ -185,7 +185,7 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "parallel": false,
-            "envFile": ".firebase.env",
+            "envFile": ".env",
             "args": "--configuration=default",
             "commands": [
               "npm run build -- functions --configuration={args.configuration}",
@@ -210,7 +210,7 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "envFile": ".firebase.env",
+            "envFile": ".env",
             "args": "--configuration=default",
             "command": "npm run firebase -- deploy --only=firestore --project={args.configuration}"
           },
@@ -232,7 +232,7 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "envFile": ".firebase.env",
+            "envFile": ".env",
             "args": "--configuration=default",
             "command": "npm run firebase -- deploy --only=storage --project={args.configuration}"
           },
