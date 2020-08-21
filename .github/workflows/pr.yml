@@ -8,14 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
-      NX_FIREBASE_APP_API_KEY: ${{secrets.PR_FIREBASE_APP_API_KEY}}
-      NX_FIREBASE_APP_AUTH_DOMAIN: ${{secrets.PR_FIREBASE_APP_AUTH_DOMAIN}}
-      NX_FIREBASE_APP_DATABASE_URL: ${{secrets.PR_FIREBASE_APP_DATABASE_URL}}
-      NX_FIREBASE_APP_PROJECT_ID: ${{secrets.PR_FIREBASE_APP_PROJECT_ID}}
-      NX_FIREBASE_APP_STORAGE_BUCKET: ${{secrets.PR_FIREBASE_APP_STORAGE_BUCKET}}
-      NX_FIREBASE_APP_MESSAGING_SENDER_ID: ${{secrets.PR_FIREBASE_APP_MESSAGING_SENDER_ID}}
-      NX_FIREBASE_APP_APP_ID: ${{secrets.PR_FIREBASE_APP_APP_ID}}
-      NX_FIREBASE_APP_MEASUREMENT_ID: ${{secrets.PR_FIREBASE_APP_MEASUREMENT_ID}}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -38,21 +30,11 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      # - name: Setup env
-      #   run: |
-      #     echo "NX_FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
-      #     echo "NX_FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
-      #     echo "NX_FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
-      #     echo "NX_FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
-      #     echo "NX_FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
-      #     echo "NX_FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
-      #     echo "NX_FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
-      #     echo "NX_FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
-      #     cat .env
       - name: Install dependencies
         run: npm ci
-      - name: Run e2e tests
-        run: npm run affected:e2e:ci
+      # TODO: Find a way to allow firebase to be e2e tested
+      # - name: Run e2e tests
+      #   run: npm run affected:e2e:ci
       - name: Lint
         run: npm run affected:lint:ci
       - name: Build
