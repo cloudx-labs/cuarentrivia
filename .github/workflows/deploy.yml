@@ -8,6 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
+      FIREBASE_APP_API_KEY: ${{secrets.FIREBASE_APP_API_KEY}}
+      FIREBASE_APP_AUTH_DOMAIN: ${{secrets.FIREBASE_APP_AUTH_DOMAIN}}
+      FIREBASE_APP_DATABASE_URL: ${{secrets.FIREBASE_APP_DATABASE_URL}}
+      FIREBASE_APP_PROJECT_ID: ${{secrets.FIREBASE_APP_PROJECT_ID}}
+      FIREBASE_APP_STORAGE_BUCKET: ${{secrets.FIREBASE_APP_STORAGE_BUCKET}}
+      FIREBASE_APP_MESSAGING_SENDER_ID: ${{secrets.FIREBASE_APP_MESSAGING_SENDER_ID}}
+      FIREBASE_APP_APP_ID: ${{secrets.FIREBASE_APP_APP_ID}}
+      FIREBASE_APP_MEASUREMENT_ID: ${{secrets.FIREBASE_APP_MEASUREMENT_ID}}
       FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
     steps:
       - name: Check out repository
@@ -31,6 +39,17 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Setup env
+        run: |
+          echo "NX_FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
+          echo "NX_FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
+          echo "NX_FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
+          echo "NX_FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
+          echo "NX_FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
+          echo "NX_FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
+          echo "NX_FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
+          echo "NX_FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
+          echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}" >> .env
       - name: Install dependencies
         run: npm ci
       - name: Lint
@@ -41,7 +60,5 @@ jobs:
         run: npm run affected:test -- --base=HEAD~1
       - name: Run e2e tests
         run: npm run affected:e2e -- --base=HEAD~1
-      - name: Create dotenv files
-        run: echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}" > .firebase.env
       - name: Deploy
         run: npm run nx -- affected --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
