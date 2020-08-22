@@ -18,7 +18,8 @@
             "assets": [
               "apps/www/src/favicon.ico",
               "apps/www/src/assets",
-              "apps/www/src/cuarentrivia.webmanifest"
+              "apps/www/src/cuarentrivia.webmanifest",
+              "apps/www/src/browserconfig.xml"
             ],
             "styles": ["apps/www/src/styles.scss"],
             "scripts": [],
