@@ -1,20 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TriviaComponentProps } from './symbols';
+import { answerQuestion } from '../shared/trivias.service';
+import { Button } from '@material-ui/core';
 
-import './in-progress.scss';
+import useInterval from '@use-it/interval';
 
-const InProgress = (props: TriviaComponentProps) => {
-  const selectOption = (index: number) => {
-    console.log('do something');
+const SECOND = 1000;
+
+const Answer = ({
+  possibleAnswer,
+  selectOption,
+  answered,
+}: {
+  possibleAnswer: string;
+  answered: boolean;
+  selectOption: () => void;
+}) => {
+  return (
+    <Button
+      variant="contained"
+      className="option"
+      disabled={answered}
+      onClick={selectOption}
+    >
+      {possibleAnswer}
+    </Button>
+  );
+};
+
+const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
+  const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
+
+  const [answered, setAnswered] = useState(false);
+  const [time, setTime] = useState(0);
+  const [timer, setTimer] = useState(trivia.timePerQuestion);
+
+  useInterval(() => {
+    setTime(time + 1);
+  }, 1);
+
+  useInterval(() => {
+    setTimer(timer - 1);
+  }, SECOND);
+
+  const selectOption = async (index: number) => {
+    setAnswered(true);
+    try {
+      await answerQuestion(
+        triviaId,
+        trivia.currentQuestionIndex,
+        user,
+        index,
+        time
+      );
+    } catch {
+      setAnswered(false);
+    }
   };
 
   return (
     <main className="question">
+      <div>Tiempo restante: {timer}</div>
       <div className="options">
-        <div className="option-0" onClick={() => selectOption(0)} />
-        <div className="option-1" onClick={() => selectOption(1)} />
-        <div className="option-2" onClick={() => selectOption(2)} />
-        <div className="option-3" onClick={() => selectOption(3)} />
+        {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
+          <Answer
+            key={index}
+            possibleAnswer={possibleAnswer}
+            answered={answered}
+            selectOption={() => selectOption(index)}
+          />
+        ))}
       </div>
     </main>
   );
