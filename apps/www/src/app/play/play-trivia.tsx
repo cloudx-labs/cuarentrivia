@@ -2,6 +2,7 @@ import React from 'react';
 import { TriviaComponentProps } from './symbols';
 import Joining from './joining';
 import InProgress from './in-progress';
+import Completed from './completed';
 
 const PlayTrivia = (props: TriviaComponentProps) => {
   switch (props.trivia.status) {
