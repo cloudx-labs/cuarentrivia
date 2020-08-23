@@ -3,7 +3,6 @@ import { TriviaComponentProps } from './symbols';
 import { answerQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
 
-import './in-progress.scss';
 import useInterval from '@use-it/interval';
 
 const SECOND = 1000;
