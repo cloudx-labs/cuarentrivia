@@ -14,6 +14,7 @@ export interface Participants {
 export type TriviaStatus =
   | 'joining'
   | 'inProgress'
+  | 'questionResult'
   | 'intermission'
   | 'completed';
 
@@ -22,6 +23,7 @@ export interface Trivia {
   createdBy: string;
   createdByDisplayName: string;
   status: TriviaStatus;
+  timePerQuestion: number;
   currentQuestionIndex: number;
   questions: Question[];
   participants: Participants;
@@ -33,6 +35,7 @@ export const buildTrivia = buildObject<Trivia>({
   createdByDisplayName: '',
   status: 'joining',
   currentQuestionIndex: null,
+  timePerQuestion: 10000,
   questions: [],
   participants: {},
 });

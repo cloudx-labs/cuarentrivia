@@ -58,6 +58,7 @@ export const createTrivia = async (
     createdByDisplayName: trivia.createdByDisplayName,
     status: trivia.status,
     currentQuestionIndex: null,
+    timePerQuestion: trivia.timePerQuestion,
   };
   const { questions } = trivia;
   const createdTriviaRef = await db.collection('trivias').add(baseTrivia);
@@ -99,7 +100,7 @@ export const answerQuestion = async (
 
 export const finishCurrentQuestion = async (triviaId: string) => {
   const db = getDb();
-  await db.doc(`/trivias/${triviaId}`).update({ status: 'intermission' });
+  await db.doc(`/trivias/${triviaId}`).update({ status: 'questionResult' });
 };
 
 export const goToNextQuestion = async (triviaId: string, trivia: Trivia) => {

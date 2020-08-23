@@ -1,19 +1,20 @@
 import React from 'react';
 import { TriviaComponentProps } from './symbols';
 import Joining from './joining';
+import InProgress from './in-progress';
 
 const PlayTrivia = (props: TriviaComponentProps) => {
   switch (props.trivia.status) {
     case 'joining':
       return <Joining {...props} />;
     case 'inProgress':
-      return null; //<InProgress {...props} />;
+      return <InProgress {...props} />;
     case 'intermission':
-      return null; // <Intermission {...props} />;
+      return <div>INTERMISSION</div>; // <Intermission {...props} />;
     case 'completed':
-      return null; //<Completed {...props} />;
+      return <Completed {...props} />;
     default:
-      return null;
+      return <div>The trivia has an invalid status</div>;
   }
 };
 
