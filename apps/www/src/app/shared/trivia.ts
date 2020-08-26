@@ -18,16 +18,33 @@ export type TriviaStatus =
   | 'intermission'
   | 'completed';
 
-export interface Trivia {
+export interface TriviaBase {
   friendlyName: string;
   createdBy: string;
   createdByDisplayName: string;
   status: TriviaStatus;
   timePerQuestion: number;
   currentQuestionIndex: number;
+}
+
+export interface Trivia extends TriviaBase {
   questions: Question[];
   participants: Participants;
 }
+
+type TriviaTemplateBase = Pick<
+  Trivia,
+  'friendlyName' | 'createdBy' | 'createdByDisplayName' | 'timePerQuestion'
+>;
+
+type QuestionTemplate = Pick<
+  Question,
+  'question' | 'possibleAnswers' | 'correctAnswerIndex' | 'value'
+>;
+
+export type TriviaTemplate = TriviaTemplateBase & {
+  questions: QuestionTemplate[];
+};
 
 export const buildTrivia = buildObject<Trivia>({
   friendlyName: '',

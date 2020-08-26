@@ -1,6 +1,7 @@
-import firebase, { User } from 'firebase/app';
+import firebase, { User, database } from 'firebase/app';
 import verifyTriviaId from './verify-trivia-id';
-import { Trivia } from './trivia';
+import { Trivia, TriviaTemplate, TriviaBase } from './trivia';
+import { Question, QuestionBase } from './question';
 
 const getDb = () => firebase.firestore();
 
@@ -118,4 +119,58 @@ export const goToNextQuestion = async (triviaId: string, trivia: Trivia) => {
   } else {
     await triviaRef.update({ currentQuestionIndex: null, status: 'completed' });
   }
+};
+
+export const startTrivia = async ({
+  friendlyName,
+  createdBy,
+  createdByDisplayName,
+  timePerQuestion,
+  questions,
+}: TriviaTemplate): Promise<[string, Trivia]> => {
+  const db = getDb();
+  const triviasRef = db.collection('/trivias');
+  const trivia: TriviaBase = {
+    friendlyName,
+    createdBy,
+    createdByDisplayName,
+    timePerQuestion,
+    status: 'joining',
+    currentQuestionIndex: null,
+  };
+  const newTriviaRef = await triviasRef.add(trivia);
+
+  const writeBatch = db.batch();
+
+  const questionsToCreate: QuestionBase[] = questions.map(
+    ({
+      question,
+      possibleAnswers,
+      correctAnswerIndex,
+      value,
+    }): QuestionBase => ({
+      question,
+      possibleAnswers,
+      correctAnswerIndex,
+      value,
+    })
+  );
+
+  questionsToCreate.forEach((questionToCreate, index) => {
+    const questionRef = newTriviaRef.collection('questions').doc(`${index}`);
+    writeBatch.set(questionRef, questionToCreate);
+  });
+
+  await writeBatch.commit();
+
+  const createdTrivia: Trivia = {
+    ...trivia,
+    participants: {},
+    questions: questionsToCreate.map((question) => ({
+      ...question,
+      participantsAnswers: {},
+    })),
+  };
+
+  return [newTriviaRef.id, createdTrivia];
 };

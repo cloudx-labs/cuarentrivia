@@ -9,12 +9,15 @@ export interface ParticipantAnswer {
   [key: string]: Answer;
 }
 
-export interface Question {
+export interface QuestionBase {
   question: string;
   possibleAnswers: string[];
   correctAnswerIndex: number;
-  participantsAnswers: ParticipantAnswer;
   value: number;
+}
+
+export interface Question extends QuestionBase {
+  participantsAnswers: ParticipantAnswer;
 }
 
 export const buildQuestion = buildObject<Question>({
