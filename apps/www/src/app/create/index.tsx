@@ -96,7 +96,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   );
 
   return (
-    <main className={classes.root}>
+    <main className="create">
       <form noValidate onSubmit={handleFormSubmit}>
         {questions.map((question, index) => (
           <QuestionForm
