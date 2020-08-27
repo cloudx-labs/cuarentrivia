@@ -51,11 +51,18 @@ object {
 }
 
 html {
-  font-size: 14px;
+  font-size: 8px;
 }
 
 @media (min-width: 420px) {
   html {
     font-size: 16px;
   }
+}
+
+body,
+html,
+#root {
+  height: 100%;
+ background-color:  var(--cloudx-gray-lighter);
 }

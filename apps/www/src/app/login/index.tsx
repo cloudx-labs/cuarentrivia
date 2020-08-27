@@ -4,6 +4,9 @@ import { FirebaseAuth } from 'react-firebaseui';
 import firebase from 'firebase/app';
 import useTitle from '../shared/use-title.hook';
 import { useQuery } from '../shared/use-query.hook';
+import logo from '../../assets/icons/android-icon-36x36.png';
+import './index.scss';
+import Nav from '../nav/nav';
 
 const Login = () => {
   const history = useHistory();
@@ -39,7 +42,17 @@ const Login = () => {
 
   useTitle('Login');
 
-  return <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebaseAuth} />;
+  return (
+    <Nav>
+      <main className="login">
+        <section className="login-content">
+          <img src={logo} alt="Logo" className="login-content-logo" />
+          <h1 className="login-content-title">Sing in</h1>
+          <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebaseAuth} />
+        </section>
+      </main>
+    </Nav>
+  );
 };
 
 export default Login;
