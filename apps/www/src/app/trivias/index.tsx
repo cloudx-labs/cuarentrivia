@@ -8,7 +8,7 @@ import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
 import { useHistory } from 'react-router-dom';
-import { startTrivia } from '../shared/trivias.service';
+import { startTrivia, getTemplateQuestions } from '../shared/trivias.service';
 
 const ShowError = ({ error }: { error: Error }) =>
   !error ? null : <span>{error.message}</span>;
@@ -26,9 +26,10 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   const history = useHistory();
 
   const start = async (index: number) => {
-    const [, template] = myTemplates[index];
+    const [templateId, template] = myTemplates[index];
     try {
-      const [triviaId, trivia] = await startTrivia(template);
+      const questions = await getTemplateQuestions(user, templateId);
+      const [triviaId, trivia] = await startTrivia({ ...template, questions });
       setCreatedTriviaModalProps({
         trivia,
         triviaId,

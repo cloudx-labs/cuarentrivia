@@ -183,3 +183,26 @@ export const startTrivia = async ({
 
   return [newTriviaRef.id, createdTrivia];
 };
+
+export const getTemplateQuestions = async (
+  user: User,
+  templateId: string
+): Promise<QuestionTemplate[]> => {
+  const db = getDb();
+  const questionsRef = db.collection(
+    `/templates/${user.uid}/trivias/${templateId}/questions`
+  );
+  const questions = await questionsRef.get();
+  const result = questions.docs.map(
+    (doc): QuestionTemplate => {
+      const {
+        question,
+        possibleAnswers,
+        correctAnswerIndex,
+        value,
+      } = doc.data();
+      return { question, possibleAnswers, correctAnswerIndex, value };
+    }
+  );
+  return result;
+};

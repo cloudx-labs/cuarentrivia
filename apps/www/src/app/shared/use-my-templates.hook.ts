@@ -1,6 +1,6 @@
 import firebase, { User } from 'firebase/app';
 import { Loading } from './symbols';
-import { TriviaTemplate } from './trivia';
+import { TriviaTemplateBase } from './trivia';
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 const firestoreOptions: {
@@ -9,7 +9,7 @@ const firestoreOptions: {
 
 const useMyTemplates = (
   user: User
-): [[string, TriviaTemplate][], Loading, Error] => {
+): [[string, TriviaTemplateBase][], Loading, Error] => {
   const templatesRef = firebase
     .firestore()
     .collection(`/templates/${user.uid}/trivias`);
@@ -19,12 +19,12 @@ const useMyTemplates = (
     firestoreOptions
   );
 
-  let data: [string, TriviaTemplate][];
+  let data: [string, TriviaTemplateBase][];
 
   if (!!snapshot && !loading && !error) {
     data = snapshot.docs.map((templateSnapshot) => [
       templateSnapshot.id,
-      templateSnapshot.data() as TriviaTemplate,
+      templateSnapshot.data() as TriviaTemplateBase,
     ]);
   }
 
