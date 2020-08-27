@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Route,
-  Redirect,
-  useLocation,
-  useHistory,
-} from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { Gamepad, List } from '@material-ui/icons';
 
 import Join from '../join';
