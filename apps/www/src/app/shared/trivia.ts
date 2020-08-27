@@ -32,12 +32,12 @@ export interface Trivia extends TriviaBase {
   participants: Participants;
 }
 
-type TriviaTemplateBase = Pick<
+export type TriviaTemplateBase = Pick<
   Trivia,
   'friendlyName' | 'createdBy' | 'createdByDisplayName' | 'timePerQuestion'
 >;
 
-type QuestionTemplate = Pick<
+export type QuestionTemplate = Pick<
   Question,
   'question' | 'possibleAnswers' | 'correctAnswerIndex' | 'value'
 >;
@@ -55,4 +55,12 @@ export const buildTrivia = buildObject<Trivia>({
   timePerQuestion: 10000,
   questions: [],
   participants: {},
+});
+
+export const buildTriviaTemplate = buildObject<TriviaTemplate>({
+  friendlyName: '',
+  createdBy: '',
+  createdByDisplayName: '',
+  timePerQuestion: 10000,
+  questions: [],
 });

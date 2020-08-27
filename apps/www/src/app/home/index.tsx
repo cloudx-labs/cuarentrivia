@@ -25,7 +25,7 @@ const Home = () => {
     <div className="home">
       <div className="home-content">
         <Switch>
-          <Route path="/trivias" component={Trivias} />
+          <Route exact path="/trivias" component={Trivias} />
           <Route path="/trivias/create" component={Create} />
           <Route exact path="/" component={Join} />
         </Switch>

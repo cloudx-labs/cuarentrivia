@@ -23,6 +23,14 @@ service cloud.firestore {
       }
     }
 
+    match /templates/{template} {
+      allow read, write: if request.auth.uid == template;
+
+      match /trivias/{trivia} {
+        allow read, write: if request.auth.uid == template;
+      }
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

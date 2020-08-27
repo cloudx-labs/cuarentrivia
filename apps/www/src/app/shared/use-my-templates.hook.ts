@@ -12,7 +12,7 @@ const useMyTemplates = (
 ): [[string, TriviaTemplate][], Loading, Error] => {
   const templatesRef = firebase
     .firestore()
-    .collection(`templates/${user.uid}/trivias`);
+    .collection(`/templates/${user.uid}/trivias`);
 
   const [snapshot, loading, error] = useCollection(
     templatesRef,
