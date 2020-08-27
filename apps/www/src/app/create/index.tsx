@@ -14,26 +14,7 @@ import QuestionForm from './question-form';
 import './index.scss';
 import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    button: {
-      marginTop: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-    actionsContainer: {
-      marginBottom: theme.spacing(2),
-    },
-    resetContainer: {
-      padding: theme.spacing(3),
-    },
-  })
-);
-
 const CreateTriviaContent = ({ user }: { user: User }) => {
-  const classes = useStyles();
   const history = useHistory();
   const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
   const [error, setError] = useState<Error>(null);
@@ -82,7 +63,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   );
 
   return (
-    <main className={classes.root}>
+    <main className="create">
       <form noValidate onSubmit={handleFormSubmit}>
         {questions.map((question, index) => (
           <QuestionForm

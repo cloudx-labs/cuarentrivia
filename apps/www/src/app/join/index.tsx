@@ -7,6 +7,7 @@ import { joinTrivia } from '../shared/trivias.service';
 import useTitle from '../shared/use-title.hook';
 
 import './index.scss';
+import Nav from '../nav/nav';
 
 export interface JoinGameContentProps {
   user: firebase.User;
@@ -42,34 +43,43 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
   };
 
   return (
-    <main className="join-game-content">
-      <form noValidate onSubmit={handleFormSubmit}>
-        <h1>Hello, {user.displayName}!</h1>
-        <div>
-          <label htmlFor="triviaId">Trivia Name</label>
-          <input
-            id="triviaId"
-            type="text"
-            placeholder="Trivia Name"
-            required
-            value={triviaId}
-            onChange={handleTriviaIdChange}
-          />
-        </div>
-        <div className="submit">
-          <button type="submit" disabled={isTriviaIdInvalid}>
-            Join
-          </button>
-        </div>
-        <Error error={error} />
-        <div className="create-game">
-          <span className="create-game-child">Or</span>
-          <Link to="/trivias" className="create-game-child">
-            see your trivias here
-          </Link>
-        </div>
-      </form>
-    </main>
+    <Nav>
+      <main className="join">
+        <form noValidate onSubmit={handleFormSubmit} className="join-form">
+          <h1 className="join-form-title">Hello, {user.displayName}!</h1>
+          <div className="join-form-main">
+            <label htmlFor="triviaId" className="join-form-main-trivia-name">
+              Trivia Name
+            </label>
+            <input
+              className="join-form-main-nick-name"
+              id="triviaId"
+              type="text"
+              placeholder="Nick Name"
+              required
+              value={triviaId}
+              onChange={handleTriviaIdChange}
+            />
+          </div>
+          <div className="join-form-submit">
+            <button
+              type="submit"
+              disabled={isTriviaIdInvalid}
+              className="join-form-submit-button"
+            >
+              Join
+            </button>
+          </div>
+          <Error error={error} />
+          <div className="join-form-create-game">
+            <span className="join-form-create-game-child">Or</span>
+            <Link to="/trivias" className="join-form-create-game-child">
+              see your trivias here
+            </Link>
+          </div>
+        </form>
+      </main>
+    </Nav>
   );
 };
 

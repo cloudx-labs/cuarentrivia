@@ -1,52 +1,67 @@
-.join-game-content {
-  background-color: var(--cloudx-orange);
-  color: var(--cloudx-white);
+.join {
+  color: var(--cloudx-black);
   display: flex;
   justify-content: center;
-  // width: 100%;
-  height: 100%;
+  width: 100%;
 
-  form {
+  &-form {
     overflow: auto;
-    padding: 4rem;
-    div {
+    padding: 8rem;
+    &-title {
+      margin-bottom: 1rem;
+      font-weight: normal;
+    }
+    &-main {
       display: flex;
       flex-direction: column;
-      margin-bottom: 1rem;
-      label {
-        margin-bottom: 0.5rem;
+      align-items: center;
+      &-trivia-name {
+        margin-bottom: 1rem;
+        font-weight: lighter;
       }
-      input {
-        border-radius: 0.25rem;
+      &-nick-name {
+        border-radius: 1rem;
         height: 2rem;
+        border: 1px solid var(--cloudx-gray);
+        width: 100%;
+        padding: 0.25rem 1rem;
       }
-
-      &.submit {
-        display: flex;
-        justify-content: center;
-        button {
-          margin: auto;
-          padding: 0.5rem 1rem;
-          background-color: var(--cloudx-white);
-          color: var(--cloudx-gray);
-          font-weight: 600;
-          border-radius: 0.25rem;
-          box-shadow: 0.25rem 0.25rem 0.25rem var(--cloudx-gray);
-          &:focus {
-            box-shadow: none;
-            outline: none;
-          }
+      &-nick-name:focus {
+        outline: none;
+      }
+    }
+    &-submit {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      &-button {
+        margin: auto;
+        padding: 0.5rem 2rem;
+        background-color: var(--cloudx-orange);
+        color: var(--cloudx-white);
+        font-weight: 600;
+        border-radius: 0.25rem;
+        box-shadow: 0.25rem 0.25rem 0.25rem var(--cloudx-gray);
+        cursor: pointer;
+        &:focus {
+          box-shadow: none;
+          outline: none;
         }
       }
+    }
 
-      &.create-game {
-        padding: 2rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .create-game-child {
-          margin-right: 0.5rem;
-        }
+    &-create-game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &-child:first-child {
+        color: var(--cloudx-black);
+        font-weight: lighter;
+        font-size: 0.85rem;
+      }
+      &-child {
+        margin-top: 1rem;
+        color: var(--cloudx-blue);
       }
     }
   }
