@@ -32,7 +32,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
     event.preventDefault();
     try {
       await joinTrivia(triviaId, user);
-      history.push(`/trivias/${triviaId}`);
+      history.push(`/play/${triviaId}`);
     } catch (error) {
       setError(error);
     }
@@ -62,15 +62,19 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
             />
           </div>
           <div className="join-form-submit">
-            <button type="submit" disabled={isTriviaIdInvalid} className="join-form-submit-button">
+            <button
+              type="submit"
+              disabled={isTriviaIdInvalid}
+              className="join-form-submit-button"
+            >
               Join
             </button>
           </div>
           <Error error={error} />
           <div className="join-form-create-game">
             <span className="join-form-create-game-child">Or</span>
-            <Link to="/create" className="join-form-create-game-child">
-              Create a new trivia here
+            <Link to="/trivias" className="join-form-create-game-child">
+              see your trivias here
             </Link>
           </div>
         </form>

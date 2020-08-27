@@ -6,28 +6,18 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { buildQuestion, Question } from '../shared/question';
 import generateFriendlyName from '../shared/generate-friendly-name';
-import { createTrivia } from '../shared/trivias.service';
-import CreatedTriviaModal, {
-  CreatedTriviaModalProps,
-} from './created-trivia-modal';
+import { createTemplate } from '../shared/trivias.service';
 import SubmitError from './submit-error';
 import { useHistory } from 'react-router-dom';
 import QuestionForm from './question-form';
 
 import './index.scss';
-import { buildTrivia, Trivia } from '../shared/trivia';
+import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
   const history = useHistory();
   const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
   const [error, setError] = useState<Error>(null);
-  const [modalData, setModalData] = useState<
-    Omit<CreatedTriviaModalProps, 'handleDismissed'>
-  >({
-    trivia: null,
-    triviaId: null,
-    visible: false,
-  });
 
   const handleAdd = () => {
     setQuestions((questions) => questions.concat([buildQuestion()]));
@@ -52,21 +42,17 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
     event.preventDefault();
     try {
       const friendlyName = await generateFriendlyName();
-      const triviaToCreate: Trivia = buildTrivia({
+      const triviaToCreate: TriviaTemplate = buildTriviaTemplate({
         friendlyName,
         createdBy: user.uid,
         createdByDisplayName: user.displayName,
         questions,
       });
-      const [trivia, triviaId] = await createTrivia(triviaToCreate);
-      setModalData({ trivia, triviaId, visible: true });
+      await createTemplate(triviaToCreate, user);
+      history.push('/trivias');
     } catch (error) {
       setError(error);
     }
-  };
-
-  const handleModalDismissed = () => {
-    history.push('/');
   };
 
   const isFormValid = questions.every(
@@ -99,10 +85,6 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         </div>
         <SubmitError error={error} />
       </form>
-      <CreatedTriviaModal
-        {...modalData}
-        handleDismissed={handleModalDismissed}
-      />
     </main>
   );
 };

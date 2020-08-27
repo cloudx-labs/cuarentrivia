@@ -6,8 +6,7 @@ import {
   useCollection,
 } from 'react-firebase-hooks/firestore';
 import { Question } from './question';
-
-export type Loading = boolean;
+import { Loading } from './symbols';
 
 const firestoreOptions: {
   snapshotListenOptions: firebase.firestore.SnapshotListenOptions;
