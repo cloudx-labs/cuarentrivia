@@ -3,6 +3,7 @@ import { buildObject } from './build-object';
 
 export interface TriviaParticipant {
   displayName: string;
+  email: string;
   photoURL: string;
   score: number;
 }
@@ -22,6 +23,7 @@ export interface TriviaBase {
   friendlyName: string;
   createdBy: string;
   createdByDisplayName: string;
+  createdByEmail: string;
   status: TriviaStatus;
   timePerQuestion: number;
   currentQuestionIndex: number;
@@ -34,7 +36,11 @@ export interface Trivia extends TriviaBase {
 
 export type TriviaTemplateBase = Pick<
   Trivia,
-  'friendlyName' | 'createdBy' | 'createdByDisplayName' | 'timePerQuestion'
+  | 'friendlyName'
+  | 'createdBy'
+  | 'createdByDisplayName'
+  | 'createdByEmail'
+  | 'timePerQuestion'
 >;
 
 export type QuestionTemplate = Pick<
@@ -50,6 +56,7 @@ export const buildTrivia = buildObject<Trivia>({
   friendlyName: '',
   createdBy: '',
   createdByDisplayName: '',
+  createdByEmail: '',
   status: 'joining',
   currentQuestionIndex: null,
   timePerQuestion: 10000,
@@ -61,6 +68,7 @@ export const buildTriviaTemplate = buildObject<TriviaTemplate>({
   friendlyName: '',
   createdBy: '',
   createdByDisplayName: '',
+  createdByEmail: '',
   timePerQuestion: 10000,
   questions: [],
 });

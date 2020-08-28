@@ -2,7 +2,6 @@ import React, { useState, FormEvent } from 'react';
 import Authenticate from '../shared/authenticate';
 import useTitle from '../shared/use-title.hook';
 import { User } from 'firebase/app';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import { buildQuestion, Question } from '../shared/question';
 import generateFriendlyName from '../shared/generate-friendly-name';
@@ -46,6 +45,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         friendlyName,
         createdBy: user.uid,
         createdByDisplayName: user.displayName,
+        createdByEmail: user.email,
         questions,
       });
       await createTemplate(triviaToCreate, user);

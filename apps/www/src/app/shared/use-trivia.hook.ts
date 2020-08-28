@@ -49,6 +49,7 @@ const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
         const data = curr.data();
         const triviaParticipant: TriviaParticipant = {
           displayName: data.displayName,
+          email: data.email,
           photoURL: data.photoURL,
           score: data.score,
         };
