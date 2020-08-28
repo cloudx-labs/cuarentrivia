@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export const environment = {
   production: true,
   firebase: {
@@ -9,5 +11,16 @@ export const environment = {
     messagingSenderId: process.env.NX_FIREBASE_APP_MESSAGING_SENDER_ID,
     appId: process.env.NX_FIREBASE_APP_MESSAGING_APP_ID,
     measurementId: process.env.NX_FIREBASE_APP_MEASUREMENT_ID,
+  },
+  firebaseUi: {
+    signInOptions: [
+      {
+        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        scopes: [],
+        customParameters: {
+          hd: 'cloudx.com',
+        },
+      },
+    ],
   },
 };
