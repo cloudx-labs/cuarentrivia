@@ -10,7 +10,7 @@ export const environment = {
     projectId: process.env.NX_FIREBASE_APP_PROJECT_ID,
     storageBucket: process.env.NX_FIREBASE_APP_STORAGE_BUCKET,
     messagingSenderId: process.env.NX_FIREBASE_APP_MESSAGING_SENDER_ID,
-    appId: process.env.NX_FIREBASE_APP_MESSAGING_APP_ID,
+    appId: process.env.NX_FIREBASE_APP_APP_ID,
     measurementId: process.env.NX_FIREBASE_APP_MEASUREMENT_ID,
   },
 };
