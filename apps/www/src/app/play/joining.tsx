@@ -19,10 +19,15 @@ const ListItemTriviaParticipantAvatar = ({
   participant: TriviaParticipant;
 }) => {
   if (participant.photoURL) {
-    return <Avatar alt={participant.displayName} src={participant.photoURL} />;
+    return (
+      <Avatar
+        alt={participant.displayName || participant.email}
+        src={participant.photoURL}
+      />
+    );
   } else {
     return (
-      <Avatar alt={participant.displayName}>
+      <Avatar alt={participant.displayName || participant.email}>
         <PersonIcon />
       </Avatar>
     );

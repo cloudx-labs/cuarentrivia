@@ -12,15 +12,17 @@ import {
 
 const ParticipantAvatar = ({
   displayName,
+  email,
   photoUrl,
 }: {
   displayName: string;
+  email: string;
   photoUrl: string;
 }) => {
   if (photoUrl) {
-    return <Avatar alt={displayName} src={photoUrl} />;
+    return <Avatar alt={displayName || email} src={photoUrl} />;
   } else {
-    const names = displayName.split(' ');
+    const names = (displayName || email).split(' ');
     const firstName = names[0];
     const lastName = names[names.length - 1] || '';
     const initials = `${firstName[0]}${lastName[0] || ''}`;
@@ -42,11 +44,13 @@ const HostCompleted = ({ trivia }: TriviaComponentProps) => {
               <Avatar>{index + 1}</Avatar>
             </ListItemAvatar>
             <ListItemText>
-              {participant.displayName} - {participant.score}
+              {participant.displayName || participant.email} -{' '}
+              {participant.score}
             </ListItemText>
             <ListItemSecondaryAction>
               <ParticipantAvatar
                 displayName={participant.displayName}
+                email={participant.email}
                 photoUrl={participant.photoURL}
               />
             </ListItemSecondaryAction>

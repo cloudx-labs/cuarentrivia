@@ -46,7 +46,9 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
     <Nav>
       <main className="join">
         <form noValidate onSubmit={handleFormSubmit} className="join-form">
-          <h1 className="join-form-title">Hello, {user.displayName}!</h1>
+          <h1 className="join-form-title">
+            Hello, {user.displayName || user.email}!
+          </h1>
           <div className="join-form-main">
             <label htmlFor="triviaId" className="join-form-main-trivia-name">
               Trivia Name
