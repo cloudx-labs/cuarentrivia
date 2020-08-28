@@ -40,7 +40,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
   }, 1);
 
   useInterval(() => {
-    setTimer(timer - 1);
+    setTimer(timer - SECOND);
   }, SECOND);
 
   const selectOption = async (index: number) => {
@@ -60,7 +60,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
 
   return (
     <main className="question">
-      <div>Tiempo restante: {timer}</div>
+      <div>Tiempo restante: {timer === 0 ? 0 : timer / SECOND}</div>
       <div className="options">
         {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
           <Answer
