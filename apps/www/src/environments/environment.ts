@@ -1,6 +1,8 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // When building for production, this file is replaced with `environment.prod.ts`.
 
+import firebase from 'firebase/app';
+
 export const environment = {
   production: false,
   firebase: {
@@ -12,5 +14,17 @@ export const environment = {
     messagingSenderId: process.env.NX_FIREBASE_APP_MESSAGING_SENDER_ID,
     appId: process.env.NX_FIREBASE_APP_APP_ID,
     measurementId: process.env.NX_FIREBASE_APP_MEASUREMENT_ID,
+  },
+  firebaseUi: {
+    signInOptions: [
+      {
+        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        scopes: [],
+      },
+      {
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        requireDisplayName: true,
+      },
+    ],
   },
 };

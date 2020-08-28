@@ -7,18 +7,12 @@ import { useQuery } from '../shared/use-query.hook';
 import logo from '../../assets/icons/android-icon-36x36.png';
 import './index.scss';
 import Nav from '../nav/nav';
+import { environment } from '../../environments/environment';
 
 const Login = () => {
   const history = useHistory();
   const query = useQuery();
 
-  const googleAuthProvider = {
-    provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    scopes: [],
-    customParameters: {
-      hd: 'cloudx.com',
-    },
-  };
   const signInSuccessWithAuthResult = (
     authResult: firebase.auth.UserCredential
   ): boolean => {
@@ -33,7 +27,7 @@ const Login = () => {
     return true;
   };
   const uiConfig: firebaseui.auth.Config = {
-    signInOptions: [googleAuthProvider],
+    signInOptions: environment.firebaseUi.signInOptions,
     callbacks: {
       signInSuccessWithAuthResult,
     },
