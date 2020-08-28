@@ -50,6 +50,7 @@ export const joinTrivia = async (triviaId: string, user: User) => {
 
   await participantRef.set({
     displayName: user.displayName,
+    email: user.email,
     photoURL: user.photoURL,
     score: 0,
   });
@@ -64,6 +65,7 @@ export const createTemplate = async (
     friendlyName: trivia.friendlyName,
     createdBy: trivia.createdBy,
     createdByDisplayName: trivia.createdByDisplayName,
+    createdByEmail: trivia.createdByEmail,
     timePerQuestion: trivia.timePerQuestion,
   };
   const { questions } = trivia;
@@ -134,6 +136,7 @@ export const startTrivia = async ({
   friendlyName,
   createdBy,
   createdByDisplayName,
+  createdByEmail,
   timePerQuestion,
   questions,
 }: TriviaTemplate): Promise<[string, Trivia]> => {
@@ -143,6 +146,7 @@ export const startTrivia = async ({
     friendlyName,
     createdBy,
     createdByDisplayName,
+    createdByEmail,
     timePerQuestion,
     status: 'joining',
     currentQuestionIndex: null,

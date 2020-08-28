@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import Join from '../join';
 import Trivias from '../trivias';

@@ -47,9 +47,10 @@ const buildRanking = (trivia: Trivia): TriviaRanking => {
     trivia.participants
   )
     .map(
-      ([uid, { displayName, photoURL }]): TriviaRankingParticipant => ({
+      ([uid, { displayName, photoURL, email }]): TriviaRankingParticipant => ({
         uid,
         displayName,
+        email,
         photoURL,
         score: calculateTotalScore(
           uid,
