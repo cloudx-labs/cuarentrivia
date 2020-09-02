@@ -1,9 +1,14 @@
 import React from 'react';
 import { TriviaComponentProps } from './symbols';
+import { buildAnswer } from '../shared/question';
 
 const QuestionResult = ({ trivia, user }: TriviaComponentProps) => {
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
-  const currentUserAnswer = currentQuestion.participantsAnswers[user.uid];
+  const currentParticipant = (trivia.participants || {})[user.uid];
+  const currentUserAnswer =
+    (currentParticipant || { answers: [] }).answers[
+      trivia.currentQuestionIndex
+    ] || buildAnswer();
 
   const message =
     currentQuestion.correctAnswerIndex === currentUserAnswer.selectedAnswerIndex

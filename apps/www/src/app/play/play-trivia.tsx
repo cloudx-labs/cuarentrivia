@@ -3,6 +3,7 @@ import { TriviaComponentProps } from './symbols';
 import Joining from './joining';
 import InProgress from './in-progress';
 import Completed from './completed';
+import QuestionResult from './question-result';
 
 const PlayTrivia = (props: TriviaComponentProps) => {
   switch (props.trivia.status) {
@@ -10,6 +11,8 @@ const PlayTrivia = (props: TriviaComponentProps) => {
       return <Joining {...props} />;
     case 'inProgress':
       return <InProgress {...props} />;
+    case 'questionResult':
+      return <QuestionResult {...props} />;
     case 'intermission':
       return <div>INTERMISSION</div>; // <Intermission {...props} />;
     case 'completed':

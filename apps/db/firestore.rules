@@ -9,17 +9,12 @@ service cloud.firestore {
       match /participants/{participant} {
         allow read: if request.auth != null;
         allow create: if request.auth.uid == participant;
-        allow update: if request.auth.uid == get(/databases/$(database)/documents/trivias/$(trivia)).data.createdBy;
+        allow update: if request.auth.uid == participant || request.auth.uid == get(/databases/$(database)/documents/trivias/$(trivia)).data.createdBy;
       }
 
       match /questions/{question} {
         allow read: if request.auth != null;
         allow write: if request.auth.uid == get(/databases/$(database)/documents/trivias/$(trivia)).data.createdBy;
-
-        match /participantsAnswers/{participantAnswer} {
-          allow read: if request.auth != null;
-          allow write: if request.auth.uid == participantAnswer;
-        }
       }
     }
 

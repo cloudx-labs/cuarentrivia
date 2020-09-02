@@ -31,8 +31,8 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      await joinTrivia(triviaId, user);
-      history.push(`/play/${triviaId}`);
+      const _triviaId = await joinTrivia(triviaId, user);
+      history.push(`/play/${_triviaId}`);
     } catch (error) {
       setError(error);
     }

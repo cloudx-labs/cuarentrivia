@@ -1,13 +1,22 @@
-import { Trivia } from './trivia';
+import { Trivia, TriviaParticipant, buildTriviaParticipant } from './trivia';
 import { TriviaRanking, TriviaRankingParticipant } from './trivia-ranking';
-import { Question } from './question';
+import { Question, buildAnswer, Answer } from './question';
 
 const calculateScore = (
-  participantId: string,
+  participant: TriviaParticipant,
+  questionIndex: number,
   question: Question,
   timePerQuestion: number
 ): number => {
-  const answer = question.participantsAnswers[participantId];
+  const defaultAnswer: Answer = buildAnswer({
+    time: timePerQuestion,
+  });
+  const answer = participant.answers[questionIndex] || defaultAnswer;
+
+  if (answer.selectedAnswerIndex !== question.correctAnswerIndex) {
+    return 0;
+  }
+
   // By default, questions offer up to 1000 points when a player responds correctly. You can toggle this to 0 or 2000 if you'd prefer.
 
   // How points work
@@ -31,13 +40,14 @@ const calculateScore = (
 };
 
 const calculateTotalScore = (
-  participantId: string,
+  participant: TriviaParticipant,
   questions: Question[],
   timePerQuestion: number
 ): number => {
   return questions.reduce(
-    (totalScore, question) =>
-      totalScore + calculateScore(participantId, question, timePerQuestion),
+    (totalScore, question, index) =>
+      totalScore +
+      calculateScore(participant, index, question, timePerQuestion),
     0
   );
 };
@@ -53,7 +63,7 @@ const buildRanking = (trivia: Trivia): TriviaRanking => {
         email,
         photoURL,
         score: calculateTotalScore(
-          uid,
+          (trivia.participants || {})[uid] || buildTriviaParticipant(),
           trivia.questions,
           trivia.timePerQuestion
         ),

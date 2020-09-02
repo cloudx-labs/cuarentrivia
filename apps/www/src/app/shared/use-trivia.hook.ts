@@ -7,13 +7,15 @@ import {
 } from 'react-firebase-hooks/firestore';
 import { Question } from './question';
 import { Loading } from './symbols';
+import { getDb } from './get-db';
 
 const firestoreOptions: {
   snapshotListenOptions: firebase.firestore.SnapshotListenOptions;
 } = { snapshotListenOptions: { includeMetadataChanges: true } };
 
 const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
-  const triviaRef = firebase.firestore().doc(`trivias/${triviaId}`);
+  const db = getDb();
+  const triviaRef = db.doc(`/trivias/${triviaId}`);
   const questionsRef = triviaRef.collection('questions');
   const triviaParticipantsRef = triviaRef.collection('participants');
 
@@ -48,10 +50,11 @@ const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
       (prev, curr) => {
         const data = curr.data();
         const triviaParticipant: TriviaParticipant = {
-          displayName: data.displayName,
-          email: data.email,
-          photoURL: data.photoURL,
-          score: data.score,
+          displayName: data.displayName || null,
+          email: data.email || null,
+          photoURL: data.photoURL || null,
+          score: data.score || null,
+          answers: data.answers || [],
         };
         return { ...prev, [curr.id]: triviaParticipant };
       },

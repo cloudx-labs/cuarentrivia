@@ -1,10 +1,9 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import Authenticate from '../shared/authenticate';
 import useTitle from '../shared/use-title.hook';
 import { User } from 'firebase/app';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { buildQuestion, Question } from '../shared/question';
-import generateFriendlyName from '../shared/generate-friendly-name';
 import { createTemplate } from '../shared/trivias.service';
 import SubmitError from './submit-error';
 import { useHistory } from 'react-router-dom';
@@ -15,6 +14,7 @@ import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
   const history = useHistory();
+  const [name, setName] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
   const [error, setError] = useState<Error>(null);
 
@@ -40,9 +40,8 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      const friendlyName = await generateFriendlyName();
       const triviaToCreate: TriviaTemplate = buildTriviaTemplate({
-        friendlyName,
+        friendlyName: name,
         createdBy: user.uid,
         createdByDisplayName: user.displayName,
         createdByEmail: user.email,
@@ -55,16 +54,27 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
     }
   };
 
-  const isFormValid = questions.every(
-    (question) =>
-      question.question &&
-      question.correctAnswerIndex > -1 &&
-      question.possibleAnswers.every((possibleAnswer) => !!possibleAnswer)
-  );
+  const isFormValid =
+    !!name &&
+    questions.every(
+      (question) =>
+        question.question &&
+        question.correctAnswerIndex > -1 &&
+        question.possibleAnswers.every((possibleAnswer) => !!possibleAnswer)
+    );
+
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
 
   return (
     <main className="create">
       <form noValidate onSubmit={handleFormSubmit}>
+        <TextField
+          label="Trivia name"
+          value={name}
+          onChange={handleNameChange}
+        />
         {questions.map((question, index) => (
           <QuestionForm
             key={index}

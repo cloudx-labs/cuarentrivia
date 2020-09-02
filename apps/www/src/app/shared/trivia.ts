@@ -1,4 +1,4 @@
-import { Question } from './question';
+import { Question, Answer } from './question';
 import { buildObject } from './build-object';
 
 export interface TriviaParticipant {
@@ -6,7 +6,16 @@ export interface TriviaParticipant {
   email: string;
   photoURL: string;
   score: number;
+  answers: Answer[];
 }
+
+export const buildTriviaParticipant = buildObject<TriviaParticipant>({
+  displayName: '',
+  email: '',
+  photoURL: '',
+  score: 0,
+  answers: [],
+});
 
 export interface Participants {
   [key: string]: TriviaParticipant;
