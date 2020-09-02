@@ -2,7 +2,7 @@ import React from 'react';
 import {
   List,
   ListItem,
-  ListItemAvatar,
+  ListItemAvatar,ListItemText,
   Avatar,
   Button,
 } from '@material-ui/core';
@@ -43,6 +43,7 @@ const ListItemTriviaParticipant = ({
     <ListItemAvatar>
       <ListItemTriviaParticipantAvatar participant={participant} />
     </ListItemAvatar>
+    <ListItemText>{participant.displayName || participant.email}</ListItemText>
   </ListItem>
 );
 

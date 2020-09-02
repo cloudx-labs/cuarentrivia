@@ -3,21 +3,34 @@ import { TriviaComponentProps } from './symbols';
 import Chart from 'react-google-charts';
 import { goToNextQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
+import { buildAnswer } from '../shared/question';
+
+type DataItem = [string, number];
 
 const HostQuestionResult = ({ trivia, triviaId }: TriviaComponentProps) => {
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
 
-  const amountAnswersPerPossibleAnswers = [
-    currentQuestion.possibleAnswers.map(
+  const amountAnswersPerPossibleAnswers: [[string, string], ...DataItem[]] = [
+    ['Answer', 'People who answered'],
+    ...currentQuestion.possibleAnswers.map(
       (possibleAnswer, possibleAnswerIndex) => {
-        const answersAmount = Object.values(
-          currentQuestion.participantsAnswers || {}
-        ).map(
-          (participantsAnswer) =>
-            participantsAnswer.selectedAnswerIndex === possibleAnswerIndex
+        const answerChecks = Object.values(trivia.participants || {}).map(
+          (triviaParticipant) => {
+            const triviaParticipantAnswer =
+              triviaParticipant.answers[trivia.currentQuestionIndex] ||
+              buildAnswer();
+            return (
+              triviaParticipantAnswer.selectedAnswerIndex ===
+              possibleAnswerIndex
+            );
+          }
+        );
+        const answersAmount = answerChecks.reduce(
+          (prev, curr) => prev + (curr ? 1 : 0),
+          0
         );
 
-        const result = [possibleAnswer, answersAmount];
+        const result: DataItem = [possibleAnswer, answersAmount];
         return result;
       }
     ),
@@ -28,10 +41,10 @@ const HostQuestionResult = ({ trivia, triviaId }: TriviaComponentProps) => {
   return (
     <main className="trivia-in-progress">
       <Chart
-        chartType="ColumnChart"
+        chartType="Bar"
         width={'500px'}
         height={'300px'}
-        data={[amountAnswersPerPossibleAnswers]}
+        data={amountAnswersPerPossibleAnswers}
       />
       <Button
         variant="contained"

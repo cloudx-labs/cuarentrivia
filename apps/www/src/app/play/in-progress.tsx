@@ -51,7 +51,8 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
         trivia.currentQuestionIndex,
         user,
         index,
-        time
+        time,
+        trivia.participants[user.uid].answers
       );
     } catch {
       setAnswered(false);

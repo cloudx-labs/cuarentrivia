@@ -6,12 +6,15 @@ import {
   TriviaBase,
   TriviaTemplateBase,
   QuestionTemplate,
+  buildTriviaParticipant,
 } from './trivia';
-import { QuestionBase } from './question';
+import { Question, Answer } from './question';
+import { getDb } from './get-db';
 
-const getDb = () => firebase.firestore();
-
-export const joinTrivia = async (triviaId: string, user: User) => {
+export const joinTrivia = async (
+  triviaId: string,
+  user: User
+): Promise<string> => {
   const db = getDb();
   const triviaIdType = verifyTriviaId(triviaId);
 
@@ -37,7 +40,7 @@ export const joinTrivia = async (triviaId: string, user: User) => {
   const trivia: Trivia = triviaSnapshot.data() as Trivia;
 
   if (trivia.createdBy === user.uid) {
-    return;
+    return triviaSnapshot.id;
   }
 
   const participantRef = triviaRef.collection('participants').doc(user.uid);
@@ -45,15 +48,18 @@ export const joinTrivia = async (triviaId: string, user: User) => {
   const participant = await participantRef.get();
 
   if (participant.exists) {
-    return;
+    return triviaSnapshot.id;
   }
 
-  await participantRef.set({
+  const triviaParticipant = buildTriviaParticipant({
     displayName: user.displayName,
     email: user.email,
     photoURL: user.photoURL,
-    score: 0,
   });
+
+  await participantRef.set(triviaParticipant);
+
+  return triviaSnapshot.id;
 };
 
 export const createTemplate = async (
@@ -100,14 +106,21 @@ export const answerQuestion = async (
   questionIndex: number,
   user: User,
   selectedAnswerIndex: number,
-  time: number
+  time: number,
+  originalAnswers: Answer[]
 ) => {
   const db = getDb();
-  await db
-    .doc(
-      `/trivias/${triviaId}/questions/${questionIndex}/participantsAnswers/${user.uid}`
-    )
-    .set({ selectedAnswerIndex, time });
+  const answers = [...originalAnswers];
+  answers[questionIndex] = { selectedAnswerIndex, time };
+
+  const participantRef = db.doc(
+    `/trivias/${triviaId}/participants/${user.uid}`
+  );
+  const v1 = await participantRef.get();
+  console.log(v1);
+  await participantRef.update({ answers });
+  const v2 = await participantRef.get();
+  console.log(v2);
 };
 
 export const finishCurrentQuestion = async (triviaId: string) => {
@@ -155,13 +168,8 @@ export const startTrivia = async ({
 
   const writeBatch = db.batch();
 
-  const questionsToCreate: QuestionBase[] = questions.map(
-    ({
-      question,
-      possibleAnswers,
-      correctAnswerIndex,
-      value,
-    }): QuestionBase => ({
+  const questionsToCreate: Question[] = questions.map(
+    ({ question, possibleAnswers, correctAnswerIndex, value }): Question => ({
       question,
       possibleAnswers,
       correctAnswerIndex,
