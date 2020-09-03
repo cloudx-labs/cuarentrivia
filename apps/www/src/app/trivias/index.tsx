@@ -8,7 +8,11 @@ import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
 import { useHistory } from 'react-router-dom';
-import { startTrivia, getTemplateQuestions } from '../shared/trivias.service';
+import {
+  startTrivia,
+  getTemplateQuestions,
+  removeTrivia,
+} from '../shared/trivias.service';
 import generateFriendlyName from '../shared/generate-friendly-name';
 
 const ShowError = ({ error }: { error: Error }) =>
@@ -49,7 +53,8 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   };
 
   const remove = async (index: number) => {
-    // removeTrivia(myTemplates[index])
+    const [templateId] = myTemplates[index];
+    await removeTrivia(user, templateId);
   };
 
   const handleCreateTemplate = () => {

@@ -116,11 +116,7 @@ export const answerQuestion = async (
   const participantRef = db.doc(
     `/trivias/${triviaId}/participants/${user.uid}`
   );
-  const v1 = await participantRef.get();
-  console.log(v1);
   await participantRef.update({ answers });
-  const v2 = await participantRef.get();
-  console.log(v2);
 };
 
 export const finishCurrentQuestion = async (triviaId: string) => {
@@ -217,4 +213,10 @@ export const getTemplateQuestions = async (
     }
   );
   return result;
+};
+
+export const removeTrivia = async (user: User, templateId: string) => {
+  const db = getDb();
+  const templateRef = db.doc(`/templates/${user.uid}/trivias/${templateId}`);
+  await templateRef.delete();
 };
