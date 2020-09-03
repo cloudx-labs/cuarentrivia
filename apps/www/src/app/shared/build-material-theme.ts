@@ -6,7 +6,7 @@ const buildMaterialTheme = () => {
     typography: { fontFamily: `"Montserrat Alternates", sans-serif` },
     palette: {
       primary: {
-        light: '#ff6600',
+        light: '#f7decd',
         main: '#ff6600',
         dark: '#ff6600',
         contrastText: '#ffffff',
