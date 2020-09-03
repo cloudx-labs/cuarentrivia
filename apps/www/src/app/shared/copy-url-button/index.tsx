@@ -15,8 +15,8 @@ const CopyUrlButton = ({ url }: { url: string }) => {
     );
   } else {
     return (
-      <Button variant="contained" color="primary" onClick={handleClick}>
-        Copy URL
+      <Button variant="contained" color="secondary" onClick={handleClick}>
+        {isUrlCopied ? 'Copied!' : 'Copy URL'}
       </Button>
     );
   }

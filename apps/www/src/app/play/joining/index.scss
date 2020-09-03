@@ -1,0 +1,52 @@
+.joining {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-rows: auto 40px;
+  column-gap: 100px;
+  row-gap: 40px;
+  height: 100%;
+  grid-template-areas: 'main aside' 'footer footer';
+
+  .content {
+    grid-area: main;
+    .title {
+      font-weight: normal;
+      margin-bottom: 2rem;
+    }
+    .trivia-content {
+      font-weight: lighter;
+      margin-bottom: 0.5rem;
+      .trivia-link {
+        color: var(--cloudx-blue);
+        font-weight: normal;
+      }
+    }
+  }
+  .participants {
+    grid-area: aside;
+    border: 1px solid var(--cloudx-gray);
+    padding: 1rem;
+    border-radius: 18px;
+    background-color: var(--cloudx-white);
+    height: 300px;
+    overflow-y: auto;
+    .title {
+      font-size: 0.7rem;
+      font-weight: lighter;
+    }
+  }
+  .buttons-contaners {
+    grid-area: footer;
+    justify-self: end;
+    display: grid;
+    grid-template-columns: min-content min-content;
+    column-gap: 1rem;
+
+    .MuiButtonBase-root {
+      border-radius: 8px;
+      .MuiButton-label {
+        white-space: nowrap;
+      }
+    }
+  }
+}
