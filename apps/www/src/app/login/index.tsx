@@ -6,7 +6,7 @@ import useTitle from '../shared/use-title.hook';
 import { useQuery } from '../shared/use-query.hook';
 import logo from '../../assets/icons/android-icon-36x36.png';
 import './index.scss';
-import Nav from '../nav/nav';
+import Nav from '../nav';
 import { environment } from '../../environments/environment';
 
 const Login = () => {

@@ -14,6 +14,8 @@ import {
   removeTrivia,
 } from '../shared/trivias.service';
 import generateFriendlyName from '../shared/generate-friendly-name';
+import Nav from '../nav';
+import './index.scss';
 
 const ShowError = ({ error }: { error: Error }) =>
   !error ? null : <span>{error.message}</span>;
@@ -64,46 +66,53 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   const _myTemplates = myTemplates || [];
 
   return (
-    <Async loading={loading} error={myTemplatesError}>
-      <ul>
-        {_myTemplates.map(([, myTemplate], index) => (
-          <li key={index}>
-            <span>{myTemplate.friendlyName} - </span>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => start(index)}
-            >
-              Start
-            </Button>
-            <Button variant="contained" color="primary" disabled>
-              Update
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => remove(index)}
-            >
-              Remove
-            </Button>
-          </li>
-        ))}
-      </ul>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCreateTemplate}
-      >
-        Create
-      </Button>
-      <ShowError error={error} />
-      <CreatedTriviaModal
-        {...createdTriviaModalProps}
-        handleDismissed={() =>
-          setCreatedTriviaModalProps((state) => ({ ...state, visible: false }))
-        }
-      />
-    </Async>
+    <Nav>
+      <main className="trivia">
+        {/* <Async loading={loading} error={myTemplatesError}> */}
+        <ul>
+          {_myTemplates.map(([, myTemplate], index) => (
+            <li key={index}>
+              <span>{myTemplate.friendlyName} - </span>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => start(index)}
+              >
+                Start
+              </Button>
+              <Button variant="contained" color="primary" disabled>
+                Update
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => remove(index)}
+              >
+                Remove
+              </Button>
+            </li>
+          ))}
+        </ul>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateTemplate}
+        >
+          Create
+        </Button>
+        <ShowError error={error} />
+        <CreatedTriviaModal
+          {...createdTriviaModalProps}
+          handleDismissed={() =>
+            setCreatedTriviaModalProps((state) => ({
+              ...state,
+              visible: false,
+            }))
+          }
+        />
+        {/* </Async> */}
+      </main>
+    </Nav>
   );
 };
 

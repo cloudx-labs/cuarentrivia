@@ -1,5 +1,5 @@
 import React from 'react';
-import './nav.scss';
+import './index.scss';
 import logo from '../../assets/icons/cuarentrivia-logo.png';
 import firebase from 'firebase/app';
 import { useHistory } from 'react-router-dom';
