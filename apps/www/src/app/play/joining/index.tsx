@@ -2,16 +2,19 @@ import React from 'react';
 import {
   List,
   ListItem,
-  ListItemAvatar,ListItemText,
+  ListItemAvatar,
+  ListItemText,
   Avatar,
   Button,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
-import { TriviaComponentProps } from './symbols';
-import useTriviaUrl from '../shared/use-trivia-url.hook';
-import CopyUrlButton from '../shared/copy-url-button';
-import { TriviaParticipant, Trivia } from '../shared/trivia';
-import { goToNextQuestion } from '../shared/trivias.service';
+import { TriviaParticipant, Trivia } from '../../shared/trivia';
+import { goToNextQuestion } from '../../shared/trivias.service';
+import { TriviaComponentProps } from '../symbols';
+import CopyUrlButton from '../../shared/copy-url-button';
+import useTriviaUrl from '../../shared/use-trivia-url.hook';
+import Nav from '../../nav';
+import './index.scss';
 
 const ListItemTriviaParticipantAvatar = ({
   participant,
@@ -62,7 +65,7 @@ const HostAction = ({
 
   if (isHost) {
     return (
-      <Button variant="contained" color="secondary" onClick={startGame}>
+      <Button variant="contained" color="primary" onClick={startGame}>
         Start!{' '}
         <span role="img" aria-label="race flag">
           🏁
@@ -87,25 +90,31 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
   const isHost = trivia.createdBy === user.uid;
 
   return (
-    <main className="joining-trivia">
-      <header>
-        <h2>Welcome to Cuarentrivia</h2>
-        <h3>{trivia.friendlyName}</h3>
-        <p>
-          Invite people by sharing this link: <a href={url}>{url}</a>
-        </p>
-        <CopyUrlButton url={url}></CopyUrlButton>
-        <HostAction triviaId={triviaId} trivia={trivia} isHost={isHost} />
-      </header>
-      <div className="participants">
-        <h3>You'll be playing with:</h3>
-        <List>
-          {Object.values(trivia.participants).map((participant) => (
-            <ListItemTriviaParticipant participant={participant} />
-          ))}
-        </List>
-      </div>
-    </main>
+    <Nav>
+      <main className="joining">
+        <section className="content">
+          <h1 className="title">Welcome to Cloudtrivia</h1>
+          <h3 className="trivia-content">
+            Trivia key: <b>{trivia.friendlyName}</b>
+          </h3>
+          <p className="trivia-content">
+            Invite people by sharing this link: <a className="trivia-link" href={url}>{url}</a>
+          </p>
+        </section>
+        <aside className="participants">
+          <h3 className="title">You'll be playing with:</h3>
+          <List>
+            {Object.values(trivia.participants).map((participant) => (
+              <ListItemTriviaParticipant participant={participant} />
+            ))}
+          </List>
+        </aside>
+        <footer className="buttons-contaners">
+          <CopyUrlButton url={url}></CopyUrlButton>
+          <HostAction triviaId={triviaId} trivia={trivia} isHost={isHost} />
+        </footer>
+      </main>
+    </Nav>
   );
 };
 

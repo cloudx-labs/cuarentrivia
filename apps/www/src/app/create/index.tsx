@@ -11,6 +11,7 @@ import QuestionForm from './question-form';
 
 import './index.scss';
 import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
+import Nav from '../nav';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
   const history = useHistory();
@@ -68,34 +69,48 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   };
 
   return (
-    <main className="create">
-      <form noValidate onSubmit={handleFormSubmit}>
-        <TextField
-          label="Trivia name"
-          value={name}
-          onChange={handleNameChange}
-        />
-        {questions.map((question, index) => (
-          <QuestionForm
-            key={index}
-            question={question}
-            setQuestion={(question) => handleSetQuestion(question, index)}
-            remove={() => handleRemove(index)}
-          />
-        ))}
-        <div className="add">
-          <Button variant="contained" onClick={handleAdd}>
-            Add question
-          </Button>
-        </div>
-        <div className="submit">
-          <Button variant="contained" type="submit" disabled={!isFormValid}>
-            Create
-          </Button>
-        </div>
-        <SubmitError error={error} />
-      </form>
-    </main>
+    <Nav>
+      <main className="create">
+        <form className="create-form" noValidate onSubmit={handleFormSubmit}>
+          <div className="container">
+            <TextField
+              label="Trivia name"
+              value={name}
+              onChange={handleNameChange}
+              className="title"
+            />
+            {questions.map((question, index) => (
+              <QuestionForm
+                key={index}
+                question={question}
+                setQuestion={(question) => handleSetQuestion(question, index)}
+                remove={() => handleRemove(index)}
+              />
+            ))}
+            <div className="action-buttons">
+              <Button
+                variant="contained"
+                onClick={handleAdd}
+                className="add"
+                color="primary"
+              >
+                Add question
+              </Button>
+              <Button
+                color="primary"
+                variant="contained"
+                type="submit"
+                disabled={!isFormValid}
+                className="submit"
+              >
+                Create
+              </Button>
+            </div>
+            <SubmitError error={error} />
+          </div>
+        </form>
+      </main>
+    </Nav>
   );
 };
 

@@ -5,9 +5,7 @@ import useMyTemplates from '../shared/use-my-templates.hook';
 import Async from '../shared/async';
 import {
   Button,
-  List,
-  ListItem,
-  ListItemText,
+  Divider,
   ListItemSecondaryAction,
   IconButton,
 } from '@material-ui/core';
@@ -21,10 +19,9 @@ import {
   removeTrivia,
 } from '../shared/trivias.service';
 import generateFriendlyName from '../shared/generate-friendly-name';
-import Nav from '../nav/nav';
-import { PlayCircleFilledWhite, Edit, Delete } from '@material-ui/icons';
-
+import Nav from '../nav';
 import './index.scss';
+import { PlayCircleFilledWhite, Edit, Delete } from '@material-ui/icons';
 
 const ShowError = ({ error }: { error: Error }) =>
   !error ? null : <span>{error.message}</span>;
@@ -75,55 +72,72 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   const _myTemplates = myTemplates || [];
 
   return (
-    <Async loading={loading} error={myTemplatesError}>
-      <Nav>
-        <div className="trivias">
-          <List>
-            {_myTemplates.map(([, myTemplate], index) => (
-              <ListItem key={index}>
-                <ListItemText>{myTemplate.friendlyName}</ListItemText>
-                <ListItemSecondaryAction>
+    <Nav>
+      <main className="trivia">
+        <section className="title-container">
+          <h1 className="title">Trivias</h1>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateTemplate}
+            className="create-button"
+          >
+            Create
+          </Button>
+        </section>
+        {/* <Async loading={loading} error={myTemplatesError}> */}
+        <ul className="trivia-list">
+          {_myTemplates.length != 0 && <Divider />}
+          {_myTemplates.map(([, myTemplate], index) => (
+            <>
+              <li key={index} className="trivia-item">
+                <p className="name">{myTemplate.friendlyName} - </p>
+                <div className="buttons-container">
                   <IconButton
+                    className="icon-button"
                     edge="end"
                     aria-label="start"
                     onClick={() => start(index)}
                   >
                     <PlayCircleFilledWhite />
                   </IconButton>
-                  <IconButton edge="end" aria-label="edit" disabled>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    disabled
+                    className="icon-button"
+                  >
                     <Edit />
                   </IconButton>
                   <IconButton
                     edge="end"
                     aria-label="remove"
                     onClick={() => remove(index)}
+                    className="icon-button"
                   >
                     <Delete />
                   </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ))}
-          </List>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCreateTemplate}
-          >
-            Create
-          </Button>
-          <ShowError error={error} />
-          <CreatedTriviaModal
-            {...createdTriviaModalProps}
-            handleDismissed={() =>
-              setCreatedTriviaModalProps((state) => ({
-                ...state,
-                visible: false,
-              }))
-            }
-          />
-        </div>
-      </Nav>
-    </Async>
+                </div>
+              </li>
+              <Divider />
+            </>
+          ))}
+        </ul>
+
+        <ShowError error={error} />
+        <CreatedTriviaModal
+          {...createdTriviaModalProps}
+          handleDismissed={() =>
+            setCreatedTriviaModalProps((state) => ({
+              ...state,
+              visible: false,
+            }))
+          }
+        />
+        {/* </Async> */}
+        <p className="amount">Amount of trivias: {_myTemplates.length}</p>
+      </main>
+    </Nav>
   );
 };
 

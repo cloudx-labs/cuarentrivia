@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 import './app.scss';
 
@@ -10,9 +10,17 @@ import Home from './home';
 export const App = () => {
   return (
     <BrowserRouter>
-      <Route exact path="/login" component={Login} />
-      <Route exact path="/play/:triviaId" component={Play} />
-      <Route path="/" component={Home} />
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/play/:triviaId">
+          <Play />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 };

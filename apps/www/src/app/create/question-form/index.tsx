@@ -1,8 +1,9 @@
 import React from 'react';
 import { TextField, Divider, Checkbox, IconButton } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import { Question } from '../shared/question';
-import { updatePrimitiveItemAt } from '../shared/update-item';
+import { Question } from '../../shared/question';
+import { updatePrimitiveItemAt } from '../../shared/update-item';
+import './index.scss';
 
 export interface QuestionFormProps {
   question: Question;
@@ -25,23 +26,25 @@ const PossibleAnswerControl = ({
 }: PossibleAnswerControlProps) => {
   return (
     <div className="possible-answer">
-      <Checkbox
-        color="primary"
-        checked={isCorrectAnswer}
-        onChange={(event) =>
-          setPossibleAnswer({
-            possibleAnswer,
-            isCorrectAnswer: event.target.checked,
-          })
-        }
-      />
       <TextField
         label="Answer"
+        className="answer"
         value={possibleAnswer}
         onChange={(event) =>
           setPossibleAnswer({
             possibleAnswer: event.target.value,
             isCorrectAnswer,
+          })
+        }
+      />
+      <Checkbox
+        color="primary"
+        className="check"
+        checked={isCorrectAnswer}
+        onChange={(event) =>
+          setPossibleAnswer({
+            possibleAnswer,
+            isCorrectAnswer: event.target.checked,
           })
         }
       />
@@ -68,33 +71,40 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
   };
 
   return (
-    <div className="question-form">
-      <IconButton color="primary" onClick={remove}>
-        <Delete />
-      </IconButton>
-      <TextField
-        id="question"
-        label="Question"
-        value={question.question}
-        onChange={(event) =>
-          setQuestion({
-            ...question,
-            question: event.target.value,
-          })
-        }
-      />
-      {question.possibleAnswers.map((possibleAnswer, index) => (
-        <PossibleAnswerControl
-          key={index}
-          possibleAnswer={possibleAnswer}
-          isCorrectAnswer={index === question.correctAnswerIndex}
-          setPossibleAnswer={(payload) =>
-            handleSetPossibleAnswer(payload, index)
+    <section className="question-form">
+      <section className="title-container">
+        <TextField
+          id="question"
+          label="Question"
+          className="title"
+          value={question.question}
+          onChange={(event) =>
+            setQuestion({
+              ...question,
+              question: event.target.value,
+            })
           }
         />
-      ))}
-      <Divider />
-    </div>
+
+        <IconButton color="primary" onClick={remove} className="delete-button">
+          <Delete />
+        </IconButton>
+      </section>
+      <section className="answer-container">
+        {' '}
+        {question.possibleAnswers.map((possibleAnswer, index) => (
+          <PossibleAnswerControl
+            key={index}
+            possibleAnswer={possibleAnswer}
+            isCorrectAnswer={index === question.correctAnswerIndex}
+            setPossibleAnswer={(payload) =>
+              handleSetPossibleAnswer(payload, index)
+            }
+          />
+        ))}
+      </section>
+      <Divider className="divider"/>
+    </section>
   );
 };
 

@@ -7,7 +7,7 @@ import { joinTrivia } from '../shared/trivias.service';
 import useTitle from '../shared/use-title.hook';
 
 import './index.scss';
-import Nav from '../nav/nav';
+import Nav from '../nav';
 
 export interface JoinGameContentProps {
   user: firebase.User;
