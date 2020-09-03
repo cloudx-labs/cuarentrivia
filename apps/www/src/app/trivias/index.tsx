@@ -3,7 +3,12 @@ import useTitle from '../shared/use-title.hook';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import useMyTemplates from '../shared/use-my-templates.hook';
 import Async from '../shared/async';
-import { Button, Divider } from '@material-ui/core';
+import {
+  Button,
+  Divider,
+  ListItemSecondaryAction,
+  IconButton,
+} from '@material-ui/core';
 import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
@@ -16,6 +21,7 @@ import {
 import generateFriendlyName from '../shared/generate-friendly-name';
 import Nav from '../nav';
 import './index.scss';
+import { PlayCircleFilledWhite, Edit, Delete } from '@material-ui/icons';
 
 const ShowError = ({ error }: { error: Error }) =>
   !error ? null : <span>{error.message}</span>;
@@ -87,30 +93,30 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
               <li key={index} className="trivia-item">
                 <p className="name">{myTemplate.friendlyName} - </p>
                 <div className="buttons-container">
-                  <Button
-                    variant="contained"
-                    color="primary"
+                  <IconButton
+                    className="icon-button"
+                    edge="end"
+                    aria-label="start"
                     onClick={() => start(index)}
-                    className="action-button"
                   >
-                    Start
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
+                    <PlayCircleFilledWhite />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
                     disabled
-                    className="action-button"
+                    className="icon-button"
                   >
-                    Update
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
+                    <Edit />
+                  </IconButton>
+                  <IconButton
+                    edge="end"
+                    aria-label="remove"
                     onClick={() => remove(index)}
-                    className="action-button"
+                    className="icon-button"
                   >
-                    Remove
-                  </Button>
+                    <Delete />
+                  </IconButton>
                 </div>
               </li>
               <Divider />

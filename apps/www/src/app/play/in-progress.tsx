@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { TriviaComponentProps } from './symbols';
 import { answerQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
-
 import useInterval from '@use-it/interval';
+
+import './in-progress.scss';
 
 const SECOND = 1000;
 
@@ -31,7 +32,7 @@ const Answer = ({
 const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
 
-  const [answered, setAnswered] = useState(false);
+  const [answered, setAnswered] = useState<number | null>(null);
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(trivia.timePerQuestion);
 
@@ -44,7 +45,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
   }, SECOND);
 
   const selectOption = async (index: number) => {
-    setAnswered(true);
+    setAnswered(index);
     try {
       await answerQuestion(
         triviaId,
@@ -55,7 +56,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
         trivia.participants[user.uid].answers
       );
     } catch {
-      setAnswered(false);
+      setAnswered(null);
     }
   };
 
@@ -67,7 +68,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaComponentProps) => {
           <Answer
             key={index}
             possibleAnswer={possibleAnswer}
-            answered={answered}
+            answered={answered !== null}
             selectOption={() => selectOption(index)}
           />
         ))}
