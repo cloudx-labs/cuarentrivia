@@ -41,7 +41,7 @@ const HostQuestionResult = ({ trivia, triviaId }: TriviaComponentProps) => {
   return (
     <main className="trivia-in-progress">
       <Chart
-        chartType="Bar"
+        chartType="PieChart"
         width={'500px'}
         height={'300px'}
         data={amountAnswersPerPossibleAnswers}
