@@ -2,7 +2,7 @@ import React from 'react';
 import './nav.scss';
 import logo from '../../assets/icons/cuarentrivia-logo.png';
 import firebase from 'firebase/app';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 interface Nav {
   children: React.ReactNode;
@@ -19,7 +19,9 @@ const Nav = ({ children }: Nav) => {
   return (
     <>
       <nav className="nav">
-        <img src={logo} alt="Logo" className="nav-logo" />
+        <Link to="/">
+          <img src={logo} alt="Logo" className="nav-logo" />
+        </Link>
         <a
           role="button"
           className="nav-logout"
