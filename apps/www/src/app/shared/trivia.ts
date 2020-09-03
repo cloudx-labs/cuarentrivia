@@ -68,7 +68,7 @@ export const buildTrivia = buildObject<Trivia>({
   createdByEmail: '',
   status: 'joining',
   currentQuestionIndex: null,
-  timePerQuestion: 10000,
+  timePerQuestion: 17000,
   questions: [],
   participants: {},
 });
@@ -78,6 +78,6 @@ export const buildTriviaTemplate = buildObject<TriviaTemplate>({
   createdBy: '',
   createdByDisplayName: '',
   createdByEmail: '',
-  timePerQuestion: 10000,
+  timePerQuestion: 17000,
   questions: [],
 });

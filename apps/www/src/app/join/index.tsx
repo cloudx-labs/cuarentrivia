@@ -57,7 +57,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
               className="join-form-main-nick-name"
               id="triviaId"
               type="text"
-              placeholder="Nick Name"
+              placeholder="Trivia Name"
               required
               value={triviaId}
               onChange={handleTriviaIdChange}

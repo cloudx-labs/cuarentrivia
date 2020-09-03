@@ -3,6 +3,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  .progress {
+    width: 90%;
+    margin: auto;
+    height: 1rem;
+  }
   .options {
     flex: 1 1 auto;
     display: flex;
@@ -10,6 +15,9 @@
     flex-wrap: wrap;
     .option {
       flex: 1 1 50%;
+      &.selected {
+        border: white solid 0.5rem;
+      }
       &:nth-child(1) {
         font-weight: bold;
         color: var(--cloudx-white);
