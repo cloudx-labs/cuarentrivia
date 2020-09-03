@@ -18,6 +18,7 @@ import {
 } from '@material-ui/icons';
 
 import './host-in-progress.scss';
+import HostQuestionResult from './host-question-result';
 
 const SECOND = 1000;
 
@@ -33,10 +34,11 @@ const ListIcon = ({ index }: { index: number }) => {
   }
 };
 
-const HostInProgress = ({ trivia, triviaId }: TriviaComponentProps) => {
+const HostInProgress = (props: TriviaComponentProps) => {
+  const { trivia } = props;
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
   const [time, setTime] = useState(trivia.timePerQuestion);
-
+  const [completed, setCompleted] = useState(false);
   const timeInSeconds = time / SECOND;
 
   useInterval(() => {
@@ -44,35 +46,39 @@ const HostInProgress = ({ trivia, triviaId }: TriviaComponentProps) => {
     setTime(newTime);
 
     if (newTime === 0) {
-      finishCurrentQuestion(triviaId);
+      setCompleted(true);
     }
   }, SECOND);
 
   const timePercentage = Math.floor((time / trivia.timePerQuestion) * 100);
 
-  return (
-    <main className="trivia-in-progress">
-      <span className="question">{currentQuestion.question}</span>
-      <List>
-        {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
-          <ListItem key={index}>
-            <ListItemAvatar>
-              <Avatar className="question-avatar">
-                <ListIcon index={index} />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText>{possibleAnswer}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
-      <span>Time left: {timeInSeconds}</span>
-      <LinearProgress
-        className="progress"
-        variant="determinate"
-        value={timePercentage}
-      />
-    </main>
-  );
+  if (!completed) {
+    return (
+      <main className="trivia-in-progress">
+        <span className="question">{currentQuestion.question}</span>
+        <List>
+          {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
+            <ListItem key={index}>
+              <ListItemAvatar>
+                <Avatar className="question-avatar">
+                  <ListIcon index={index} />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText>{possibleAnswer}</ListItemText>
+            </ListItem>
+          ))}
+        </List>
+        <span>Time left: {timeInSeconds}</span>
+        <LinearProgress
+          className="progress"
+          variant="determinate"
+          value={timePercentage}
+        />
+      </main>
+    );
+  } else {
+    return <HostQuestionResult {...props} />;
+  }
 };
 
 export default HostInProgress;
