@@ -4,8 +4,7 @@
   display: flex;
   justify-content: center;
   &-form {
-    padding: 1.5rem;
-    overflow: auto;
+    padding: 0 1.5rem;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -36,6 +35,7 @@
         display: flex;
         justify-content: flex-end;
         flex-direction: row;
+        margin-top: 1rem;
         .add {
           max-width: 148px;
           margin-right: 1rem;

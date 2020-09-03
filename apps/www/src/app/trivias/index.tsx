@@ -3,7 +3,7 @@ import useTitle from '../shared/use-title.hook';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import useMyTemplates from '../shared/use-my-templates.hook';
 import Async from '../shared/async';
-import { Button } from '@material-ui/core';
+import { Button, Divider } from '@material-ui/core';
 import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
@@ -68,38 +68,56 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   return (
     <Nav>
       <main className="trivia">
+        <section className="title-container">
+          <h1 className="title">Trivias</h1>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateTemplate}
+            className="create-button"
+          >
+            Create
+          </Button>
+        </section>
         {/* <Async loading={loading} error={myTemplatesError}> */}
-        <ul>
+        <ul className="trivia-list">
+          {_myTemplates.length != 0 && <Divider />}
           {_myTemplates.map(([, myTemplate], index) => (
-            <li key={index}>
-              <span>{myTemplate.friendlyName} - </span>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => start(index)}
-              >
-                Start
-              </Button>
-              <Button variant="contained" color="primary" disabled>
-                Update
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => remove(index)}
-              >
-                Remove
-              </Button>
-            </li>
+            <>
+              <li key={index} className="trivia-item">
+                <p className="name">{myTemplate.friendlyName} - </p>
+                <div className="buttons-container">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => start(index)}
+                    className="action-button"
+                  >
+                    Start
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    disabled
+                    className="action-button"
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => remove(index)}
+                    className="action-button"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              </li>
+              <Divider />
+            </>
           ))}
         </ul>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCreateTemplate}
-        >
-          Create
-        </Button>
+
         <ShowError error={error} />
         <CreatedTriviaModal
           {...createdTriviaModalProps}
@@ -111,6 +129,7 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
           }
         />
         {/* </Async> */}
+        <p className="amount">Amount of trivias: {_myTemplates.length}</p>
       </main>
     </Nav>
   );

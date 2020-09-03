@@ -1,7 +1,49 @@
 .trivia {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+    .title {
+      font-size: 3rem;
+      line-height: 2.6rem;
+    }
+    .create-button{
+      line-height: 1.5;
+    }
+  }
+  .trivia-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    .trivia-item {
+      padding: 1rem 0.3rem;
+      display: flex;
+      justify-content: space-between;
+      .buttons-container {
+        display: grid;
+        grid-template-columns: 80px 80px 80px;
+        column-gap: 4px;
+        .action-button {
+          max-height: 25px;
+          .MuiButton-label {
+            font-size: 0.75rem;
+            line-height: 1.3;
+          }
+        }
+      }
+    }
+    .trivia-item:nth-child(odd) {
+      background-color: var(--cloudx-white);
+    }
+  }
+  .amount {
+    font-weight: lighter;
+    line-height: 36px;
+    align-self: flex-end;
+  }
 }
