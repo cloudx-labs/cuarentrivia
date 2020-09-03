@@ -1,12 +1,18 @@
 .nav {
   box-shadow: 0px 1px 1px #00000029;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 12px 20px;
   background: var(--cloudx-white);
   &-logo {
     width: 134px;
     height: 32px;
     opacity: 0.9;
+  }
+  &-logout {
+    text-decoration: none;
+    color: var(--cloudx-black);
   }
 }
 
