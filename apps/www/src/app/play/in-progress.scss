@@ -1,0 +1,35 @@
+.question {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  .options {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .option {
+      flex: 1 1 50%;
+      &:nth-child(1) {
+        font-weight: bold;
+        color: var(--cloudx-white);
+        background-color: var(--option-red);
+      }
+      &:nth-child(2) {
+        font-weight: bold;
+        color: var(--cloudx-white);
+        background-color: var(--option-blue);
+      }
+      &:nth-child(3) {
+        font-weight: bold;
+        color: var(--cloudx-white);
+        background-color: var(--option-yellow);
+      }
+      &:nth-child(4) {
+        font-weight: bold;
+        color: var(--cloudx-white);
+        background-color: var(--option-green);
+      }
+    }
+  }
+}
