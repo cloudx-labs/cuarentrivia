@@ -4,8 +4,8 @@ import { answerQuestion } from '../../shared/trivias.service';
 import { Button, LinearProgress } from '@material-ui/core';
 import useInterval from '@use-it/interval';
 import './index.scss';
-import QuestionResult from '../question-result';
 import Nav from '../../nav';
+import QuestionResult from '../QuestionResult';
 
 const SECOND = 1000;
 
