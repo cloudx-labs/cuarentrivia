@@ -3,12 +3,7 @@ import useTitle from '../shared/use-title.hook';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import useMyTemplates from '../shared/use-my-templates.hook';
 import Async from '../shared/async';
-import {
-  Button,
-  Divider,
-  ListItemSecondaryAction,
-  IconButton,
-} from '@material-ui/core';
+import { Button, Divider, IconButton } from '@material-ui/core';
 import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
@@ -85,56 +80,56 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
             Create
           </Button>
         </section>
-        {/* <Async loading={loading} error={myTemplatesError}> */}
-        <ul className="trivia-list">
-          {_myTemplates.length != 0 && <Divider />}
-          {_myTemplates.map(([, myTemplate], index) => (
-            <>
-              <li key={index} className="trivia-item">
-                <p className="name">{myTemplate.friendlyName} - </p>
-                <div className="buttons-container">
-                  <IconButton
-                    className="icon-button"
-                    edge="end"
-                    aria-label="start"
-                    onClick={() => start(index)}
-                  >
-                    <PlayCircleFilledWhite />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    aria-label="edit"
-                    disabled
-                    className="icon-button"
-                  >
-                    <Edit />
-                  </IconButton>
-                  <IconButton
-                    edge="end"
-                    aria-label="remove"
-                    onClick={() => remove(index)}
-                    className="icon-button"
-                  >
-                    <Delete />
-                  </IconButton>
-                </div>
-              </li>
-              <Divider />
-            </>
-          ))}
-        </ul>
+        <Async loading={loading} error={myTemplatesError}>
+          <ul className="trivia-list">
+            {_myTemplates.length !== 0 && <Divider />}
+            {_myTemplates.map(([, myTemplate], index) => (
+              <>
+                <li key={index} className="trivia-item">
+                  <p className="name">{myTemplate.friendlyName} - </p>
+                  <div className="buttons-container">
+                    <IconButton
+                      className="icon-button"
+                      edge="end"
+                      aria-label="start"
+                      onClick={() => start(index)}
+                    >
+                      <PlayCircleFilledWhite />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      disabled
+                      className="icon-button"
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="remove"
+                      onClick={() => remove(index)}
+                      className="icon-button"
+                    >
+                      <Delete />
+                    </IconButton>
+                  </div>
+                </li>
+                <Divider />
+              </>
+            ))}
+          </ul>
 
-        <ShowError error={error} />
-        <CreatedTriviaModal
-          {...createdTriviaModalProps}
-          handleDismissed={() =>
-            setCreatedTriviaModalProps((state) => ({
-              ...state,
-              visible: false,
-            }))
-          }
-        />
-        {/* </Async> */}
+          <ShowError error={error} />
+          <CreatedTriviaModal
+            {...createdTriviaModalProps}
+            handleDismissed={() =>
+              setCreatedTriviaModalProps((state) => ({
+                ...state,
+                visible: false,
+              }))
+            }
+          />
+        </Async>
         <p className="amount">Amount of trivias: {_myTemplates.length}</p>
       </main>
     </Nav>
