@@ -10,7 +10,12 @@ const HostTrivia = (props: TriviaComponentProps) => {
     case 'joining':
       return <Joining {...props} />;
     case 'inProgress':
-      return <HostInProgress {...props} />;
+      return (
+        <HostInProgress
+          {...props}
+          questionIndex={props.trivia.currentQuestionIndex}
+        />
+      );
     case 'questionResult':
       return <HostQuestionResult {...props} />;
     case 'intermission':

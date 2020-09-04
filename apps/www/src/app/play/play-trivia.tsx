@@ -10,7 +10,12 @@ const PlayTrivia = (props: TriviaComponentProps) => {
     case 'joining':
       return <Joining {...props} />;
     case 'inProgress':
-      return <InProgress {...props} />;
+      return (
+        <InProgress
+          {...props}
+          questionIndex={props.trivia.currentQuestionIndex}
+        />
+      );
     case 'questionResult':
       return <QuestionResult {...props} />;
     case 'intermission':
