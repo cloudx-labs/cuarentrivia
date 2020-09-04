@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
 import { TriviaComponentProps } from './symbols';
-import { finishCurrentQuestion } from '../shared/trivias.service';
 import {
   List,
   ListItem,
