@@ -3,7 +3,7 @@ import { TriviaComponentProps } from './symbols';
 import Joining from './joining';
 import HostInProgress from './host-in-progress';
 import HostQuestionResult from './host-question-result';
-import HostCompleted from './host-completed';
+import HostCompleted from './hostCompleted';
 
 const HostTrivia = (props: TriviaComponentProps) => {
   switch (props.trivia.status) {
