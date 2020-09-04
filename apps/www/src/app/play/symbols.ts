@@ -5,4 +5,5 @@ export interface TriviaComponentProps {
   user: User;
   trivia: Trivia;
   triviaId: string;
+  questionIndex?: number;
 }

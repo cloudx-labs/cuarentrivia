@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
 import { TriviaComponentProps } from './symbols';
 import { finishCurrentQuestion } from '../shared/trivias.service';
@@ -35,8 +35,8 @@ const ListIcon = ({ index }: { index: number }) => {
 };
 
 const HostInProgress = (props: TriviaComponentProps) => {
-  const { trivia } = props;
-  const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
+  const { trivia, questionIndex } = props;
+  const currentQuestion = trivia.questions[questionIndex];
   const [time, setTime] = useState(trivia.timePerQuestion);
   const [completed, setCompleted] = useState(false);
   const timeInSeconds = time / SECOND;
@@ -49,6 +49,11 @@ const HostInProgress = (props: TriviaComponentProps) => {
       setCompleted(true);
     }
   }, SECOND);
+
+  useEffect(() => {
+    setCompleted(false);
+    setTime(trivia.timePerQuestion);
+  }, [trivia.currentQuestionIndex]);
 
   const timePercentage = Math.floor((time / trivia.timePerQuestion) * 100);
 

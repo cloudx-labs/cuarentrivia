@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TriviaComponentProps } from './symbols';
 import { answerQuestion } from '../shared/trivias.service';
 import { Button, LinearProgress } from '@material-ui/core';
 import useInterval from '@use-it/interval';
-
 import './in-progress.scss';
 import QuestionResult from './question-result';
+import Nav from '../nav';
 
 const SECOND = 1000;
 
@@ -52,9 +52,18 @@ const InProgress = (props: TriviaComponentProps) => {
     setTimer(timer - SECOND);
   }, SECOND);
 
-  if (timer === 0) {
-    setCompleted(true);
-  }
+  useEffect(() => {
+    if (timer === 0) {
+      setCompleted(true);
+    }
+  }, [timer]);
+
+  useEffect(() => {
+    setCompleted(false);
+    setTime(0);
+    setTimer(trivia.timePerQuestion);
+    setAnswered(null);
+  }, [trivia.currentQuestionIndex]);
 
   const selectOption = async (index: number) => {
     setAnswered(index);
@@ -77,25 +86,30 @@ const InProgress = (props: TriviaComponentProps) => {
 
   if (!completed) {
     return (
-      <main className="question">
-        <div>Tiempo restante: {timerInSeconds}</div>
-        <LinearProgress
-          className="progress"
-          variant="determinate"
-          value={timePercentage}
-        />
-        <div className="options">
-          {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
-            <Answer
-              key={index}
-              possibleAnswer={possibleAnswer}
-              answered={answered !== null}
-              selected={answered === index}
-              selectOption={() => selectOption(index)}
-            />
-          ))}
-        </div>
-      </main>
+      <Nav>
+        <main className="question">
+          <section>
+            <h1>{currentQuestion.question}</h1>
+            <span>Tiempo restante: {timerInSeconds}</span>
+          </section>
+          <LinearProgress
+            className="progress"
+            variant="determinate"
+            value={timePercentage}
+          />
+          <div className="options">
+            {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
+              <Answer
+                key={index}
+                possibleAnswer={possibleAnswer}
+                answered={answered !== null}
+                selected={answered === index}
+                selectOption={() => selectOption(index)}
+              />
+            ))}
+          </div>
+        </main>
+      </Nav>
     );
   } else {
     return <QuestionResult {...props} />;

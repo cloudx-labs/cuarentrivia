@@ -50,14 +50,11 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
             Hello, {user.displayName || user.email}!
           </h1>
           <div className="join-form-main">
-            <label htmlFor="triviaId" className="join-form-main-trivia-name">
-              Trivia Name
-            </label>
             <input
               className="join-form-main-nick-name"
               id="triviaId"
               type="text"
-              placeholder="Trivia Name"
+              placeholder="Trivia key"
               required
               value={triviaId}
               onChange={handleTriviaIdChange}

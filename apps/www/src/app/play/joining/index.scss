@@ -34,6 +34,26 @@
       font-size: 0.7rem;
       font-weight: lighter;
     }
+    .avatar-list {
+      padding: 0;
+      margin: 0.5rem 0;
+      justify-content: flex-start;
+      .avatar-item {
+        min-width: 24px;
+        margin-right: 0.5rem;
+        .avatar {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      .name {
+        .MuiTypography-root {
+          font-size: 0.7rem;
+          font-weight: normal;
+          line-height: 0.75rem;
+        }
+      }
+    }
   }
   .buttons-contaners {
     grid-area: footer;
