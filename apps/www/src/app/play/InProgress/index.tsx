@@ -95,7 +95,7 @@ const InProgress = (props: TriviaComponentProps) => {
             <h1 className="title">{currentQuestion.question}</h1>
             <span className="time">{timerInSeconds}</span>
           </section>
-          <Error error={error} />
+          <Error error={answerError} />
           <div className="options">
             {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
               <Answer
