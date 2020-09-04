@@ -3,7 +3,6 @@ import { TriviaComponentProps } from './symbols';
 import { answerQuestion } from '../shared/trivias.service';
 import { Button, LinearProgress } from '@material-ui/core';
 import useInterval from '@use-it/interval';
-
 import './in-progress.scss';
 import QuestionResult from './question-result';
 import Nav from '../nav';
