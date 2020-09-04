@@ -26,11 +26,15 @@ const ListItemTriviaParticipantAvatar = ({
       <Avatar
         alt={participant.displayName || participant.email}
         src={participant.photoURL}
+        className="avatar"
       />
     );
   } else {
     return (
-      <Avatar alt={participant.displayName || participant.email}>
+      <Avatar
+        alt={participant.displayName || participant.email}
+        className="avatar"
+      >
         <PersonIcon />
       </Avatar>
     );
@@ -42,52 +46,24 @@ const ListItemTriviaParticipant = ({
 }: {
   participant: TriviaParticipant;
 }) => (
-  <ListItem>
-    <ListItemAvatar>
+  <ListItem className="avatar-list">
+    <ListItemAvatar className="avatar-item">
       <ListItemTriviaParticipantAvatar participant={participant} />
     </ListItemAvatar>
-    <ListItemText>{participant.displayName || participant.email}</ListItemText>
+    <ListItemText className="name">
+      {participant.displayName || participant.email}
+    </ListItemText>
   </ListItem>
 );
-
-const HostAction = ({
-  triviaId,
-  trivia,
-  isHost,
-}: {
-  isHost: boolean;
-  triviaId: string;
-  trivia: Trivia;
-}) => {
-  const startGame = () => {
-    goToNextQuestion(triviaId, trivia);
-  };
-
-  if (isHost) {
-    return (
-      <Button variant="contained" color="primary" onClick={startGame}>
-        Start!{' '}
-        <span role="img" aria-label="race flag">
-          🏁
-        </span>
-      </Button>
-    );
-  } else {
-    return (
-      <p>
-        Please wait while the host starts the game{' '}
-        <span role="img" aria-label="clock">
-          ⏰
-        </span>
-      </p>
-    );
-  }
-};
 
 const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
   const url = useTriviaUrl(trivia.friendlyName);
 
   const isHost = trivia.createdBy === user.uid;
+
+  const startGame = () => {
+    goToNextQuestion(triviaId, trivia);
+  };
 
   return (
     <Nav>
@@ -98,7 +74,10 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
             Trivia key: <b>{trivia.friendlyName}</b>
           </h3>
           <p className="trivia-content">
-            Invite people by sharing this link: <a className="trivia-link" href={url}>{url}</a>
+            Invite people by sharing this link:{' '}
+            <a className="trivia-link" href={url}>
+              {url}
+            </a>
           </p>
         </section>
         <aside className="participants">
@@ -111,7 +90,25 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
         </aside>
         <footer className="buttons-contaners">
           <CopyUrlButton url={url}></CopyUrlButton>
-          <HostAction triviaId={triviaId} trivia={trivia} isHost={isHost} />
+
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isHost ? false : true}
+            onClick={startGame}
+          >
+            {isHost ? (
+              <>
+                {' '}
+                Start!{' '}
+                <span role="img" aria-label="race flag">
+                  🏁
+                </span>
+              </>
+            ) : (
+              'Please wait'
+            )}
+          </Button>
         </footer>
       </main>
     </Nav>
