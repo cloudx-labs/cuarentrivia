@@ -46,6 +46,10 @@ const HostQuestionResult = ({ trivia, triviaId }: TriviaComponentProps) => {
         height={'300px'}
         data={amountAnswersPerPossibleAnswers}
       />
+      <h1>
+        Correct answer:{' '}
+        {currentQuestion.possibleAnswers[currentQuestion.correctAnswerIndex]}
+      </h1>
       <Button
         variant="contained"
         color="primary"
