@@ -8,7 +8,7 @@ import {
   Button,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
-import { TriviaParticipant, Trivia } from '../../shared/trivia';
+import { TriviaParticipant } from '../../shared/trivia';
 import { goToNextQuestion } from '../../shared/trivias.service';
 import { TriviaComponentProps } from '../symbols';
 import CopyUrlButton from '../../shared/copy-url-button';

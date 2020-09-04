@@ -7,7 +7,6 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  ListItemSecondaryAction,
 } from '@material-ui/core';
 import './index.scss';
 import Nav from '../../nav';
@@ -47,10 +46,10 @@ const HostCompleted = ({ trivia }: TriviaComponentProps) => {
                 <Avatar>{index + 1}</Avatar>
               </ListItemAvatar>
               <ParticipantAvatar
-                  displayName={participant.displayName}
-                  email={participant.email}
-                  photoUrl={participant.photoURL}
-                />
+                displayName={participant.displayName}
+                email={participant.email}
+                photoUrl={participant.photoURL}
+              />
               <ListItemText className="name">
                 {participant.score} -{' '}
                 {participant.displayName || participant.email}

@@ -2,7 +2,7 @@ import React from 'react';
 import { TriviaComponentProps } from './symbols';
 import Joining from './joining';
 import Completed from './completed';
-import InProgress from './InProgres';
+import InProgress from './InProgress';
 import QuestionResult from './QuestionResult';
 
 const PlayTrivia = (props: TriviaComponentProps) => {

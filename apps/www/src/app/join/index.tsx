@@ -5,20 +5,14 @@ import Authenticate from '../shared/authenticate';
 import { useQuery } from '../shared/use-query.hook';
 import { joinTrivia } from '../shared/trivias.service';
 import useTitle from '../shared/use-title.hook';
+import Nav from '../nav';
+import Error from '../shared/error';
 
 import './index.scss';
-import Nav from '../nav';
 
 export interface JoinGameContentProps {
   user: firebase.User;
 }
-
-const Error = ({ error }: { error: Error }) =>
-  !error ? null : (
-    <div className="error">
-      <p>{error.message}</p>
-    </div>
-  );
 
 const JoinContent = ({ user }: JoinGameContentProps) => {
   const query = useQuery();
