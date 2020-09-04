@@ -69,7 +69,7 @@ const buildRanking = (trivia: Trivia): TriviaRanking => {
         ),
       })
     )
-    .sort((a, b) => a.score - b.score);
+    .sort((a, b) => b.score - a.score);
   return { participants };
 };
 

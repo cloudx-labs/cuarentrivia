@@ -44,6 +44,7 @@ const HostCompleted = ({ trivia }: TriviaComponentProps) => {
               <Avatar>{index + 1}</Avatar>
             </ListItemAvatar>
             <ListItemText>
+              {participant.score} -{' '}
               {participant.displayName || participant.email}
             </ListItemText>
             <ListItemSecondaryAction>
