@@ -51,7 +51,6 @@ const HostInProgress = (props: TriviaComponentProps) => {
   }, SECOND);
 
   useEffect(() => {
-    
     setCompleted(false);
     setTime(trivia.timePerQuestion);
   }, [trivia.currentQuestionIndex]);

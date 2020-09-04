@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { TriviaComponentProps } from './symbols';
-import { answerQuestion } from '../shared/trivias.service';
+import { TriviaComponentProps } from '../symbols';
+import { answerQuestion } from '../../shared/trivias.service';
 import { Button, LinearProgress } from '@material-ui/core';
 import useInterval from '@use-it/interval';
-import './in-progress.scss';
-import QuestionResult from './question-result';
-import Nav from '../nav';
+import './index.scss';
+import QuestionResult from '../question-result';
+import Nav from '../../nav';
 
 const SECOND = 1000;
 
@@ -21,12 +21,12 @@ const Answer = ({
   selectOption: () => void;
 }) => {
   const variant = answered && !selected ? 'outlined' : 'contained';
-  const selectedClassName = selected ? 'selected' : '';
+  const noSelectedClassName = answered && !selected ? 'no-selected' : '';
 
   return (
     <Button
       variant={variant}
-      className={`option ${selectedClassName}`}
+      className={`option ${noSelectedClassName}`}
       disabled={answered}
       onClick={selectOption}
     >
@@ -88,15 +88,10 @@ const InProgress = (props: TriviaComponentProps) => {
     return (
       <Nav>
         <main className="question">
-          <section>
-            <h1>{currentQuestion.question}</h1>
-            <span>Tiempo restante: {timerInSeconds}</span>
+          <section className="header">
+            <h1 className="title">{currentQuestion.question}</h1>
+            <span className="time">{timerInSeconds}</span>
           </section>
-          <LinearProgress
-            className="progress"
-            variant="determinate"
-            value={timePercentage}
-          />
           <div className="options">
             {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
               <Answer
