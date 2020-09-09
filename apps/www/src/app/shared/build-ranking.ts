@@ -2,6 +2,8 @@ import { Trivia, TriviaParticipant, buildTriviaParticipant } from './trivia';
 import { TriviaRanking, TriviaRankingParticipant } from './trivia-ranking';
 import { Question, buildAnswer, Answer } from './question';
 
+const SECOND = 1000;
+
 const calculateScore = (
   participant: TriviaParticipant,
   questionIndex: number,
@@ -12,6 +14,8 @@ const calculateScore = (
     time: timePerQuestion,
   });
   const answer = participant.answers[questionIndex] || defaultAnswer;
+  const answerTimeSeconds = Math.floor(answer.time / SECOND);
+  const timePerQuestionSeconds = Math.floor(timePerQuestion / SECOND);
 
   if (answer.selectedAnswerIndex !== question.correctAnswerIndex) {
     return 0;
@@ -23,7 +27,7 @@ const calculateScore = (
   // Points are awarded based on speed of answer. This is how points are calculated:
 
   // Divide response time by the question timer. For example, a player responded 2 seconds after a 30-second question timer started. 2 divided by 30 is 0.0667.
-  const timeByTimePerQuestion = answer.time / timePerQuestion;
+  const timeByTimePerQuestion = answerTimeSeconds / timePerQuestionSeconds;
   // Divide that value by 2. For example, 0.0667 divided by 2 is 0.0333.
   const dividedByTwo = timeByTimePerQuestion / 2;
   // Subtract that value from 1. For example, 1 minus 0.0333 is 0.9667.
