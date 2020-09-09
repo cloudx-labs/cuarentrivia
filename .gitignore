@@ -46,4 +46,4 @@ ui-debug.log
 .firebase/
 .firebaserc
 
-*.env
+*.env*
