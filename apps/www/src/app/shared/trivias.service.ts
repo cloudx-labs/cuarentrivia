@@ -110,8 +110,21 @@ export const answerQuestion = async (
   originalAnswers: Answer[]
 ) => {
   const db = getDb();
-  const answers = [...originalAnswers];
-  answers[questionIndex] = { selectedAnswerIndex, time };
+  const answers = [];
+
+  for (let i = 0; i <= questionIndex; i++) {
+    let answer: Answer;
+    if (i < questionIndex) {
+      answer = originalAnswers[i];
+      if (!answer) {
+        answer = { selectedAnswerIndex: null, time: 0 };
+      }
+    } else {
+      answer = { selectedAnswerIndex, time };
+    }
+
+    answers[i] = answer;
+  }
 
   const participantRef = db.doc(
     `/trivias/${triviaId}/participants/${user.uid}`

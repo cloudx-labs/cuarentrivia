@@ -41,17 +41,13 @@ const InProgress = (props: TriviaComponentProps) => {
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
 
   const [answered, setAnswered] = useState<number | null>(null);
-  const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(trivia.timePerQuestion);
+  const [timerStart, setTimerStart] = useState(new Date());
   const [completed, setCompleted] = useState(false);
   const [answerError, setAnswerError] = useState<Error>(null);
 
   useInterval(() => {
-    setTime(time + 1);
-  }, 1);
-
-  useInterval(() => {
-    setTimer(timer - SECOND);
+    setTimer((timer) => timer - SECOND);
   }, SECOND);
 
   useEffect(() => {
@@ -62,9 +58,10 @@ const InProgress = (props: TriviaComponentProps) => {
 
   useEffect(() => {
     setCompleted(false);
-    setTime(0);
     setTimer(trivia.timePerQuestion);
+    setTimerStart(new Date());
     setAnswered(null);
+    setAnswerError(null);
   }, [trivia.currentQuestionIndex, trivia.timePerQuestion]);
 
   const selectOption = async (index: number) => {
@@ -75,7 +72,7 @@ const InProgress = (props: TriviaComponentProps) => {
         trivia.currentQuestionIndex,
         user,
         index,
-        time,
+        new Date().getTime() - timerStart.getTime(),
         trivia.participants[user.uid].answers
       );
     } catch (error) {
@@ -85,7 +82,6 @@ const InProgress = (props: TriviaComponentProps) => {
   };
 
   const timerInSeconds = timer / SECOND;
-  // const timePercentage = Math.floor((timer / trivia.timePerQuestion) * 100);
 
   if (!completed) {
     return (
