@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import useInterval from '@use-it/interval';
 import { TriviaComponentProps } from './symbols';
 import {
   List,
@@ -7,7 +6,6 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-  LinearProgress,
 } from '@material-ui/core';
 import {
   ChangeHistory,
@@ -18,8 +16,8 @@ import {
 
 import './host-in-progress.scss';
 import HostQuestionResult from './host-question-result';
-
-const SECOND = 1000;
+import { setQuestionStartTime } from '../shared/trivias.service';
+import Timer from './timer';
 
 const ListIcon = ({ index }: { index: number }) => {
   if (index === 0) {
@@ -34,27 +32,21 @@ const ListIcon = ({ index }: { index: number }) => {
 };
 
 const HostInProgress = (props: TriviaComponentProps) => {
-  const { trivia, questionIndex } = props;
+  const { trivia, questionIndex, triviaId } = props;
   const currentQuestion = trivia.questions[questionIndex];
-  const [time, setTime] = useState(trivia.timePerQuestion);
   const [completed, setCompleted] = useState(false);
-  const timeInSeconds = time / SECOND;
-
-  useInterval(() => {
-    const newTime = time - SECOND;
-    setTime(newTime);
-
-    if (newTime === 0) {
-      setCompleted(true);
-    }
-  }, SECOND);
 
   useEffect(() => {
     setCompleted(false);
-    setTime(trivia.timePerQuestion);
   }, [trivia.currentQuestionIndex, trivia.timePerQuestion]);
 
-  const timePercentage = Math.floor((time / trivia.timePerQuestion) * 100);
+  const handleSetHostStartTime = async (startTime: number) => {
+    await setQuestionStartTime(
+      triviaId,
+      trivia.currentQuestionIndex,
+      startTime
+    );
+  };
 
   if (!completed) {
     return (
@@ -72,11 +64,12 @@ const HostInProgress = (props: TriviaComponentProps) => {
             </ListItem>
           ))}
         </List>
-        <span>Time left: {timeInSeconds}</span>
-        <LinearProgress
-          className="progress"
-          variant="determinate"
-          value={timePercentage}
+        <Timer
+          questionIndex={trivia.currentQuestionIndex}
+          startTime={currentQuestion.startTime}
+          timePerQuestion={trivia.timePerQuestion}
+          setCompleted={setCompleted}
+          setStartTime={handleSetHostStartTime}
         />
       </main>
     );

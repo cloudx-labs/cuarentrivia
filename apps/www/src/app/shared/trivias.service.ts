@@ -7,9 +7,37 @@ import {
   TriviaTemplateBase,
   QuestionTemplate,
   buildTriviaParticipant,
+  TriviaParticipant,
 } from './trivia';
 import { Question, Answer } from './question';
 import { getDb } from './get-db';
+
+const mapAnswers = (
+  originalAnswers: Answer[],
+  questionIndex: number,
+  answerPatch: Partial<Answer>
+): Answer[] => {
+  const answers: Answer[] = [];
+
+  for (let i = 0; i <= questionIndex; i++) {
+    let answer: Answer;
+    const originalAnswer = originalAnswers[i];
+
+    if (i === questionIndex) {
+      answer = { ...originalAnswer, ...answerPatch };
+    } else {
+      if (!originalAnswer) {
+        answer = { selectedAnswerIndex: null, time: 0, startTime: 0 };
+      } else {
+        answer = originalAnswer;
+      }
+    }
+
+    answers[i] = answer;
+  }
+
+  return answers;
+};
 
 export const joinTrivia = async (
   triviaId: string,
@@ -106,30 +134,12 @@ export const answerQuestion = async (
   questionIndex: number,
   user: User,
   selectedAnswerIndex: number,
-  time: number,
-  originalAnswers: Answer[]
+  time: number
 ) => {
-  const db = getDb();
-  const answers = [];
-
-  for (let i = 0; i <= questionIndex; i++) {
-    let answer: Answer;
-    if (i < questionIndex) {
-      answer = originalAnswers[i];
-      if (!answer) {
-        answer = { selectedAnswerIndex: null, time: 0 };
-      }
-    } else {
-      answer = { selectedAnswerIndex, time };
-    }
-
-    answers[i] = answer;
-  }
-
-  const participantRef = db.doc(
-    `/trivias/${triviaId}/participants/${user.uid}`
-  );
-  await participantRef.update({ answers });
+  return updateParticipantAnswers(triviaId, questionIndex, user, {
+    selectedAnswerIndex,
+    time,
+  });
 };
 
 export const finishCurrentQuestion = async (triviaId: string) => {
@@ -183,6 +193,7 @@ export const startTrivia = async ({
       possibleAnswers,
       correctAnswerIndex,
       value,
+      startTime: null,
     })
   );
 
@@ -232,4 +243,41 @@ export const removeTrivia = async (user: User, templateId: string) => {
   const db = getDb();
   const templateRef = db.doc(`/templates/${user.uid}/trivias/${templateId}`);
   await templateRef.delete();
+};
+
+export const setAnswerStartTime = async (
+  triviaId: string,
+  questionIndex: number,
+  user: User,
+  startTime: number
+): Promise<void> => {
+  return updateParticipantAnswers(triviaId, questionIndex, user, { startTime });
+};
+
+export const updateParticipantAnswers = async (
+  triviaId: string,
+  questionIndex: number,
+  user: User,
+  answerPatch: Partial<Answer>
+) => {
+  const db = getDb();
+  const participantRef = db.doc(
+    `/trivias/${triviaId}/participants/${user.uid}`
+  );
+  const participantSnapshot = await participantRef.get();
+  const participant = participantSnapshot.data() as TriviaParticipant;
+  const originalAnswers = participant.answers;
+  const answers = mapAnswers(originalAnswers, questionIndex, answerPatch);
+
+  await participantRef.update({ answers });
+};
+
+export const setQuestionStartTime = async (
+  triviaId: string,
+  questionIndex: number,
+  startTime: number
+) => {
+  const db = getDb();
+  const questionRef = db.doc(`/trivias/${triviaId}/questions/${questionIndex}`);
+  await questionRef.update({ startTime });
 };

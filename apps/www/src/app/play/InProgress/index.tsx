@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { TriviaComponentProps } from '../symbols';
-import { answerQuestion } from '../../shared/trivias.service';
+import {
+  answerQuestion,
+  setAnswerStartTime,
+} from '../../shared/trivias.service';
 import { Button } from '@material-ui/core';
-import useInterval from '@use-it/interval';
 import './index.scss';
 import Nav from '../../nav';
 import QuestionResult from '../QuestionResult';
 import Error from '../../shared/error';
-
-const SECOND = 1000;
+import Timer from '../timer';
 
 const Answer = ({
   possibleAnswer,
@@ -39,30 +40,22 @@ const Answer = ({
 const InProgress = (props: TriviaComponentProps) => {
   const { trivia, triviaId, user } = props;
   const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
-
-  const [answered, setAnswered] = useState<number | null>(null);
-  const [timer, setTimer] = useState(trivia.timePerQuestion);
-  const [timerStart, setTimerStart] = useState(new Date());
+  const participant = trivia.participants[user.uid];
+  const currentAnswer =
+    participant && participant.answers[trivia.currentQuestionIndex];
+  const answerStartTime =
+    (currentAnswer && currentAnswer.startTime) || undefined;
+  const selectedAnswerIndex =
+    (currentAnswer && currentAnswer.selectedAnswerIndex) || null;
+  const [answered, setAnswered] = useState<number | null>(selectedAnswerIndex);
   const [completed, setCompleted] = useState(false);
   const [answerError, setAnswerError] = useState<Error>(null);
 
-  useInterval(() => {
-    setTimer((timer) => timer - SECOND);
-  }, SECOND);
-
-  useEffect(() => {
-    if (timer === 0) {
-      setCompleted(true);
-    }
-  }, [timer]);
-
   useEffect(() => {
     setCompleted(false);
-    setTimer(trivia.timePerQuestion);
-    setTimerStart(new Date());
-    setAnswered(null);
+    setAnswered(selectedAnswerIndex);
     setAnswerError(null);
-  }, [trivia.currentQuestionIndex, trivia.timePerQuestion]);
+  }, [trivia.currentQuestionIndex, selectedAnswerIndex]);
 
   const selectOption = async (index: number) => {
     setAnswered(index);
@@ -72,8 +65,7 @@ const InProgress = (props: TriviaComponentProps) => {
         trivia.currentQuestionIndex,
         user,
         index,
-        new Date().getTime() - timerStart.getTime(),
-        trivia.participants[user.uid].answers
+        new Date().getTime()
       );
     } catch (error) {
       setAnswerError(error);
@@ -81,7 +73,14 @@ const InProgress = (props: TriviaComponentProps) => {
     }
   };
 
-  const timerInSeconds = timer / SECOND;
+  const handleSetAnswerStartTime = async (answerStartTime: number) => {
+    await setAnswerStartTime(
+      triviaId,
+      trivia.currentQuestionIndex,
+      user,
+      answerStartTime
+    );
+  };
 
   if (!completed) {
     return (
@@ -89,7 +88,15 @@ const InProgress = (props: TriviaComponentProps) => {
         <main className="question">
           <section className="header">
             <h1 className="title">{currentQuestion.question}</h1>
-            <span className="time">{timerInSeconds}</span>
+            <div className="in-progress-timer">
+              <Timer
+                questionIndex={trivia.currentQuestionIndex}
+                startTime={answerStartTime}
+                timePerQuestion={trivia.timePerQuestion}
+                setCompleted={setCompleted}
+                setStartTime={handleSetAnswerStartTime}
+              />
+            </div>
           </section>
           <Error error={answerError} />
           <div className="options">

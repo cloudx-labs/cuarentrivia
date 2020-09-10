@@ -3,6 +3,7 @@ import { buildObject } from './build-object';
 export interface Answer {
   selectedAnswerIndex: number;
   time: number;
+  startTime: number;
 }
 
 export interface ParticipantAnswer {
@@ -14,6 +15,7 @@ export interface Question {
   possibleAnswers: string[];
   correctAnswerIndex: number;
   value: number;
+  startTime: number;
 }
 
 export const buildQuestion = buildObject<Question>({
@@ -21,9 +23,11 @@ export const buildQuestion = buildObject<Question>({
   possibleAnswers: ['', '', '', ''],
   correctAnswerIndex: null,
   value: 1000,
+  startTime: null,
 });
 
 export const buildAnswer = buildObject<Answer>({
   selectedAnswerIndex: null,
   time: 0,
+  startTime: 0,
 });
