@@ -41,7 +41,7 @@ const Login = () => {
       <main className="login">
         <section className="login-content">
           <img src={logo} alt="Logo" className="login-content-logo" />
-          <h1 className="login-content-title">Sing In</h1>
+          <h1 className="login-content-title">Sign In</h1>
           <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebaseAuth} />
         </section>
       </main>
