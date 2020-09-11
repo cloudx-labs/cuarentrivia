@@ -14,7 +14,9 @@ const calculateScore = (
     time: timePerQuestion,
   });
   const answer = participant.answers[questionIndex] || defaultAnswer;
-  const answerTimeSeconds = Math.floor(answer.time / SECOND);
+  const answerTimeSeconds = Math.floor(
+    (answer.time - answer.startTime) / SECOND
+  );
   const timePerQuestionSeconds = Math.floor(timePerQuestion / SECOND);
 
   if (answer.selectedAnswerIndex !== question.correctAnswerIndex) {
