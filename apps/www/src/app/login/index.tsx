@@ -37,7 +37,7 @@ const Login = () => {
   useTitle('Login');
 
   return (
-    <Nav>
+    <Nav notShowLogout={true}>
       <main className="login">
         <section className="login-content">
           <img src={logo} alt="Logo" className="login-content-logo" />

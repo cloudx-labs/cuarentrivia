@@ -1,3 +1,4 @@
+@import '../../../scss/variables.scss';
 .question {
   height: 100%;
   width: 100%;
@@ -26,9 +27,10 @@
   }
   .options {
     width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, calc(50% - 10px)));
-    grid-template-rows: 100px 100px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
     gap: 10px;
     .no-selected.option:nth-child(1),
     .no-selected.option:nth-child(2),
@@ -39,6 +41,7 @@
     .option {
       border-radius: 8px;
       text-transform: capitalize;
+      font-size: 2rem;
 
       &:nth-child(1) {
         font-weight: bold;
@@ -66,4 +69,16 @@
 
 .in-progress-timer {
   width: 100%;
+}
+
+@media screen and (min-width: $bp-l) {
+  .question {
+    .options {
+      grid-template-columns: repeat(auto-fill, minmax(350px, calc(50% - 10px)));
+      grid-template-rows: 200px 200px;
+      .option {
+        font-size: 1rem;
+      }
+    }
+  }
 }

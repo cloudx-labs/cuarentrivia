@@ -6,9 +6,10 @@ import { useHistory, Link } from 'react-router-dom';
 
 interface Nav {
   children: React.ReactNode;
+  notShowLogout?: boolean;
 }
 
-const Nav = ({ children }: Nav) => {
+const Nav = ({ children, notShowLogout }: Nav) => {
   const history = useHistory();
 
   const handleLogout = async () => {
@@ -22,14 +23,16 @@ const Nav = ({ children }: Nav) => {
         <Link to="/">
           <img src={logo} alt="Logo" className="nav-logo" />
         </Link>
-        <a
-          role="button"
-          className="nav-logout"
-          href="#logout"
-          onClick={handleLogout}
-        >
-          Logout
-        </a>
+        {!notShowLogout && (
+          <a
+            role="button"
+            className="nav-logout"
+            href="#logout"
+            onClick={handleLogout}
+          >
+            Logout
+          </a>
+        )}
       </nav>
       <section className="children">{children}</section>
     </>

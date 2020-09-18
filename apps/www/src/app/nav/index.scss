@@ -1,3 +1,5 @@
+@import '../../scss/variables.scss';
+
 .nav {
   box-shadow: 0px 1px 1px #00000029;
   display: flex;
@@ -17,10 +19,16 @@
 }
 
 .children {
-  padding: 3.5rem 13%;
+  padding: 3.5rem 3%;
   padding-bottom: 2rem;
   box-sizing: border-box;
   height: calc(100vh - 56px);
   overflow-y: auto;
   margin: auto;
+}
+
+@media screen and (min-width: $bp-l) {
+  .children {
+    padding: 3.5rem 13%;
+  }
 }
