@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 blockquote,
 dl,
 dd,
@@ -54,7 +56,7 @@ html {
   font-size: 8px;
 }
 
-@media (min-width: 420px) {
+@media (min-width: $bp-l) {
   html {
     font-size: 16px;
   }
@@ -66,4 +68,3 @@ html,
   height: 100%;
   background-color: var(--cloudx-gray-lighter);
 }
-

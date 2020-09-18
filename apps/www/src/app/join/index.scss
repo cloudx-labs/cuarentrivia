@@ -1,15 +1,21 @@
+@import '../../scss/variables.scss';
+
 .join {
   color: var(--cloudx-black);
   display: flex;
   justify-content: center;
   width: 100%;
+  align-items: center;
+  height: 100%;
 
   &-form {
     overflow: auto;
-    padding: 8rem;
+    width: 100%;
     &-title {
-      margin-bottom: 1rem;
+      margin-bottom: 2.5rem;
       font-weight: normal;
+      font-size: 4.5rem;
+      text-align: center;
     }
     &-main {
       display: flex;
@@ -21,7 +27,8 @@
       }
       &-nick-name {
         border-radius: 1rem;
-        height: 2rem;
+        height: 4rem;
+        box-sizing: border-box;
         border: 1px solid var(--cloudx-gray);
         width: 100%;
         padding: 0.25rem 1rem;
@@ -57,11 +64,35 @@
       &-child:first-child {
         color: var(--cloudx-black);
         font-weight: lighter;
-        font-size: 0.85rem;
+        font-size: 1.2rem;
       }
       &-child {
         margin-top: 1rem;
+        font-size: 1.5rem;
         color: var(--cloudx-blue);
+      }
+    }
+  }
+}
+
+@media screen and (min-width: $bp-l) {
+  .join {
+    align-items: flex-start;
+    .join-form {
+      max-width: 992px;
+      margin: auto;
+      .join-form-title {
+        margin-bottom: 2rem;
+        font-size: 4rem;
+        text-align: start;
+      }
+      &-create-game {
+        &-child:first-child {
+          font-size: 0.85rem;
+        }
+        &-child {
+          font-size: 1rem;
+        }
       }
     }
   }
