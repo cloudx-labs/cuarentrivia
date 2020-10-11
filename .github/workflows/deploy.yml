@@ -57,8 +57,18 @@ jobs:
       - name: Build
         run: npm run affected:build -- --base=HEAD~1
       - name: Test
-        run: npm run affected:test -- --base=HEAD~1
+        run: npm run affected:test -- --base=HEAD~1 --codeCoverage
       - name: Run e2e tests
         run: npm run affected:e2e -- --base=HEAD~1
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: coverage
+      - name: Run codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: coverage
       - name: Deploy
         run: npm run nx -- affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
