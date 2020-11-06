@@ -60,6 +60,7 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
   const url = useTriviaUrl(trivia.friendlyName);
 
   const isHost = trivia.createdBy === user.uid;
+  const participantsCount = Object.values(trivia.participants).length;
 
   const startGame = () => {
     goToNextQuestion(triviaId, trivia);
@@ -81,7 +82,9 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
           </p>
         </section>
         <aside className="participants">
-          <h3 className="title">You'll be playing with:</h3>
+          <h3 className="title">
+            You'll be playing with ({participantsCount}):
+          </h3>
           <List>
             {Object.values(trivia.participants).map((participant) => (
               <ListItemTriviaParticipant participant={participant} />
