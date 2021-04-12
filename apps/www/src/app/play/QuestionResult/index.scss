@@ -10,6 +10,29 @@
     margin: 0;
     margin-bottom: 1.5rem;
   }
+  .toasty {
+    position: fixed;
+    bottom: 0px;
+    right: -1000px;
+    background-color: red;
+    display: block;
+    animation-name: move;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+  }
+  @keyframes move {
+    0% {
+      right: -1000px;
+    }
+
+    50% {
+      right: 10px;
+    }
+
+    100% {
+      right: -1000px;
+    }
+  }
   .message {
     margin: 0;
     font-size: 1rem;
