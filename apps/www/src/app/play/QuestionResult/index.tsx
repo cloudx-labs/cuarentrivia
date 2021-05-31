@@ -17,18 +17,10 @@ const QuestionResult = ({ trivia, user }: TriviaComponentProps) => {
     answerIsCorrect
       ? 'Acertaste!'
       : 'No Acertaste!';
-  const showToasty = Math.random() < 0.3 && answerIsCorrect;
-
-  //JAVIER
   return (
     <Nav>
       <main className="result">
         <h1 className="title">{message}</h1>
-        {showToasty && <div>
-          <img id="toasty-image" className="toasty" src="../../../assets/images/toasty.png" alt="toasty"></img>
-          <audio id="toasty-audio" autoPlay preload="auto"><source src="../../../assets/audio/toasty.mp3" /><source src="../../../assets/audio/toasty.ogg" /></audio>
-        </div>
-        }
         <p className="message">
           Espera un momento a que el host inicie la proxima pregunta
         </p>
