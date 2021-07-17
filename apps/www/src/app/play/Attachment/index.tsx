@@ -9,7 +9,7 @@ const ImageAttachment: FunctionComponent<AttachmentProps> = ({
 }: AttachmentProps) => <img src={value.url} alt={value.name} />;
 const VideoAttachment: FunctionComponent<AttachmentProps> = ({
   value,
-}: AttachmentProps) => <video src={value.url} />;
+}: AttachmentProps) => <video src={value.url} autoPlay />;
 
 const getComponentByContentType = (
   value: QuestionAttachment
