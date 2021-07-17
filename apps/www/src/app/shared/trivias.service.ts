@@ -110,7 +110,10 @@ export const createTemplate = async (
   const writeBatch = db.batch();
 
   questions.forEach(
-    ({ question, possibleAnswers, correctAnswerIndex, value }, index) => {
+    (
+      { question, possibleAnswers, correctAnswerIndex, value, attachment },
+      index
+    ) => {
       const questionRef = createdTriviaRef
         .collection('questions')
         .doc(`${index}`);
@@ -119,6 +122,7 @@ export const createTemplate = async (
         possibleAnswers,
         correctAnswerIndex,
         value,
+        attachment,
       };
       writeBatch.set(questionRef, questionTemplate);
     }
@@ -188,12 +192,19 @@ export const startTrivia = async ({
   const writeBatch = db.batch();
 
   const questionsToCreate: Question[] = questions.map(
-    ({ question, possibleAnswers, correctAnswerIndex, value }): Question => ({
+    ({
+      question,
+      possibleAnswers,
+      correctAnswerIndex,
+      value,
+      attachment,
+    }): Question => ({
       question,
       possibleAnswers,
       correctAnswerIndex,
       value,
       startTime: null,
+      attachment,
     })
   );
 
@@ -232,8 +243,15 @@ export const getTemplateQuestions = async (
         possibleAnswers,
         correctAnswerIndex,
         value,
+        attachment,
       } = doc.data();
-      return { question, possibleAnswers, correctAnswerIndex, value };
+      return {
+        question,
+        possibleAnswers,
+        correctAnswerIndex,
+        value,
+        attachment,
+      };
     }
   );
   return result;

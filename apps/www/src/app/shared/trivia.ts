@@ -54,7 +54,7 @@ export type TriviaTemplateBase = Pick<
 
 export type QuestionTemplate = Pick<
   Question,
-  'question' | 'possibleAnswers' | 'correctAnswerIndex' | 'value'
+  'question' | 'possibleAnswers' | 'correctAnswerIndex' | 'value' | 'attachment'
 >;
 
 export type TriviaTemplate = TriviaTemplateBase & {
