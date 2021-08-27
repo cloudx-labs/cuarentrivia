@@ -117,7 +117,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
       </section>
       <section className="attachment-container">
         <input
-          accept="image/jpeg"
+          accept="image/*"
           className="attachment-container-input"
           id="attachmentInput"
           type="file"
