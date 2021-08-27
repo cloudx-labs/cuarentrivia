@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  Component,
+  FunctionComponent,
+} from 'react';
 import { TriviaComponentProps } from '../symbols';
 import {
   answerQuestion,
@@ -10,6 +15,8 @@ import Nav from '../../nav';
 import QuestionResult from '../QuestionResult';
 import Error from '../../shared/error';
 import Timer from '../timer';
+import { QuestionAttachment } from '../../shared/question';
+import { Attachment } from '../Attachment';
 
 const Answer = ({
   possibleAnswer,
@@ -98,6 +105,7 @@ const InProgress = (props: TriviaComponentProps) => {
               />
             </div>
           </section>
+          <Attachment value={currentQuestion.attachment} />
           <Error error={answerError} />
           <div className="options">
             {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (

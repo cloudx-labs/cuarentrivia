@@ -18,6 +18,7 @@ import './host-in-progress.scss';
 import HostQuestionResult from './host-question-result';
 import { setQuestionStartTime } from '../shared/trivias.service';
 import Timer from './timer';
+import { Attachment } from './Attachment';
 
 const ListIcon = ({ index }: { index: number }) => {
   if (index === 0) {
@@ -52,6 +53,7 @@ const HostInProgress = (props: TriviaComponentProps) => {
     return (
       <main className="trivia-in-progress">
         <span className="question">{currentQuestion.question}</span>
+        <Attachment value={currentQuestion.attachment} />
         <List>
           {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
             <ListItem key={index}>

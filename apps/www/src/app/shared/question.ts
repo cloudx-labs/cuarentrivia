@@ -10,12 +10,18 @@ export interface ParticipantAnswer {
   [key: string]: Answer;
 }
 
+export interface QuestionAttachment {
+  name: string;
+  contentType: string;
+  url: string;
+}
 export interface Question {
   question: string;
   possibleAnswers: string[];
   correctAnswerIndex: number;
   value: number;
   startTime: number;
+  attachment: QuestionAttachment;
 }
 
 export const buildQuestion = buildObject<Question>({
@@ -24,6 +30,7 @@ export const buildQuestion = buildObject<Question>({
   correctAnswerIndex: null,
   value: 1000,
   startTime: null,
+  attachment: null,
 });
 
 export const buildAnswer = buildObject<Answer>({

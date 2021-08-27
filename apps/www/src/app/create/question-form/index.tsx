@@ -1,9 +1,16 @@
-import React from 'react';
-import { TextField, Divider, Checkbox, IconButton } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import React, { Dispatch, SetStateAction } from 'react';
+import {
+  TextField,
+  Divider,
+  Checkbox,
+  IconButton,
+  Tooltip,
+} from '@material-ui/core';
+import { AttachFile, Delete } from '@material-ui/icons';
 import { Question } from '../../shared/question';
 import { updatePrimitiveItemAt } from '../../shared/update-item';
 import './index.scss';
+import * as firebase from 'firebase/app';
 
 export interface QuestionFormProps {
   question: Question;
@@ -70,6 +77,25 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
     });
   };
 
+  const handleAttachmentChange = async (event: any) => {
+    console.log(event.target.files);
+    const files: FileList = event.target.files;
+    if (files.length) {
+      const file = files.item(0);
+      const storageRef = firebase.storage().ref(`${Date.now()}_${file.name}`);
+      await storageRef.put(file);
+      const url = await storageRef.getDownloadURL();
+      setQuestion({
+        ...question,
+        attachment: {
+          name: file.name,
+          contentType: file.type,
+          url,
+        },
+      });
+    }
+  };
+
   return (
     <section className="question-form">
       <section className="title-container">
@@ -85,10 +111,33 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
             })
           }
         />
-
         <IconButton color="primary" onClick={remove} className="delete-button">
           <Delete />
         </IconButton>
+      </section>
+      <section className="attachment-container">
+        <input
+          accept="image/*"
+          className="attachment-container-input"
+          id="attachmentInput"
+          type="file"
+          onChange={handleAttachmentChange}
+        />
+        <Tooltip title="Select Attachment">
+          <label htmlFor="attachmentInput">
+            <IconButton
+              className="attachment-container-button"
+              color="primary"
+              aria-label="upload attachment"
+              component="span"
+            >
+              <AttachFile fontSize="large" />
+            </IconButton>
+          </label>
+        </Tooltip>
+        <label>
+          {question.attachment ? question.attachment.name : 'Select File'}
+        </label>
       </section>
       <section className="answer-container">
         {' '}
@@ -103,7 +152,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
           />
         ))}
       </section>
-      <Divider className="divider"/>
+      <Divider className="divider" />
     </section>
   );
 };
