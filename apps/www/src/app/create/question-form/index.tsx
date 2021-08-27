@@ -80,7 +80,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
   const handleAttachmentChange = async (event: any) => {
     console.log(event.target.files);
     const files: FileList = event.target.files;
-    if (!!files.length) {
+    if (files.length) {
       const file = files.item(0);
       const storageRef = firebase.storage().ref(`${Date.now()}_${file.name}`);
       await storageRef.put(file);
