@@ -2,7 +2,7 @@ import React from 'react';
 import './index.scss';
 import logo from '../../assets/icons/cuarentrivia-logo.png';
 import firebase from 'firebase/app';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface Nav {
   children: React.ReactNode;
@@ -10,11 +10,11 @@ interface Nav {
 }
 
 const Nav = ({ children, notShowLogout }: Nav) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await firebase.auth().signOut();
-    history.push('/login');
+    navigate('/login');
   };
 
   return (

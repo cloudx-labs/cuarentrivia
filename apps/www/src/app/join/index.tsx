@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import firebase from 'firebase/app';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Authenticate from '../shared/authenticate';
 import { useQuery } from '../shared/use-query.hook';
 import { joinTrivia } from '../shared/trivias.service';
@@ -16,7 +16,7 @@ export interface JoinGameContentProps {
 
 const JoinContent = ({ user }: JoinGameContentProps) => {
   const query = useQuery();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [triviaId, setTriviaId] = useState<string>(query.get('triviaId') || '');
   const [error, setError] = useState<Error>(null);
 
@@ -26,7 +26,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
     event.preventDefault();
     try {
       const _triviaId = await joinTrivia(triviaId, user);
-      history.push(`/play/${_triviaId}`);
+      navigate(`/play/${_triviaId}`);
     } catch (error) {
       setError(error);
     }

@@ -9,7 +9,7 @@ import ErrorPage from '../shared/error-page';
 import HostTrivia from './host-trivia';
 
 const PlayContent = ({ user }: AuthenticatedProps) => {
-  const { triviaId } = useParams();
+  const { triviaId } = useParams<Record<'triviaId', string>>();
   const [trivia, loadingTrivia, errorTrivia] = useTrivia(triviaId);
 
   if (loadingTrivia) {

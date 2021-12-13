@@ -6,7 +6,7 @@ import { Button, TextField } from '@material-ui/core';
 import { buildQuestion, Question } from '../shared/question';
 import { createTemplate } from '../shared/trivias.service';
 import SubmitError from './submit-error';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import QuestionForm from './question-form';
 
 import './index.scss';
@@ -14,7 +14,7 @@ import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
 import Nav from '../nav';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
   const [error, setError] = useState<Error>(null);
@@ -49,7 +49,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         questions,
       });
       await createTemplate(triviaToCreate, user);
-      history.push('/trivias');
+      navigate('/trivias');
     } catch (error) {
       setError(error);
     }

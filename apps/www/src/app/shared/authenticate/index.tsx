@@ -4,7 +4,7 @@ import React, {
   FunctionComponent,
 } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoadingPage from '../loading-page';
 import ErrorPage from '../error-page';
 import firebase, { User } from 'firebase/app';
@@ -19,7 +19,7 @@ const Authenticate = <T extends AuthenticatedProps>({
   component,
 }: AuthenticateProps<T>) => {
   const [user, loading, error] = useAuthState(firebase.auth());
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
 
   if (loading) {
@@ -27,7 +27,7 @@ const Authenticate = <T extends AuthenticatedProps>({
   } else if (error) {
     return <ErrorPage error={error.message} />;
   } else if (!user) {
-    history.push(`/login?redirectTo=${location.pathname}`);
+    navigate(`/login?redirectTo=${location.pathname}`);
     return null;
   } else {
     const ComponentToRender = component as ComponentType<AuthenticatedProps>;

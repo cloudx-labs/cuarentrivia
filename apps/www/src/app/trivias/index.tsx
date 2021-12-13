@@ -7,7 +7,7 @@ import { Button, Divider, IconButton } from '@material-ui/core';
 import CreatedTriviaModal, {
   CreatedTriviaModalProps,
 } from '../create/created-trivia-modal';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   startTrivia,
   getTemplateQuestions,
@@ -31,7 +31,7 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
     visible: false,
   });
   const [error, setError] = useState<Error>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const start = async (index: number) => {
     const [templateId, template] = myTemplates[index];
@@ -61,7 +61,7 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   };
 
   const handleCreateTemplate = () => {
-    history.push('/trivias/create');
+    navigate('/trivias/create');
   };
 
   const _myTemplates = myTemplates || [];

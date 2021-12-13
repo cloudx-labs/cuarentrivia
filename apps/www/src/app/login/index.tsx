@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { FirebaseAuth } from 'react-firebaseui';
 import firebase from 'firebase/app';
 import useTitle from '../shared/use-title.hook';
@@ -8,9 +7,10 @@ import logo from '../../assets/icons/android-icon-36x36.png';
 import './index.scss';
 import Nav from '../nav';
 import { environment } from '../../environments/environment';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const query = useQuery();
 
   const signInSuccessWithAuthResult = (
@@ -22,7 +22,7 @@ const Login = () => {
 
     const redirectTo = query.get('redirectTo') || '/';
 
-    history.push(redirectTo);
+    navigate(redirectTo);
 
     return true;
   };
