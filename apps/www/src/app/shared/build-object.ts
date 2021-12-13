@@ -1,3 +1,3 @@
-export const buildObject = <T extends {}>(defaults: T) => (
+export const buildObject = <T extends Record<string, unknown>>(defaults: T) => (
   data?: Partial<T>
 ) => ({ ...defaults, ...data });

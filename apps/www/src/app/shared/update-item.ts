@@ -1,4 +1,4 @@
-export const updateObjectItemAt = <T extends {}>(
+export const updateObjectItemAt = <T extends Record<string, unknown>>(
   list: T[],
   index: number,
   data: Partial<T>

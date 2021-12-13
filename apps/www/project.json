@@ -1,0 +1,102 @@
+{
+  "root": "apps/www",
+  "sourceRoot": "apps/www/src",
+  "projectType": "application",
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "options": {
+        "outputPath": "dist/apps/www",
+        "index": "apps/www/src/index.html",
+        "main": "apps/www/src/main.tsx",
+        "polyfills": "apps/www/src/polyfills.ts",
+        "tsConfig": "apps/www/tsconfig.app.json",
+        "assets": [
+          "apps/www/src/favicon.ico",
+          "apps/www/src/assets",
+          "apps/www/src/cuarentrivia.webmanifest",
+          "apps/www/src/browserconfig.xml"
+        ],
+        "styles": ["apps/www/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/www/src/environments/environment.ts",
+              "with": "apps/www/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "extractCss": true,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "www:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "www:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:lint",
+      "options": {
+        "linter": "eslint",
+        "tsConfig": [
+          "apps/www/tsconfig.app.json",
+          "apps/www/tsconfig.spec.json"
+        ],
+        "exclude": ["**/node_modules/**", "!apps/www/**/*"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/www/jest.config.js",
+        "tsconfig": "apps/www/tsconfig.spec.json",
+        "passWithNoTests": true
+      },
+      "outputs": ["coverage/apps/www"]
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "envFile": ".env",
+        "args": "--configuration=default",
+        "commands": [
+          "npm run build -- www --configuration={args.configuration}",
+          "npm run workbox -- generateSW apps/www/workbox-config.js",
+          "npm run firebase -- deploy --only=hosting --project={args.configuration}"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "args": "--configuration=production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

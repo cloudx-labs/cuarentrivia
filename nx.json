@@ -18,35 +18,11 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ]
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
   },
-  "projects": {
-    "www": {
-      "tags": []
-    },
-    "www-e2e": {
-      "tags": [],
-      "implicitDependencies": [
-        "www"
-      ]
-    },
-    "functions": {
-      "tags": []
-    },
-    "db": {
-      "tags": []
-    },
-    "storage": {
-      "tags": []
-    }
-  },
+  "projects": {},
   "cli": {
     "defaultCollection": "@nrwl/react"
   },
@@ -66,5 +42,13 @@
         "linter": "eslint"
       }
     }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
   }
 }

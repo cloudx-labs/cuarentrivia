@@ -1,0 +1,76 @@
+{
+  "root": "apps/functions",
+  "sourceRoot": "apps/functions/src",
+  "projectType": "application",
+  "prefix": "functions",
+  "generators": {},
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "options": {
+        "outputPath": "dist/apps/functions",
+        "main": "apps/functions/src/main.ts",
+        "tsconfig": "apps/functions/tsconfig.app.json",
+        "assets": ["apps/functions/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/functions/src/environments/environment.ts",
+              "with": "apps/functions/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "functions:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:lint",
+      "options": {
+        "linter": "eslint",
+        "tsconfig": [
+          "apps/functions/tsconfig.app.json",
+          "apps/functions/tsconfig.spec.json"
+        ],
+        "exclude": ["**/node_modules/**", "!apps/functions/**/*"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "options": {
+        "jestConfig": "apps/functions/jest.config.js",
+        "tsconfig": "apps/functions/tsconfig.spec.json",
+        "passWithNoTests": true
+      },
+      "outputs": ["coverage/apps/functions"]
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "envFile": ".env",
+        "args": "--configuration=default",
+        "commands": [
+          "npm run build -- functions --configuration={args.configuration}",
+          "npm run firebase -- deploy --only=functions --project={args.configuration}"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "args": "--configuration=production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

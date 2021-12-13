@@ -1,0 +1,23 @@
+{
+  "root": "apps/db",
+  "sourceRoot": "apps/db",
+  "projectType": "application",
+  "prefix": "db",
+  "generators": {},
+  "targets": {
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "envFile": ".env",
+        "args": "--configuration=default",
+        "command": "npm run firebase -- deploy --only=firestore --project={args.configuration}"
+      },
+      "configurations": {
+        "production": {
+          "args": "--configuration=production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,275 +1,29 @@
 {
-  "version": 1,
+  "version": 2,
   "projects": {
-    "www": {
-      "root": "apps/www",
-      "sourceRoot": "apps/www/src",
-      "projectType": "application",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/web:build",
-          "options": {
-            "outputPath": "dist/apps/www",
-            "index": "apps/www/src/index.html",
-            "main": "apps/www/src/main.tsx",
-            "polyfills": "apps/www/src/polyfills.ts",
-            "tsConfig": "apps/www/tsconfig.app.json",
-            "assets": [
-              "apps/www/src/favicon.ico",
-              "apps/www/src/assets",
-              "apps/www/src/cuarentrivia.webmanifest",
-              "apps/www/src/browserconfig.xml"
-            ],
-            "styles": [
-              "apps/www/src/styles.scss"
-            ],
-            "scripts": [],
-            "webpackConfig": "@nrwl/react/plugins/webpack"
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/www/src/environments/environment.ts",
-                  "with": "apps/www/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                }
-              ]
-            }
-          },
-          "outputs": [
-            "{options.outputPath}"
-          ]
-        },
-        "serve": {
-          "builder": "@nrwl/web:dev-server",
-          "options": {
-            "buildTarget": "www:build"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "www:build:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/www/tsconfig.app.json",
-              "apps/www/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/www/**/*"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/www/jest.config.js",
-            "tsConfig": "apps/www/tsconfig.spec.json",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/apps/www"
-          ]
-        },
-        "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "parallel": false,
-            "envFile": ".env",
-            "args": "--configuration=default",
-            "commands": [
-              "npm run build -- www --configuration={args.configuration}",
-              "npm run workbox -- generateSW apps/www/workbox-config.js",
-              "npm run firebase -- deploy --only=hosting --project={args.configuration}"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "args": "--configuration=production"
-            }
-          }
-        }
-      }
-    },
-    "www-e2e": {
-      "root": "apps/www-e2e",
-      "sourceRoot": "apps/www-e2e/src",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@nrwl/cypress:cypress",
-          "options": {
-            "cypressConfig": "apps/www-e2e/cypress.json",
-            "tsConfig": "apps/www-e2e/tsconfig.e2e.json",
-            "devServerTarget": "www:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "www:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/www-e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/www-e2e/**/*"
-            ]
-          }
-        }
-      }
-    },
-    "functions": {
-      "root": "apps/functions",
-      "sourceRoot": "apps/functions/src",
-      "projectType": "application",
-      "prefix": "functions",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/functions",
-            "main": "apps/functions/src/main.ts",
-            "tsConfig": "apps/functions/tsconfig.app.json",
-            "assets": [
-              "apps/functions/src/assets"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/functions/src/environments/environment.ts",
-                  "with": "apps/functions/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          },
-          "outputs": [
-            "{options.outputPath}"
-          ]
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "functions:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:lint",
-          "options": {
-            "linter": "eslint",
-            "tsConfig": [
-              "apps/functions/tsconfig.app.json",
-              "apps/functions/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "!apps/functions/**/*"
-            ]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/functions/jest.config.js",
-            "tsConfig": "apps/functions/tsconfig.spec.json",
-            "passWithNoTests": true
-          },
-          "outputs": [
-            "coverage/apps/functions"
-          ]
-        },
-        "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "parallel": false,
-            "envFile": ".env",
-            "args": "--configuration=default",
-            "commands": [
-              "npm run build -- functions --configuration={args.configuration}",
-              "npm run firebase -- deploy --only=functions --project={args.configuration}"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "args": "--configuration=production"
-            }
-          }
-        }
-      }
-    },
-    "db": {
-      "root": "apps/db",
-      "sourceRoot": "apps/db",
-      "projectType": "application",
-      "prefix": "db",
-      "schematics": {},
-      "architect": {
-        "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "envFile": ".env",
-            "args": "--configuration=default",
-            "command": "npm run firebase -- deploy --only=firestore --project={args.configuration}"
-          },
-          "configurations": {
-            "production": {
-              "args": "--configuration=production"
-            }
-          }
-        }
-      }
-    },
-    "storage": {
-      "root": "apps/storage",
-      "sourceRoot": "apps/storage",
-      "projectType": "application",
-      "prefix": "storage",
-      "schematics": {},
-      "architect": {
-        "deploy": {
-          "builder": "@nrwl/workspace:run-commands",
-          "options": {
-            "envFile": ".env",
-            "args": "--configuration=default",
-            "command": "npm run firebase -- deploy --only=storage --project={args.configuration}"
-          },
-          "configurations": {
-            "production": {
-              "args": "--configuration=production"
-            }
-          }
-        }
+    "db": "apps/db",
+    "functions": "apps/functions",
+    "storage": "apps/storage",
+    "www": "apps/www",
+    "www-e2e": "apps/www-e2e"
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  },
+  "defaultProject": "www",
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
       }
     }
   }

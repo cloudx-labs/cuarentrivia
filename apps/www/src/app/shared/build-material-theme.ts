@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/camelcase
 import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
 
 const buildMaterialTheme = () => {

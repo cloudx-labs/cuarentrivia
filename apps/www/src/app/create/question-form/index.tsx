@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import {
   TextField,
   Divider,
@@ -77,7 +77,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
     });
   };
 
-  const handleAttachmentChange = async (event: any) => {
+  const handleAttachmentChange = async (event) => {
     console.log(event.target.files);
     const files: FileList = event.target.files;
     if (files.length) {
