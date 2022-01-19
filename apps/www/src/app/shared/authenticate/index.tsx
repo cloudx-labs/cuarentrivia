@@ -7,7 +7,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import LoadingPage from '../loading-page';
 import ErrorPage from '../error-page';
-import firebase, { User } from 'firebase/app';
+import firebase from 'firebase/compat/app';
+import { User } from 'firebase/auth';
 
 export type AuthenticatedProps = PropsWithChildren<{ user: User }>;
 

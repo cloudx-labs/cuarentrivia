@@ -1,4 +1,4 @@
-import { User } from 'firebase/app';
+import { User } from 'firebase/compat/app';
 import { Trivia } from '../shared/trivia';
 
 export interface TriviaComponentProps {

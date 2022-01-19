@@ -1,4 +1,4 @@
-import firebase, { User } from 'firebase/app';
+import firebase, { User } from 'firebase/compat/app';
 import { Loading } from './symbols';
 import { TriviaTemplateBase } from './trivia';
 import { useCollection } from 'react-firebase-hooks/firestore';

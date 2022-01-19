@@ -1,6 +1,5 @@
 import React from 'react';
 import { FirebaseAuth } from 'react-firebaseui';
-import firebase from 'firebase/app';
 import useTitle from '../shared/use-title.hook';
 import { useQuery } from '../shared/use-query.hook';
 import logo from '../../assets/icons/android-icon-36x36.png';
@@ -8,14 +7,15 @@ import './index.scss';
 import Nav from '../nav';
 import { environment } from '../../environments/environment';
 import { useNavigate } from 'react-router-dom';
+import { UserCredential } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 const Login = () => {
   const navigate = useNavigate();
   const query = useQuery();
 
-  const signInSuccessWithAuthResult = (
-    authResult: firebase.auth.UserCredential
-  ): boolean => {
+  const signInSuccessWithAuthResult = (authResult: UserCredential): boolean => {
     if (!authResult.user) {
       return false;
     }

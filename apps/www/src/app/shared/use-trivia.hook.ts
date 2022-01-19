@@ -1,5 +1,5 @@
 import { Trivia, TriviaParticipant, Participants } from './trivia';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import {
   useDocumentData,
   useCollectionData,

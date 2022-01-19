@@ -1,4 +1,4 @@
-import firebase from 'firebase/app';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 export const environment = {
   production: true,
@@ -15,7 +15,7 @@ export const environment = {
   firebaseUi: {
     signInOptions: [
       {
-        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        provider: GoogleAuthProvider.PROVIDER_ID,
         scopes: [],
         customParameters: {
           hd: 'cloudx.com',

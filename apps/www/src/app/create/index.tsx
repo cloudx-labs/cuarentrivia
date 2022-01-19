@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import Authenticate from '../shared/authenticate';
 import useTitle from '../shared/use-title.hook';
-import { User } from 'firebase/app';
+import { User } from 'firebase/compat/app';
 import { Button, TextField } from '@material-ui/core';
 import { buildQuestion, Question } from '../shared/question';
 import { createTemplate } from '../shared/trivias.service';

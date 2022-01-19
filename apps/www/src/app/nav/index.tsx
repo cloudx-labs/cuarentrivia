@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
 import logo from '../../assets/icons/cuarentrivia-logo.png';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { useNavigate, Link } from 'react-router-dom';
 
 interface Nav {

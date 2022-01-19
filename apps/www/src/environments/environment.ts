@@ -1,7 +1,7 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // When building for production, this file is replaced with `environment.prod.ts`.
 
-import firebase from 'firebase/app';
+import { EmailAuthProvider, GoogleAuthProvider } from 'firebase/auth';
 
 export const environment = {
   production: false,
@@ -18,11 +18,11 @@ export const environment = {
   firebaseUi: {
     signInOptions: [
       {
-        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        provider: GoogleAuthProvider.PROVIDER_ID,
         scopes: [],
       },
       {
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        provider: EmailAuthProvider.PROVIDER_ID,
         requireDisplayName: true,
       },
     ],

@@ -10,7 +10,7 @@ import { AttachFile, Delete } from '@material-ui/icons';
 import { Question } from '../../shared/question';
 import { updatePrimitiveItemAt } from '../../shared/update-item';
 import './index.scss';
-import * as firebase from 'firebase/app';
+import * as firebase from 'firebase/compat/app';
 
 export interface QuestionFormProps {
   question: Question;

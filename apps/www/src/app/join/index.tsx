@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { useNavigate, Link } from 'react-router-dom';
 import Authenticate from '../shared/authenticate';
 import { useQuery } from '../shared/use-query.hook';
