@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "cuarentrivia-local",
+    "production": "cuarentrivia-local"
+  }
+}
