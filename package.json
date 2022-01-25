@@ -13,7 +13,7 @@
     "@material-ui/icons": "^4.11.2",
     "@use-it/interval": "^1.0.0",
     "core-js": "^3.6.5",
-    "dotenv": "^14.2.0",
+    "dotenv": "^14.3.0",
     "firebase": "^9.6.4",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.16.0",
@@ -24,7 +24,8 @@
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "0.13.7",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "workbox-window": "^6.4.2"
   },
   "devDependencies": {
     "@nrwl/cli": "13.4.6",
