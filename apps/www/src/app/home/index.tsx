@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Create from '../create';
+import Join from '../join';
 
 import './index.scss';
 
@@ -11,6 +12,7 @@ const Home = () => {
       <div className="home-content">
         <Routes>
           <Route path="/trivias/create" element={<Create />} />
+          <Route path="/" element={<Join />} />
         </Routes>
       </div>
     </div>
