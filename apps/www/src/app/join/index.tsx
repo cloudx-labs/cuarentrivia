@@ -35,7 +35,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
   };
 
   const handleChangeTriviaId = ({
-    target: value,
+    target: { value },
   }: ChangeEvent<HTMLInputElement>) => setTriviaId(value.toString());
 
   return (
