@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import Create from '../create';
 import Join from '../join';
+import Trivias from '../trivias';
 
 import './index.scss';
 
@@ -11,8 +12,9 @@ const Home = () => {
     <div className="home">
       <div className="home-content">
         <Routes>
-          <Route path="/trivias/create" element={<Create />} />
-          <Route path="/" element={<Join />} />
+          <Route path="trivias" element={<Trivias />} />
+          <Route path="create" element={<Create />} />
+          <Route path="*" element={<Join />} />
         </Routes>
       </div>
     </div>

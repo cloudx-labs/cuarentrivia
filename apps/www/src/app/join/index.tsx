@@ -68,7 +68,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
           <Error error={error} />
           <div className="join-form-create-game">
             <span className="join-form-create-game-child">Or</span>
-            <Link to="/trivias" className="join-form-create-game-child">
+            <Link to="trivias" className="join-form-create-game-child">
               see your trivias here
             </Link>
           </div>

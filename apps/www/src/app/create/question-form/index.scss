@@ -1,0 +1,42 @@
+.question-form {
+  width: 100%;
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      max-width: 50%;
+    }
+    .delete-button {
+      height: 48px;
+    }
+  }
+  .attachment-container {
+    &-input {
+      display: none;
+    }
+  }
+  .answer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    column-gap: 3rem;
+    .possible-answer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0;
+      .answer {
+        min-width: 75%;
+      }
+      .check {
+        height: 32px;
+      }
+    }
+  }
+  .divider {
+    background-color: var(--cloudx-orange);
+    opacity: 0.4;
+    margin: 1.5rem 0;
+  }
+}

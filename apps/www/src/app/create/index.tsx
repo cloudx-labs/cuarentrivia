@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { Button, TextField } from '@material-ui/core';
-import './index.scss';
+import QuestionForm from './question-form';
 import Nav from '../nav';
 import Authenticate from '../shared/authenticate';
 import { Question, TriviaTemplate } from '../shared/common';
@@ -10,6 +10,7 @@ import { buildQuestion } from '../shared/question';
 import { buildTriviaTemplate } from '../shared/trivia';
 import { createTemplate } from '../shared/trivias.service';
 import useTitle from '../shared/use-title.hook';
+import './index.scss';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
   const navigate = useNavigate();
@@ -17,8 +18,38 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
-  const handleAdd = () => setQuestions(questions => questions.concat(buildQuestion()));
+  useEffect(() => {
+    setIsDisabled(
+      !name || !questions ||
+        questions.some(
+          ({ possibleAnswers, correctAnswerIndex, question }: Question) =>
+            !question ||
+            !possibleAnswers ||
+            (correctAnswerIndex && correctAnswerIndex < 0) ||
+            possibleAnswers.some((answer) => !answer)
+        )
+    );
+  }, [name, questions]);
+
+  const handleAdd = () =>
+    setQuestions((questions) => questions.concat(buildQuestion()));
+
+  const handleRemove = (index: number) => {
+    setQuestions((questions) => [
+      ...questions.slice(0, index),
+      ...questions.slice(index + 1),
+    ]);
+  };
+
+  const handleSetQuestion = (question: Question, index: number) => {
+    setQuestions((questions) => [
+      ...questions.slice(0, index),
+      question,
+      ...questions.slice(index + 1),
+    ]);
+  };
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -32,24 +63,15 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         questions,
       });
       await createTemplate(triviaToCreate, user);
-      navigate('/trivias');
+      navigate('trivias');
     } catch (error) {
       setError(error as Error);
     }
   };
 
-  const isFormValid =
-    !!name &&
-    questions.every(
-      ({ question, correctAnswerIndex, possibleAnswers }: Question) =>
-        !!question &&
-        !!correctAnswerIndex &&
-        correctAnswerIndex >= 0 &&
-        possibleAnswers.every((answer) => !!answer)
-    );
-
-  const handleNameChange = ({ target: value }: ChangeEvent<HTMLInputElement>) =>
-    setName(value.toString());
+  const handleNameChange = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => setName(value.toString());
 
   return (
     <Nav>
@@ -63,9 +85,14 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
               className="title"
             />
             {questions.map((question, questionIndex) => (
-              <div key={questionIndex}>
-                `${questionIndex}. ${question.question}`
-              </div>
+              <QuestionForm
+                key={questionIndex}
+                question={question}
+                setQuestion={(questionUpdate) =>
+                  handleSetQuestion(questionUpdate, questionIndex)
+                }
+                remove={() => handleRemove(questionIndex)}
+              />
             ))}
             <div className="action-buttons">
               <Button
@@ -73,14 +100,18 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
                 color="primary"
                 onClick={handleAdd}
                 className="add"
-              ></Button>
+              >
+                Add question
+              </Button>
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={!isFormValid}
+                disabled={isDisabled}
                 className="submit"
-              ></Button>
+              >
+                Create
+              </Button>
             </div>
             {!!error && <div>{error}</div>}
           </div>
