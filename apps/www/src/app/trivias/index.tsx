@@ -37,18 +37,11 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
     });
   const [error, setError] = useState<Error | null>(null);
 
-  /** TODO
-   *  Fix generateFriendlyName function issues. 
-   */
   const start = async (templateId: string, template: TriviaTemplateBase) => {
     try {
       const questions = await getTemplateQuestions(user, templateId);
 
-      console.log('getTemplateQuestions', questions);
-
       const friendlyName = await generateFriendlyName();
-
-      console.log('generateFriendlyName', friendlyName);
 
       const [triviaId, trivia] = await startTrivia({
         ...template,
