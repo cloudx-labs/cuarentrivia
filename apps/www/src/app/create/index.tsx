@@ -6,7 +6,7 @@ import QuestionForm from './question-form';
 import Nav from '../nav';
 import Authenticate from '../shared/authenticate';
 import { Question, TriviaTemplate } from '../shared/common';
-import { buildQuestion } from '../shared/question';
+import { buildDefaultQuestion } from '../shared/question';
 import { buildTriviaTemplate } from '../shared/trivia';
 import { createTemplate } from '../shared/trivias.service';
 import useTitle from '../shared/use-title.hook';
@@ -17,7 +17,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
 
   const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
-  const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
+  const [questions, setQuestions] = useState<Question[]>([buildDefaultQuestion()]);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   }, [name, questions]);
 
   const handleAdd = () =>
-    setQuestions((questions) => questions.concat(buildQuestion()));
+    setQuestions((questions) => questions.concat(buildDefaultQuestion()));
 
   const handleRemove = (index: number) => {
     setQuestions((questions) => [
