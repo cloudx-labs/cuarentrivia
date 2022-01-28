@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import HostTrivia from './HostTrivia';
 import PlayTrivia from './play-trivia';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import ErrorPage from '../shared/error-page';
@@ -22,7 +23,7 @@ const PlayContent = ({ user }: AuthenticatedProps) => {
       {!!props && (
         <div>
           {trivia?.createdBy === user.uid ? (
-            <div>Host Trivia</div>
+            <HostTrivia {...props} />
           ) : (
             <PlayTrivia {...props} />
           )}
