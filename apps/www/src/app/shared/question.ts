@@ -3,7 +3,7 @@ import { Answer, Question } from './common';
 
 export const buildQuestion = buildObject<Question>({
   question: '',
-  possibleAnswers: ['', '', '', ''],
+  possibleAnswers: [],
   correctAnswerIndex: null,
   value: 1000,
   startTime: null,
