@@ -4,7 +4,7 @@ import { Button, Divider, IconButton } from '@material-ui/core';
 import { PlayCircleFilledWhite, Edit, Delete } from '@material-ui/icons';
 import Nav from '../nav';
 import CreatedTriviaModal, {
-  CreatedTriviaModalProps,
+  CreatedTriviaModalParams,
 } from '../create/created-trivia-modal';
 import Async from '../shared/async';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
@@ -20,17 +20,12 @@ import useMyTemplates from '../shared/use-my-templates.hook';
 import useTitle from '../shared/use-title.hook';
 import './index.scss';
 
-type CreationalTriviaModalProps = Omit<
-  CreatedTriviaModalProps,
-  'handleDismissed'
->;
-
 const TriviasContent = ({ user }: AuthenticatedProps) => {
   const navigate = useNavigate();
 
   const [templates, loading, templatesError] = useMyTemplates(user);
   const [createdTriviaModalProps, setCreatedTriviaModalProps] =
-    useState<CreationalTriviaModalProps>({
+    useState<CreatedTriviaModalParams>({
       trivia: null,
       triviaId: '',
       visible: false,
@@ -58,8 +53,8 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
   const remove = async (templateId: string) =>
     await removeTrivia(user, templateId);
 
-  const handleDismiss = (state: CreationalTriviaModalProps) =>
-    setCreatedTriviaModalProps({ ...state, visible: false });
+  const handleCloseCreatedTriviaModal = () =>
+    setCreatedTriviaModalProps({ ...createdTriviaModalProps, visible: false });
 
   return (
     <Nav>
@@ -117,11 +112,11 @@ const TriviasContent = ({ user }: AuthenticatedProps) => {
             <ErrorState error={error} />
             <CreatedTriviaModal
               {...createdTriviaModalProps}
-              handleDismissed={() => handleDismiss}
+              handleClose={handleCloseCreatedTriviaModal}
             />
           </>
         </Async>
-        <p className="amount">Amount of trivias: {templates.length}</p>
+        <p className="amount">{`Amount of trivias: ${templates.length}`}</p>
       </main>
     </Nav>
   );
