@@ -22,7 +22,7 @@ const QuestionResult = ({ trivia: { questions, participants, currentQuestionInde
       const selectedAnswer = (currentQuestionIndex || currentQuestionIndex === 0) ? participantUser.answers[currentQuestionIndex] : null;
       const newMessage = selectedAnswer && (answerIndex || answerIndex === 0) ? 'No Acertaste!' : null;
       setMessage(answerIndex === selectedAnswer?.selectedAnswerIndex ? 'Acertaste!' : newMessage);
-    }, [participants, user]);
+    }, [answerIndex, participants, user]);
 
   return (
     <Nav>
