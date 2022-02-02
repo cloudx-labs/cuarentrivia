@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import HostTrivia from './HostTrivia';
+import HostTrivia from './host-trivia';
 import PlayTrivia from './play-trivia';
 import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import ErrorPage from '../shared/error-page';

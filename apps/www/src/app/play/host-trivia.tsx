@@ -1,9 +1,9 @@
 import React from 'react';
-import { TriviaJoiningProps } from '../symbols';
-import Joining from '../joining';
-import HostInProgress from './HostInProgress';
-import HostQuestionResult from './HostQuestionResult';
-import HostCompleted from '../hostCompleted';
+import { TriviaJoiningProps } from './symbols';
+import Joining from './joining';
+import HostInProgress from './host-in-progress';
+import HostQuestionResult from './host-question-result';
+import HostCompleted from './hostCompleted';
 
 const HostTrivia = ({ user, trivia, triviaId }: TriviaJoiningProps) => {
   switch (trivia.status) {

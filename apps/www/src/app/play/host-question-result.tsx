@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TriviaHostQuestionResultProps } from '../../symbols';
+import { TriviaHostQuestionResultProps } from './symbols';
 import Chart from 'react-google-charts';
-import { goToNextQuestion } from '../../../shared/trivias.service';
+import { goToNextQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
-import { buildAnswer, buildQuestion } from '../../../shared/question';
-import { Question, Trivia, TriviaParticipant } from '../../../shared/common';
+import { buildAnswer, buildQuestion } from '../shared/question';
+import { Question, Trivia, TriviaParticipant } from '../shared/common';
 
 type DataItem = [string, number];
 

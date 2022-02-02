@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TriviaHostQuestionResultProps } from '../../symbols';
+import { TriviaHostQuestionResultProps } from './symbols';
 import {
   List,
   ListItem,
@@ -14,13 +14,13 @@ import {
   Grade,
 } from '@material-ui/icons';
 
-import HostQuestionResult from '../HostQuestionResult';
-import { setQuestionStartTime } from '../../../shared/trivias.service';
-import Timer from '../../timer';
-import { Attachment } from '../../Attachment';
-import { buildQuestion } from '../../../shared/question';
-import { Question } from '../../../shared/common';
-import './index.scss';
+import HostQuestionResult from './host-question-result';
+import { setQuestionStartTime } from '../shared/trivias.service';
+import Timer from './timer';
+import { Attachment } from './Attachment';
+import { buildQuestion } from '../shared/question';
+import { Question } from '../shared/common';
+import './host-in-progress.scss';
 
 const ListIcon = ({ index }: { index: number }) => {
   switch (index) {
