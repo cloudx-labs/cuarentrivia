@@ -4,46 +4,94 @@ import Chart from 'react-google-charts';
 import { goToNextQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
 import { buildAnswer, buildQuestion } from '../shared/question';
-import { Question, Trivia, TriviaParticipant } from '../shared/common';
+import {
+  Answer,
+  Participants,
+  Question,
+  Trivia,
+  TriviaParticipant,
+} from '../shared/common';
 
 type DataItem = [string, number];
 
-const HostQuestionResult = ({ trivia: { questions, currentQuestionIndex, participants}, triviaId }: TriviaHostQuestionResultProps) => {
-  const [question, setQuestion] = useState<Question>(buildQuestion());
-  const [chartData, setChartData] = useState<[[string, string], ...DataItem[]]>([['Answer', 'People who answered']]);
+type DataItems = [[string, string], ...DataItem[]] | null;
+
+const checkParticipantAnswer = (
+  participant: TriviaParticipant,
+  questionIndex: number,
+  answerIndex: number
+): boolean => {
+  const answer = participant.answers[questionIndex];
+  return answer?.selectedAnswerIndex === answerIndex;
+};
+
+const checkQuestionAnswers = (
+  answer: string,
+  answerIndex: number,
+  questionIndex: number,
+  participants: Participants
+): DataItem => {
+  const answerChecks = Object.values(participants).map((participant) =>
+    checkParticipantAnswer(participant, questionIndex, answerIndex)
+  );
+  return [
+    answer,
+    answerChecks.reduce((amount, check) => amount + (check ? 1 : 0), 0),
+  ] as DataItem;
+};
+
+const HostQuestionResult = ({
+  trivia: { questions, currentQuestionIndex, participants },
+  triviaId,
+}: TriviaHostQuestionResultProps) => {
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [chartData, setChartData] = useState<DataItems>(null);
 
   useEffect(() => {
-    const newQuestion: Question = currentQuestionIndex ? questions[currentQuestionIndex] : question;
-    const answerChecks = newQuestion.possibleAnswers.map((answer: string, answerIndex: number) => {
-      const checks = Object.values(participants || {}).map((participant: TriviaParticipant) => {
-        const {selectedAnswerIndex} = currentQuestionIndex ? participant.answers[currentQuestionIndex] : buildAnswer();
+    const currentQuestion =
+      currentQuestionIndex !== null ? questions[currentQuestionIndex] : null;
 
-        return selectedAnswerIndex === answerIndex;
-      });
+    const dataItems: DataItems = currentQuestion
+      ? [
+          ['Answer', 'People who answered'],
+          ...currentQuestion.possibleAnswers.map((answer, answerIndex) =>
+            checkQuestionAnswers(
+              answer,
+              answerIndex,
+              currentQuestionIndex!,
+              participants
+            )
+          ),
+        ]
+      : null;
 
-      const total = checks.reduce((count, check) => count + Number(check ? 1 : 0), 0);
+    setChartData(dataItems);
 
-      return [answer, total] as DataItem;
-    });
+    setQuestion(currentQuestion);
+  }, []);
 
-    setChartData([...chartData, ...answerChecks]);
-
-    setQuestion(newQuestion);
-  }, [])
-
-  const handleGoToNextQuestion = () => goToNextQuestion(triviaId, { questions, currentQuestionIndex, participants} as Trivia);
+  const handleGoToNextQuestion = () =>
+    goToNextQuestion(triviaId, {
+      questions,
+      currentQuestionIndex,
+      participants,
+    } as Trivia);
 
   return (
     <main className="trivia-in-progress">
-      <Chart
-        chartType="PieChart"
-        width={'500px'}
-        height={'300px'}
-        data={chartData}
-      />
-      {question.correctAnswerIndex && (
+      {!!chartData && (
+        <Chart
+          chartType="PieChart"
+          width={'500px'}
+          height={'300px'}
+          data={chartData}
+        />
+      )}
+      {question?.correctAnswerIndex && (
         <h1>
-          {`Correct answer: ${question.possibleAnswers[question.correctAnswerIndex]}`}
+          {`Correct answer: ${
+            question.possibleAnswers[question.correctAnswerIndex]
+          }`}
         </h1>
       )}
       <Button
