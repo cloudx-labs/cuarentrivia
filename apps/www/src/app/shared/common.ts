@@ -15,7 +15,7 @@ export interface Question {
   possibleAnswers: string[];
   correctAnswerIndex: number | null;
   value: number;
-  startTime: number | null;
+  startTime?: number;
   attachment: QuestionAttachment | null;
 }
 

@@ -1,133 +1,134 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
-import { TriviaComponentProps } from '../symbols';
+import { TriviaJoiningProps } from '../symbols';
 import Timer from '../timer';
 import Nav from '../../nav';
 import Error from '../../shared/error';
 import { Attachment } from '../Attachment';
-import { Answer, Question } from '../../shared/common';
+import { Question } from '../../shared/common';
 import { buildQuestion, buildAnswer } from '../../shared/question';
 import {
   answerQuestion,
   setAnswerStartTime,
 } from '../../shared/trivias.service';
 import './index.scss';
+import QuestionResult from '../QuestionResult';
 
 const AnswerButton = ({
   possibleAnswer,
   selectOption,
-  answered,
   selected,
+  answered,
 }: {
   possibleAnswer: string;
-  answered: boolean;
   selected: boolean;
+  answered: boolean;
   selectOption: () => void;
-}) => (
-  <Button
-    variant={selected ? 'contained' : 'outlined'}
-    className={`option ${selected ? '' : 'no-selected'}`}
-    disabled={answered}
-    onClick={selectOption}
-  >
-    {possibleAnswer}
-  </Button>
-);
+}) => {
+  const variant = answered && !selected ? 'outlined' : 'contained';
+  const noSelectedClassName = answered && !selected ? 'no-selected' : '';
 
-const InProgress = ({
-  trivia: { currentQuestionIndex, questions, participants, timePerQuestion },
-  triviaId,
-  user,
-}: TriviaComponentProps) => {
-  const [answerError, setAnswerError] = useState<Error | null>(null);
-  const [startTime, setStartTime] = useState<number>(0);
-  const [completed, setCompleted] = useState<boolean>(false);
-  const [currentQuestion, setCurrentQuestion] = useState<Question>(
-    buildQuestion()
+  return (
+    <Button
+      variant={variant}
+      className={`option ${noSelectedClassName}`}
+      disabled={answered}
+      onClick={selectOption}
+    >
+      {possibleAnswer}
+    </Button>
   );
-  const [answerIndex, setAnswerIndex] = useState<number | null>(null);
-  const [answered, setAnswered] = useState<boolean>(false);
+};
 
-  const defaultQuestion = buildQuestion();
+const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
+  const [answerError, setAnswerError] = useState<Error | null>(null);
+  const [selectedAnswerStartTime, setSelectedAnswerStartTime] = useState<number | undefined>(undefined);
 
-  const defautAnswer = buildAnswer();
+  const [completed, setCompleted] = useState<boolean>(false);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [answeredIndex, setAnsweredIndex] = useState<number | null>(null);
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number | null>(null);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    const { answers } = participants[user.uid];
-    const currentAnswer: Answer =
-      answers && currentQuestionIndex
-        ? answers[currentQuestionIndex]
-        : defautAnswer;
-    const newTime = currentAnswer.startTime || new Date().getTime();
+    const participant = trivia.participants[user.uid];
+    const currentAnswer = participant && trivia.currentQuestionIndex !== null && participant.answers[trivia.currentQuestionIndex];
+    const answerIndex = (currentAnswer && currentAnswer.selectedAnswerIndex) || null;
+    const answerStartTime = (currentAnswer && currentAnswer.startTime) || undefined;
 
-    setStartTime(newTime);
-    if (currentAnswer && currentAnswer.selectedAnswerIndex) {
-      setAnswerIndex(currentAnswer.selectedAnswerIndex);
-      setAnswered(!!currentAnswer.selectedAnswerIndex);
+    setQuestion(trivia.currentQuestionIndex !== null ? trivia.questions[trivia.currentQuestionIndex!] : null);
+    setSelectedAnswerStartTime(answerStartTime);
+    if (currentQuestionIndex !== trivia.currentQuestionIndex) {
+      setCurrentQuestionIndex(trivia.currentQuestionIndex);
     }
-    if (currentQuestionIndex) {
-      setCurrentQuestion(questions[currentQuestionIndex]);
+    if (selectedAnswerIndex !== answerIndex) {
+      setSelectedAnswerIndex(answerIndex);
     }
-    async () =>
-      await setAnswerStartTime(
-        triviaId,
-        currentQuestionIndex || 0,
-        user,
-        newTime
-      );
-  }, []);
+  }, [trivia]);
+
+  useEffect(() => {
+    setAnswerError(null);
+    setCompleted(false);
+    setAnsweredIndex(selectedAnswerIndex);
+  }, [currentQuestionIndex, selectedAnswerIndex]);
 
   const selectOption = async (index: number) => {
-    setAnswerIndex(index);
+    setAnsweredIndex(index);
     try {
       await answerQuestion(
         triviaId,
-        currentQuestionIndex || -1,
+        currentQuestionIndex!,
         user,
         index,
         new Date().getTime()
       );
     } catch (error) {
       setAnswerError(error as Error);
-      setAnswerIndex(null);
+      setAnsweredIndex(null);
     }
   };
 
-  return (
+  const handleSetAnswerStartTime = async (answerStartTime: number) => {
+    await setAnswerStartTime(
+      triviaId,
+      currentQuestionIndex!,
+      user,
+      answerStartTime
+    );
+  };
+
+  return completed ? (
+    <QuestionResult {...{ trivia, user }} />
+  ) : (
     <Nav>
       <main className="question">
         <section className="header">
-          <h1 className="title">{currentQuestion.question || ''}</h1>
+          <h1 className="title">{question?.question || ''}</h1>
           <div className="in-progress-timer">
-            {!!currentQuestionIndex && !!startTime && (
+            {currentQuestionIndex !== null && (
               <Timer
                 questionIndex={currentQuestionIndex}
-                startTime={startTime}
-                timePerQuestion={timePerQuestion}
+                startTime={selectedAnswerStartTime}
+                timePerQuestion={trivia.timePerQuestion}
                 setCompleted={setCompleted}
+                setStartTime={handleSetAnswerStartTime}
               />
             )}
           </div>
         </section>
-        {currentQuestion.attachment && (
-          <Attachment value={currentQuestion.attachment} />
-        )}
+        {!!question && question.attachment && <Attachment value={question.attachment} />}
         <Error error={answerError} />
         <div className="options">
-          {currentQuestion.possibleAnswers.map(
-            (possibleAnswer, possibleAnswerIndex) => (
-              <AnswerButton
-                key={possibleAnswerIndex}
-                possibleAnswer={possibleAnswer}
-                answered={answered}
-                selected={!!answerIndex && answerIndex === possibleAnswerIndex}
-                selectOption={() => selectOption(possibleAnswerIndex)}
-              />
-            )
-          )}
+          {!!question && currentQuestionIndex !== null && question.possibleAnswers.map((possibleAnswer, index) => (
+            <AnswerButton
+              key={index}
+              possibleAnswer={possibleAnswer}
+              answered={answeredIndex !== null}
+              selected={answeredIndex === index}
+              selectOption={() => selectOption(index)}
+            />
+          ))}
         </div>
       </main>
     </Nav>

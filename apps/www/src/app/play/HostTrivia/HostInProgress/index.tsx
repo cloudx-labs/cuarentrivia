@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TriviaComponentProps } from '../../symbols';
+import { TriviaHostQuestionResultProps } from '../../symbols';
 import {
   List,
   ListItem,
@@ -36,65 +36,59 @@ const ListIcon = ({ index }: { index: number }) => {
 };
 
 const HostInProgress = ({
-  user,
   trivia,
-  questionIndex,
   triviaId,
-}: TriviaComponentProps) => {
+}: TriviaHostQuestionResultProps) => {
   const [completed, setCompleted] = useState<boolean>(false);
-  const [startTime, setStartTime] = useState<number>(0);
   const [question, setQuestion] = useState<Question>(buildQuestion());
 
   useEffect(() => {
-    const { questions, currentQuestionIndex } = trivia;
+    const newQuestion =
+      !trivia.currentQuestionIndex && trivia.currentQuestionIndex !== 0
+        ? question
+        : trivia.questions[trivia.currentQuestionIndex];
 
-    const newQuestion = questionIndex ? questions[questionIndex] : question;
-
+    setCompleted(false);
     setQuestion(newQuestion);
-    
-    const newTime = newQuestion.startTime || new Date().getTime();
-    
-    setStartTime(newTime);
-    
-    async () =>
-      await setQuestionStartTime(triviaId, currentQuestionIndex || 0, newTime);
-  }, []);
+  }, [trivia]);
 
-  if (!completed) {
-    return (
-      <main className="trivia-in-progress">
-        <span className="question">{question.question}</span>
-        {question.attachment && <Attachment value={question.attachment} />}
-        <List>
-          {question.possibleAnswers.map((possibleAnswer, index) => (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar className="question-avatar">
-                  <ListIcon index={index} />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText>{possibleAnswer}</ListItemText>
-            </ListItem>
-          ))}
-        </List>
-        {!!trivia.currentQuestionIndex && !!startTime && (
-          <Timer
-            questionIndex={trivia.currentQuestionIndex}
-            startTime={startTime}
-            timePerQuestion={trivia.timePerQuestion}
-            setCompleted={setCompleted}
-          />
-        )}
-      </main>
-    );
-  } else {
-    return <HostQuestionResult {...{
-      user,
-      trivia,
-      questionIndex,
+  const handleSetHostStartTime = async (startTime: number) => {
+    await setQuestionStartTime(
       triviaId,
-    }} />;
-  }
+      trivia.currentQuestionIndex!,
+      startTime
+    );
+  };
+
+  return completed ? (
+    <HostQuestionResult {...{ trivia, triviaId }} />
+  ) : (
+    <main className="trivia-in-progress">
+      <span className="question">{question.question}</span>
+      {question.attachment && <Attachment value={question.attachment} />}
+      <List>
+        {question.possibleAnswers.map((possibleAnswer, index) => (
+          <ListItem key={index}>
+            <ListItemAvatar>
+              <Avatar className="question-avatar">
+                <ListIcon index={index} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText>{possibleAnswer}</ListItemText>
+          </ListItem>
+        ))}
+      </List>
+      {trivia.currentQuestionIndex !== null && (
+        <Timer
+          questionIndex={trivia.currentQuestionIndex}
+          startTime={question.startTime}
+          timePerQuestion={trivia.timePerQuestion}
+          setCompleted={setCompleted}
+          setStartTime={handleSetHostStartTime}
+        />
+      )}
+    </main>
+  );
 };
 
 export default HostInProgress;

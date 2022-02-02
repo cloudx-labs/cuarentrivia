@@ -6,26 +6,22 @@ import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import ErrorPage from '../shared/error-page';
 import LoadingPage from '../shared/loading-page';
 import useTrivia from '../shared/use-trivia.hook';
-import { TriviaComponentProps } from './symbols';
 
 const PlayContent = ({ user }: AuthenticatedProps) => {
   const { triviaId } = useParams();
 
   const [trivia, loading, error] = useTrivia(triviaId || '');
 
-  const props: Required<Omit<TriviaComponentProps, 'questionIndex'>> | null =
-    trivia ? { trivia, triviaId: triviaId || '', user } : null;
-
   return (
     <>
       {loading && <LoadingPage />}
       {error && <ErrorPage error={error.message} />}
-      {!!props && (
+      {!!trivia && !!triviaId && (
         <div>
           {trivia?.createdBy === user.uid ? (
-            <HostTrivia {...props} />
+            <HostTrivia {...{ trivia, triviaId, user }} />
           ) : (
-            <PlayTrivia {...props} />
+            <PlayTrivia {...{ trivia, triviaId, user }} />
           )}
         </div>
       )}

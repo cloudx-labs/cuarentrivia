@@ -6,7 +6,7 @@ import {
   Avatar,
   ListItemText,
 } from '@material-ui/core';
-import { TriviaComponentProps } from '../symbols';
+import { TriviaCompletedProps } from '../symbols';
 import buildRanking from '../../shared/build-ranking';
 import { TriviaRankingParticipantData } from '../../shared/trivia-ranking';
 import Nav from '../../nav';
@@ -33,7 +33,7 @@ const ParticipantAvatar = ({
   return <Avatar {...avatarProps}>{initials}</Avatar>;
 };
 
-const HostCompleted = ({ trivia }: TriviaComponentProps) => {
+const HostCompleted = ({ trivia }: TriviaCompletedProps) => {
   const ranking = buildRanking(trivia);
 
   return (

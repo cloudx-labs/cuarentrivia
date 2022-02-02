@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TriviaComponentProps } from '../../symbols';
+import { TriviaHostQuestionResultProps } from '../../symbols';
 import Chart from 'react-google-charts';
 import { goToNextQuestion } from '../../../shared/trivias.service';
 import { Button } from '@material-ui/core';
@@ -8,7 +8,7 @@ import { Question, Trivia, TriviaParticipant } from '../../../shared/common';
 
 type DataItem = [string, number];
 
-const HostQuestionResult = ({ trivia: { questions, currentQuestionIndex, participants}, triviaId }: TriviaComponentProps) => {
+const HostQuestionResult = ({ trivia: { questions, currentQuestionIndex, participants}, triviaId }: TriviaHostQuestionResultProps) => {
   const [question, setQuestion] = useState<Question>(buildQuestion());
   const [chartData, setChartData] = useState<[[string, string], ...DataItem[]]>([['Answer', 'People who answered']]);
 

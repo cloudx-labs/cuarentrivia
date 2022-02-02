@@ -8,7 +8,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
-import { TriviaComponentProps } from '../symbols';
+import { TriviaJoiningProps } from '../symbols';
 import CopyUrlButton from '../../shared/copy-url-button';
 import { TriviaParticipant } from '../../shared/common';
 import { goToNextQuestion } from '../../shared/trivias.service';
@@ -48,7 +48,7 @@ const ListItemTriviaParticipant = ({
   </ListItem>
 );
 
-const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
+const Joining = ({ trivia, user, triviaId }: TriviaJoiningProps) => {
   const url = useTriviaUrl(trivia.friendlyName);
 
   const isHost = trivia.createdBy === user.uid;

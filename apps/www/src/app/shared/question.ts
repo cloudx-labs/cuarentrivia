@@ -6,7 +6,7 @@ export const buildQuestion = buildObject<Question>({
   possibleAnswers: [],
   correctAnswerIndex: null,
   value: 1000,
-  startTime: null,
+//  startTime: null,
   attachment: null,
 });
 
@@ -15,7 +15,7 @@ export const buildDefaultQuestion = buildObject<Question>({
   possibleAnswers: ['', '', '', ''],
   correctAnswerIndex: null,
   value: 1000,
-  startTime: null,
+//  startTime: null,
   attachment: null,
 });
 
