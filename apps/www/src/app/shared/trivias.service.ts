@@ -34,8 +34,37 @@ const defaultAnswer: Answer = {
   startTime: 0,
 };
 
-const fillAnswers = (answerIndex: number) =>
-  new Array<Answer>(answerIndex + 1).fill(defaultAnswer);
+const mapAnswers = (
+  originalAnswers: Answer[],
+  questionIndex: number,
+  answerPatch: Partial<Answer>
+): Answer[] => {
+  const answers: Answer[] = [];
+
+  for (let i = 0; i <= questionIndex; i++) {
+    let answer: Answer;
+    const originalAnswer = originalAnswers[i];
+
+    if (i === questionIndex) {
+      answer = { ...originalAnswer, ...answerPatch };
+    } else {
+      if (!originalAnswer) {
+        answer = { selectedAnswerIndex: null, time: 0, startTime: 0 };
+      } else {
+        answer = originalAnswer;
+      }
+    }
+
+    answers[i] = answer;
+  }
+
+  return answers;
+};
+
+const fillAnswers = (answerIndex: number) => {
+  const answers = new Array<Answer>(answerIndex + 1).fill(defaultAnswer);
+  return answers;
+};
 
 const getAnswer = (
   answers: Answer[],
@@ -159,12 +188,10 @@ export const answerQuestion = async (
   user: User,
   selectedAnswerIndex: number,
   time: number
-) => {
-  return updateParticipantAnswers(triviaId, questionIndex, user, {
+) => await updateParticipantAnswers(triviaId, questionIndex, user, {
     selectedAnswerIndex,
     time,
   });
-};
 
 export const finishCurrentQuestion = async (triviaId: string) => {
   const db = getDb();
@@ -173,24 +200,25 @@ export const finishCurrentQuestion = async (triviaId: string) => {
   });
 };
 
-export const goToNextQuestion = async (triviaId: string, trivia: Trivia) => {
+export const goToNextQuestion = async (
+  triviaId: string,
+  { currentQuestionIndex, questions }: Trivia
+) => {
   const db = getDb();
-  const triviaRef = doc(db, `/trivias/${triviaId}`);
-  const nextCurrentQuestionIndex =
-    (trivia.currentQuestionIndex === null ? -1 : trivia.currentQuestionIndex) +
-    1;
 
-  if (nextCurrentQuestionIndex < trivia.questions.length) {
-    await updateDoc(triviaRef, {
-      currentQuestionIndex: nextCurrentQuestionIndex,
-      status: 'inProgress',
-    });
-  } else {
-    await updateDoc(triviaRef, {
-      currentQuestionIndex: null,
-      status: 'completed',
-    });
-  }
+  const triviaRef = doc(db, `/trivias/${triviaId}`);
+
+  const nextCurrentQuestionIndex =
+    !currentQuestionIndex && currentQuestionIndex !== 0
+      ? 0
+      : currentQuestionIndex + 1;
+
+  const isInProgress = nextCurrentQuestionIndex < questions.length;
+
+  await updateDoc(triviaRef, {
+    currentQuestionIndex: isInProgress ? nextCurrentQuestionIndex : null,
+    status: isInProgress ? 'inProgress' : 'completed',
+  });
 };
 
 export const startTrivia = async ({
@@ -228,7 +256,7 @@ export const startTrivia = async ({
       possibleAnswers,
       correctAnswerIndex,
       value,
-      startTime: null,
+//      startTime: null,
       attachment,
     })
   );
@@ -305,7 +333,8 @@ export const updateParticipantAnswers = async (
   const participantSnapshot = await getDoc(participantRef);
   const participant = participantSnapshot.data() as TriviaParticipant;
   const originalAnswers = participant.answers;
-  const answers = upsertAnswer(originalAnswers, questionIndex, answerPatch);
+//  const answers = upsertAnswer(originalAnswers, questionIndex, answerPatch);
+  const answers = mapAnswers(originalAnswers, questionIndex, answerPatch);
 
   await updateDoc(participantRef, { answers });
 };
@@ -316,6 +345,9 @@ export const setQuestionStartTime = async (
   startTime: number
 ) => {
   const db = getDb();
-  const questionRef = doc(db, `/trivias/${triviaId}/questions/${questionIndex}`);
+  const questionRef = doc(
+    db,
+    `/trivias/${triviaId}/questions/${questionIndex}`
+  );
   await updateDoc(questionRef, { startTime });
 };
