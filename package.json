@@ -25,6 +25,7 @@
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "0.13.7",
     "tslib": "^2.0.0",
+    "unique-names-generator": "^4.6.0",
     "workbox-window": "^6.4.2"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@nrwl/eslint-plugin-nx": "13.4.6",
     "@nrwl/jest": "13.4.6",
     "@nrwl/linter": "13.4.6",
+    "@nrwl/node": "^13.7.2",
     "@nrwl/react": "13.4.6",
     "@nrwl/tao": "13.4.6",
     "@nrwl/web": "13.4.6",

@@ -1,9 +1,10 @@
 {
   "version": 2,
   "projects": {
-    "www": "apps/www",
-    "www-e2e": "apps/www-e2e",
     "db": "apps/db",
-    "storage": "apps/storage"
+    "functions": "apps/functions",
+    "storage": "apps/storage",
+    "www": "apps/www",
+    "www-e2e": "apps/www-e2e"
   }
 }
