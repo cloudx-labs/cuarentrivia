@@ -11,6 +11,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@use-it/interval": "^1.0.0",
     "core-js": "^3.6.5",
     "dotenv": "^14.2.0",
     "firebase": "^9.6.4",

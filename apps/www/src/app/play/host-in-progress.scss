@@ -1,0 +1,45 @@
+.trivia-in-progress {
+  height: 100%;
+  padding: 2rem;
+  .questions {
+    width: auto;
+  }
+  .question {
+    margin: 0;
+    width: auto;
+    height: auto;
+    font-weight: bold;
+  }
+  ul {
+    li {
+      &:nth-child(1) {
+        .question-avatar {
+          font-weight: bold;
+          color: var(--cloudx-white);
+          background-color: var(--cloudx-red);
+        }
+      }
+      &:nth-child(2) {
+        .question-avatar {
+          font-weight: bold;
+          color: var(--cloudx-white);
+          background-color: var(--cloudx-blue);
+        }
+      }
+      &:nth-child(3) {
+        .question-avatar {
+          font-weight: bold;
+          color: var(--cloudx-white);
+          background-color: var(--cloudx-yellow);
+        }
+      }
+      &:nth-child(4) {
+        .question-avatar {
+          font-weight: bold;
+          color: var(--cloudx-white);
+          background-color: var(--cloudx-green);
+        }
+      }
+    }
+  }
+}
