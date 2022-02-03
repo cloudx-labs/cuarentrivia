@@ -5,7 +5,15 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "affected:build": "nx affected:build",
+    "affected:build:ci": "nx affected:build --base=origin/main",
+    "affected:e2e": "nx affected:e2e",
+    "affected:e2e:ci": "nx affected:e2e --base=origin/main",
+    "affected:test": "nx affected:test",
+    "affected:test:ci": "nx affected:test --base=origin/main",
+    "affected:lint": "nx affected:lint",
+    "affected:lint:ci": "nx affected:lint --base=origin/main"
   },
   "private": true,
   "dependencies": {
