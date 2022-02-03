@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /trivias/{trivia} {
+      allow read: if request.auth != null;
+      allow create: if request.auth.uid == request.resource.data.createdBy;
+      allow update, delete: if request.auth.uid == resource.data.createdBy;
+
+      match /participants/{participant} {
+        allow read: if request.auth != null;
+        allow create: if request.auth.uid == participant;
+        allow update: if request.auth.uid == participant || request.auth.uid == get(/databases/$(database)/documents/trivias/$(trivia)).data.createdBy;
+      }
+
+      match /questions/{question} {
+        allow read: if request.auth != null;
+        allow write: if request.auth.uid == get(/databases/$(database)/documents/trivias/$(trivia)).data.createdBy;
+      }
+    }
+
+    match /templates/{template} {
+      allow read, write: if request.auth.uid == template;
+
+      match /{children=**} {
+        allow read, write: if request.auth.uid == template;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
