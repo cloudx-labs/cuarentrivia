@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "cuarentrivia-local",
+    "default": "trivia-dev-49cb8",
     "production": "cuarentrivia-local"
   }
 }
