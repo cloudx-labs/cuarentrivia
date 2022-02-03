@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "www": "apps/www",
-    "www-e2e": "apps/www-e2e"
+    "www-e2e": "apps/www-e2e",
+    "db": "apps/db",
+    "storage": "apps/storage"
   }
 }

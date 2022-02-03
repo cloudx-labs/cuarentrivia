@@ -1,0 +1,22 @@
+{
+  "root": "apps/storage",
+  "sourceRoot": "apps/storage",
+  "projectType": "application",
+  "prefix": "storage",
+  "targets": {
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "envFile": ".env",
+        "args": "--firebaseProject=default",
+        "command": "npx firebase deploy --only=storage --project={args.firebaseProject}"
+      },
+      "configurations": {
+        "production": {
+          "args": "--firebaseProject=production"
+        }
+      }
+    }
+  },
+  "tags": []
+}
