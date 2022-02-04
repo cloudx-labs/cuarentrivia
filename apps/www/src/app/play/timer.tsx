@@ -34,13 +34,13 @@ const Timer = ({
     if (timer <= 0) {
       setCompleted(true);
     }
-  }, [timer]);
+  }, [timer, setCompleted]);
 
   useEffect(() => {
     if (!startTime) {
       setStartTime(new Date().getTime());
     }
-  }, [startTime]);
+  }, [startTime, setStartTime]);
 
   useInterval(() => {
     setTimer((timer) => timer - SECOND);

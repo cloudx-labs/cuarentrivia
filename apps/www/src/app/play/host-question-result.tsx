@@ -48,27 +48,28 @@ const HostQuestionResult = ({
   const [chartData, setChartData] = useState<DataItems>(null);
 
   useEffect(() => {
-    const currentQuestion =
-      currentQuestionIndex !== null ? questions[currentQuestionIndex] : null;
+    if (currentQuestionIndex !== null) {
+      const currentQuestion = questions[currentQuestionIndex];
 
-    const dataItems: DataItems = currentQuestion
-      ? [
-          ['Answer', 'People who answered'],
-          ...currentQuestion.possibleAnswers.map((answer, answerIndex) =>
-            checkQuestionAnswers(
-              answer,
-              answerIndex,
-              currentQuestionIndex!,
-              participants
-            )
-          ),
-        ]
-      : null;
+      const dataItems: DataItems = currentQuestion
+        ? [
+            ['Answer', 'People who answered'],
+            ...currentQuestion.possibleAnswers.map((answer, answerIndex) =>
+              checkQuestionAnswers(
+                answer,
+                answerIndex,
+                currentQuestionIndex,
+                participants
+              )
+            ),
+          ]
+        : null;
 
-    setChartData(dataItems);
+      setChartData(dataItems);
 
-    setQuestion(currentQuestion);
-  }, []);
+      setQuestion(currentQuestion);
+    }
+  }, [questions, currentQuestionIndex, participants]);
 
   const handleGoToNextQuestion = () =>
     goToNextQuestion(triviaId, {

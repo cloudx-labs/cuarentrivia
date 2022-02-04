@@ -7,13 +7,13 @@
     "build": "nx build",
     "test": "nx test",
     "affected:build": "nx affected:build",
-    "affected:build:ci": "nx affected:build --base=origin/master",
+    "affected:build:ci": "nx affected:build --base=origin/main",
     "affected:e2e": "nx affected:e2e",
-    "affected:e2e:ci": "nx affected:e2e --base=origin/master",
+    "affected:e2e:ci": "nx affected:e2e --base=origin/main",
     "affected:test": "nx affected:test",
-    "affected:test:ci": "nx affected:test --base=origin/master",
+    "affected:test:ci": "nx affected:test --base=origin/main",
     "affected:lint": "nx affected:lint",
-    "affected:lint:ci": "nx affected:lint --base=origin/master"
+    "affected:lint:ci": "nx affected:lint --base=origin/main"
   },
   "private": true,
   "dependencies": {
@@ -62,7 +62,7 @@
     "eslint-plugin-import": "2.25.2",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-react": "7.27.0",
-    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-react-hooks": "^4.2.1-rc.0-next-848e802d2-20220204",
     "firebase-tools": "^10.1.2",
     "jest": "27.2.3",
     "prettier": "^2.3.1",

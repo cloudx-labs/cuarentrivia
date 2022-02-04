@@ -45,20 +45,20 @@ const HostInProgress = ({
   useEffect(() => {
     const newQuestion =
       !trivia.currentQuestionIndex && trivia.currentQuestionIndex !== 0
-        ? question
+        ? buildQuestion()
         : trivia.questions[trivia.currentQuestionIndex];
 
     setCompleted(false);
     setQuestion(newQuestion);
   }, [trivia]);
 
-  const handleSetHostStartTime = async (startTime: number) => {
+  const handleSetHostStartTime = async (startTime: number) =>
+    trivia.currentQuestionIndex !== null &&
     await setQuestionStartTime(
       triviaId,
-      trivia.currentQuestionIndex!,
+      trivia.currentQuestionIndex,
       startTime
     );
-  };
 
   return completed ? (
     <HostQuestionResult {...{ trivia, triviaId }} />

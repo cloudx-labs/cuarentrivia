@@ -28,12 +28,6 @@ import {
 import { buildTriviaParticipant } from './trivia';
 import { getDb } from './get-db';
 
-const defaultAnswer: Answer = {
-  selectedAnswerIndex: null,
-  time: 0,
-  startTime: 0,
-};
-
 const mapAnswers = (
   originalAnswers: Answer[],
   questionIndex: number,
@@ -60,30 +54,6 @@ const mapAnswers = (
 
   return answers;
 };
-
-const fillAnswers = (answerIndex: number) => {
-  const answers = new Array<Answer>(answerIndex + 1).fill(defaultAnswer);
-  return answers;
-};
-
-const getAnswer = (
-  answers: Answer[],
-  answerIndex: number,
-  defaultAnswer: Answer
-) =>
-  typeof answers[answerIndex] === 'undefined'
-    ? defaultAnswer
-    : answers[answerIndex];
-
-const upsertAnswer = (
-  answers: Answer[],
-  questionIndex: number,
-  answerPatch: Partial<Answer>
-): Answer[] =>
-  fillAnswers(questionIndex).map((answer, answerIndex) => ({
-    ...getAnswer(answers, answerIndex, answer),
-    ...(answerIndex === questionIndex ? answerPatch : {}),
-  }));
 
 export const joinTrivia = async (
   triviaId: string,

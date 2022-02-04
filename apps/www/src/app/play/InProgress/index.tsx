@@ -6,7 +6,7 @@ import Nav from '../../nav';
 import Error from '../../shared/error';
 import { Attachment } from '../Attachment';
 import { Question } from '../../shared/common';
-import { buildQuestion, buildAnswer } from '../../shared/question';
+import { Exception } from '../../shared/errors';
 import {
   answerQuestion,
   setAnswerStartTime,
@@ -57,15 +57,11 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
     const answerIndex = (currentAnswer && currentAnswer.selectedAnswerIndex) || null;
     const answerStartTime = (currentAnswer && currentAnswer.startTime) || undefined;
 
-    setQuestion(trivia.currentQuestionIndex !== null ? trivia.questions[trivia.currentQuestionIndex!] : null);
+    setQuestion(trivia.currentQuestionIndex !== null ? trivia.questions[trivia.currentQuestionIndex] : null);
     setSelectedAnswerStartTime(answerStartTime);
-    if (currentQuestionIndex !== trivia.currentQuestionIndex) {
-      setCurrentQuestionIndex(trivia.currentQuestionIndex);
-    }
-    if (selectedAnswerIndex !== answerIndex) {
-      setSelectedAnswerIndex(answerIndex);
-    }
-  }, [trivia]);
+    setCurrentQuestionIndex(trivia.currentQuestionIndex);
+    setSelectedAnswerIndex(answerIndex);
+  }, [trivia.participants, trivia.currentQuestionIndex, trivia.questions, user.uid]);
 
   useEffect(() => {
     setAnswerError(null);
@@ -76,9 +72,13 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
   const selectOption = async (index: number) => {
     setAnsweredIndex(index);
     try {
+      if (!currentQuestionIndex && currentQuestionIndex !== 0) {
+        throw new Exception(500, "Question index is null.");
+      }
+
       await answerQuestion(
         triviaId,
-        currentQuestionIndex!,
+        currentQuestionIndex,
         user,
         index,
         new Date().getTime()
@@ -89,14 +89,14 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
     }
   };
 
-  const handleSetAnswerStartTime = async (answerStartTime: number) => {
+  const handleSetAnswerStartTime = async (answerStartTime: number) =>
+    currentQuestionIndex != null &&
     await setAnswerStartTime(
       triviaId,
-      currentQuestionIndex!,
+      currentQuestionIndex,
       user,
       answerStartTime
     );
-  };
 
   return completed ? (
     <QuestionResult {...{ trivia, user }} />
