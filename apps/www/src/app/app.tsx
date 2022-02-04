@@ -4,7 +4,7 @@ import Home from './home'
 import Login from './login';
 import Play from './play';
 
-export function App() {
+export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
