@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { Button, TextField } from '@material-ui/core';
+import SubmitError from './submit-error';
 import QuestionForm from './question-form';
 import Nav from '../nav';
 import Authenticate from '../shared/authenticate';
@@ -113,7 +114,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
                 Create
               </Button>
             </div>
-            {!!error && <div>{error}</div>}
+            <SubmitError error={error} />
           </div>
         </form>
       </main>
