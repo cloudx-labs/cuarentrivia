@@ -1,13 +1,11 @@
-import React, {
+import {
   ComponentType,
   PropsWithChildren,
   FunctionComponent,
 } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getAuth, User } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useHistory, useLocation } from 'react-router-dom';
-import LoadingPage from '../loading-page';
-import ErrorPage from '../error-page';
-import firebase, { User } from 'firebase/app';
 
 export type AuthenticatedProps = PropsWithChildren<{ user: User }>;
 
@@ -18,21 +16,28 @@ export interface AuthenticateProps<T extends AuthenticatedProps> {
 const Authenticate = <T extends AuthenticatedProps>({
   component,
 }: AuthenticateProps<T>) => {
-  const [user, loading, error] = useAuthState(firebase.auth());
-  const history = useHistory();
+  const [user, loading, error] = useAuthState(getAuth());
+
+  const navigate = useNavigate();
+
   const location = useLocation();
 
-  if (loading) {
-    return <LoadingPage />;
-  } else if (error) {
-    return <ErrorPage error={error.message} />;
-  } else if (!user) {
-    history.push(`/login?redirectTo=${location.pathname}`);
-    return null;
-  } else {
-    const ComponentToRender = component as ComponentType<AuthenticatedProps>;
-    return <ComponentToRender user={user} />;
-  }
+  const ErrorState = error && <div>error</div>;
+
+  const LoadingState = loading && <div>loading</div>;
+
+  const EmptyState = !error && !loading && !user && navigate(`/login?redirectTo=${location.pathname}`);
+
+  const ComponentToRender = component as ComponentType<AuthenticatedProps>;
+
+  return (
+      <>
+        {ErrorState}
+        {LoadingState}
+        {EmptyState}
+        {user && <ComponentToRender user={user} />}
+      </>
+  );
 };
 
 export default Authenticate;

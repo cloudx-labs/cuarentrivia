@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {  } from 'firebase/app'
+import { getAuth, signOut } from 'firebase/auth';
+
 import './index.scss';
-import logo from '../../assets/icons/cuarentrivia-logo.png';
-import firebase from 'firebase/app';
-import { useHistory, Link } from 'react-router-dom';
 
 interface Nav {
   children: React.ReactNode;
@@ -10,19 +11,18 @@ interface Nav {
 }
 
 const Nav = ({ children, notShowLogout }: Nav) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await firebase.auth().signOut();
-    history.push('/login');
+    const auth = getAuth();
+    await signOut(auth);
+    navigate('/login');
   };
 
   return (
     <>
       <nav className="nav">
-        <Link to="/">
-          <img src={logo} alt="Logo" className="nav-logo" />
-        </Link>
+        <Link to="/"></Link>
         {!notShowLogout && (
           <a
             role="button"

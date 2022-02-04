@@ -1,40 +1,42 @@
-import React, { useState, ChangeEvent } from 'react';
-import firebase from 'firebase/app';
-import { useHistory, Link } from 'react-router-dom';
-import Authenticate from '../shared/authenticate';
-import { useQuery } from '../shared/use-query.hook';
-import { joinTrivia } from '../shared/trivias.service';
-import useTitle from '../shared/use-title.hook';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { User } from 'firebase/auth';
 import Nav from '../nav';
+import Authenticate from '../shared/authenticate';
 import Error from '../shared/error';
+import { joinTrivia } from '../shared/trivias.service';
+import { useQuery } from '../shared/use-query.hook';
+import useTitle from '../shared/use-title.hook';
 
 import './index.scss';
 
 export interface JoinGameContentProps {
-  user: firebase.User;
+  user: User;
 }
 
 const JoinContent = ({ user }: JoinGameContentProps) => {
+  const navigate = useNavigate();
   const query = useQuery();
-  const history = useHistory();
+
+  const [error, setError] = useState<Error | null>(null);
   const [triviaId, setTriviaId] = useState<string>(query.get('triviaId') || '');
-  const [error, setError] = useState<Error>(null);
 
   const isTriviaIdInvalid = !triviaId;
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
     try {
-      const _triviaId = await joinTrivia(triviaId, user);
-      history.push(`/play/${_triviaId}`);
+      const triviaSnapshotId = await joinTrivia(triviaId, user);
+      navigate(`/play/${triviaSnapshotId}`);
     } catch (error) {
-      setError(error);
+      setError(error as Error);
     }
   };
 
-  const handleTriviaIdChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTriviaId(event.target.value);
-  };
+  const handleChangeTriviaId = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => setTriviaId(value.toString());
 
   return (
     <Nav>
@@ -51,7 +53,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
               placeholder="Trivia key"
               required
               value={triviaId}
-              onChange={handleTriviaIdChange}
+              onChange={handleChangeTriviaId}
             />
           </div>
           <div className="join-form-submit">
@@ -66,7 +68,7 @@ const JoinContent = ({ user }: JoinGameContentProps) => {
           <Error error={error} />
           <div className="join-form-create-game">
             <span className="join-form-create-game-child">Or</span>
-            <Link to="/trivias" className="join-form-create-game-child">
+            <Link to="trivias" className="join-form-create-game-child">
               see your trivias here
             </Link>
           </div>

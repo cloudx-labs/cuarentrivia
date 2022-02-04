@@ -1,25 +1,25 @@
-import React, { FunctionComponent, PropsWithChildren } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import LoadingPage from '../loading-page';
 import ErrorPage from '../error-page';
 
-export interface AsyncProps {
+export type AsyncProps = {
   loading: boolean;
-  error: Error;
-}
+  error: Error | null;
+  children: ReactElement;
+};
 
 const Async: FunctionComponent<AsyncProps> = ({
   loading,
   error,
   children,
-}: PropsWithChildren<AsyncProps>) => {
-  if (loading) {
-    return <LoadingPage />;
-  } else if (error) {
-    return <ErrorPage error={error.message} />;
-  } else {
-    // eslint-disable-next-line react/jsx-no-useless-fragment
-    return <>{children}</>;
-  }
+}: AsyncProps) => {
+  return (
+    <>
+      {loading && <LoadingPage />}
+      {error && <ErrorPage error={error.message} />}
+      {children}
+    </>
+  );
 };
 
 export default Async;

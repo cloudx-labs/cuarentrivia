@@ -1,10 +1,15 @@
 module.exports = {
-  name: 'functions',
-  preset: '../../jest.config.js',
+  displayName: 'functions',
+  preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.spec.json',
-    }
+      tsconfig: '<rootDir>/tsconfig.spec.json',
+    },
   },
-  coverageDirectory: '../../coverage/apps/functions'
+  testEnvironment: 'node',
+  transform: {
+    '^.+\\.[tj]s$': 'ts-jest',
+  },
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../../coverage/apps/functions',
 };

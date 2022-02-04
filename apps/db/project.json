@@ -1,0 +1,22 @@
+{
+  "root": "apps/db",
+  "sourceRoot": "apps/db",
+  "projectType": "application",
+  "prefix": "db",
+  "targets": {
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "envFile": ".env",
+        "args": "--firebaseProject=default",
+        "command": "npx firebase deploy --only=firestore --project={args.firebaseProject}"
+      },
+      "configurations": {
+        "production": {
+          "args": "--firebaseProject=production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

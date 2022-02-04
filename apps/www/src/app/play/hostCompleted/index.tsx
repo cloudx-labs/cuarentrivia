@@ -1,6 +1,4 @@
 import React from 'react';
-import { TriviaComponentProps } from '../symbols';
-import buildRanking from '../../shared/build-ranking';
 import {
   List,
   ListItem,
@@ -8,31 +6,34 @@ import {
   Avatar,
   ListItemText,
 } from '@material-ui/core';
-import './index.scss';
+import { TriviaCompletedProps } from '../symbols';
+import buildRanking from '../../shared/build-ranking';
+import { TriviaRankingParticipantData } from '../../shared/trivia-ranking';
 import Nav from '../../nav';
 
 const ParticipantAvatar = ({
   displayName,
   email,
-  photoUrl,
-}: {
-  displayName: string;
-  email: string;
-  photoUrl: string;
-}) => {
-  if (photoUrl) {
-    return <Avatar alt={displayName || email} src={photoUrl} />;
-  } else {
-    const names = (displayName || email).split(' ');
-    const firstName = names[0];
-    const lastName = names[names.length - 1] || '';
-    const initials = `${firstName[0]}${lastName[0] || ''}`;
+  photoURL,
+}: TriviaRankingParticipantData) => {
+   const alt: string = displayName || email;
 
-    return <Avatar>{initials}</Avatar>;
-  }
+   const src: string = photoURL;
+
+  const avatarProps = src ? { alt, src } : {};
+
+  const fullNameWords = alt.split(' ');
+
+  const firstName = fullNameWords.shift();
+
+  const lastName = fullNameWords.pop();
+
+  const initials = src ? null : `${(firstName || '').charAt(0)}${(lastName || '')?.charAt(0)}`;
+
+  return <Avatar {...avatarProps}>{initials}</Avatar>;
 };
 
-const HostCompleted = ({ trivia }: TriviaComponentProps) => {
+const HostCompleted = ({ trivia }: TriviaCompletedProps) => {
   const ranking = buildRanking(trivia);
 
   return (
@@ -40,19 +41,14 @@ const HostCompleted = ({ trivia }: TriviaComponentProps) => {
       <main className="completed">
         <h2 className="title">Ranking</h2>
         <List className="list">
-          {ranking.participants.map((participant, index) => (
-            <ListItem key="index" className="item">
+          {ranking.participants.map((participant, participantIndex) => (
+            <ListItem key={participant.uid} className="item">
               <ListItemAvatar className="position">
-                <Avatar>{index + 1}</Avatar>
+                <Avatar>{participantIndex + 1}</Avatar>
               </ListItemAvatar>
-              <ParticipantAvatar
-                displayName={participant.displayName}
-                email={participant.email}
-                photoUrl={participant.photoURL}
-              />
+              <ParticipantAvatar {...participant} />
               <ListItemText className="name">
-                {participant.score} -{' '}
-                {participant.displayName || participant.email}
+                  {`${participant.score} - ${participant.displayName || participant.email}`}
               </ListItemText>
             </ListItem>
           ))}

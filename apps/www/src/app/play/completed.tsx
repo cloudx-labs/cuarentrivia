@@ -1,8 +1,8 @@
 import React from 'react';
-import { TriviaComponentProps } from './symbols';
+import { TriviaCompletedProps } from './symbols';
 import HostCompleted from './hostCompleted';
 
-const Completed = (props: TriviaComponentProps) => {
+const Completed = (props: TriviaCompletedProps) => {
   return <HostCompleted {...props} />;
 };
 

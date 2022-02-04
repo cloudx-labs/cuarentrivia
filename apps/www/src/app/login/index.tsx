@@ -1,38 +1,38 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FirebaseAuth } from 'react-firebaseui';
-import firebase from 'firebase/app';
-import useTitle from '../shared/use-title.hook';
-import { useQuery } from '../shared/use-query.hook';
-import logo from '../../assets/icons/android-icon-36x36.png';
-import './index.scss';
+import { getAuth, UserCredential } from 'firebase/auth';
 import Nav from '../nav';
+import { useQuery } from '../shared/use-query.hook';
+import useTitle from '../shared/use-title.hook';
 import { environment } from '../../environments/environment';
 
 const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
+
   const query = useQuery();
 
-  const signInSuccessWithAuthResult = (
-    authResult: firebase.auth.UserCredential
-  ): boolean => {
+  const signInSuccessWithAuthResult = (authResult: UserCredential): boolean => {
     if (!authResult.user) {
       return false;
     }
 
+    console.log('authResult', authResult);
+
     const redirectTo = query.get('redirectTo') || '/';
 
-    history.push(redirectTo);
+    navigate(redirectTo);
 
     return true;
   };
-  const uiConfig: firebaseui.auth.Config = {
-    signInOptions: environment.firebaseUi.signInOptions,
-    callbacks: {
-      signInSuccessWithAuthResult,
+
+  const authProps = {
+    uiConfig: {
+      signInOptions: environment.firebaseUi.signInOptions,
+      callbacks: { signInSuccessWithAuthResult },
     },
+    firebaseAuth: getAuth(),
   };
-  const firebaseAuth = firebase.auth();
 
   useTitle('Login');
 
@@ -40,9 +40,9 @@ const Login = () => {
     <Nav notShowLogout={true}>
       <main className="login">
         <section className="login-content">
-          <img src={logo} alt="Logo" className="login-content-logo" />
+          <img src="" alt="Logo" className="login-content-logo" />
           <h1 className="login-content-title">Sign In</h1>
-          <FirebaseAuth uiConfig={uiConfig} firebaseAuth={firebaseAuth} />
+          <FirebaseAuth {...authProps} />
         </section>
       </main>
     </Nav>

@@ -1,34 +1,34 @@
 import React from 'react';
-import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
 import { useParams } from 'react-router-dom';
-import useTrivia from '../shared/use-trivia.hook';
-import useTitle from '../shared/use-title.hook';
-import PlayTrivia from './play-trivia';
-import LoadingPage from '../shared/loading-page';
-import ErrorPage from '../shared/error-page';
 import HostTrivia from './host-trivia';
+import PlayTrivia from './play-trivia';
+import Authenticate, { AuthenticatedProps } from '../shared/authenticate';
+import ErrorPage from '../shared/error-page';
+import LoadingPage from '../shared/loading-page';
+import useTrivia from '../shared/use-trivia.hook';
 
 const PlayContent = ({ user }: AuthenticatedProps) => {
   const { triviaId } = useParams();
-  const [trivia, loadingTrivia, errorTrivia] = useTrivia(triviaId);
 
-  if (loadingTrivia) {
-    return <LoadingPage />;
-  } else if (errorTrivia) {
-    return <ErrorPage error={errorTrivia.message} />;
-  } else {
-    if (trivia.createdBy === user.uid) {
-      return <HostTrivia user={user} trivia={trivia} triviaId={triviaId} />;
-    } else {
-      return <PlayTrivia user={user} trivia={trivia} triviaId={triviaId} />;
-    }
-  }
+  const [trivia, loading, error] = useTrivia(triviaId || '');
+
+  return (
+    <>
+      {loading && <LoadingPage />}
+      {error && <ErrorPage error={error.message} />}
+      {!!trivia && !!triviaId && (
+        <div>
+          {trivia?.createdBy === user.uid ? (
+            <HostTrivia {...{ trivia, triviaId, user }} />
+          ) : (
+            <PlayTrivia {...{ trivia, triviaId, user }} />
+          )}
+        </div>
+      )}
+    </>
+  );
 };
 
-const Play = () => {
-  useTitle('Play Trivia');
-
-  return <Authenticate component={PlayContent} />;
-};
+const Play = () => <Authenticate component={PlayContent} />;
 
 export default Play;

@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import * as ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import initFirebase from './app/shared/init-firebase';
 import App from './app/app';
@@ -11,10 +11,10 @@ initFirebase();
 const theme = buildMaterialTheme();
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 );

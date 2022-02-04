@@ -1,35 +1,21 @@
 import { buildObject } from './build-object';
-
-export interface Answer {
-  selectedAnswerIndex: number;
-  time: number;
-  startTime: number;
-}
-
-export interface ParticipantAnswer {
-  [key: string]: Answer;
-}
-
-export interface QuestionAttachment {
-  name: string;
-  contentType: string;
-  url: string;
-}
-export interface Question {
-  question: string;
-  possibleAnswers: string[];
-  correctAnswerIndex: number;
-  value: number;
-  startTime: number;
-  attachment: QuestionAttachment;
-}
+import { Answer, Question } from './common';
 
 export const buildQuestion = buildObject<Question>({
+  question: '',
+  possibleAnswers: [],
+  correctAnswerIndex: null,
+  value: 1000,
+//  startTime: null,
+  attachment: null,
+});
+
+export const buildDefaultQuestion = buildObject<Question>({
   question: '',
   possibleAnswers: ['', '', '', ''],
   correctAnswerIndex: null,
   value: 1000,
-  startTime: null,
+//  startTime: null,
   attachment: null,
 });
 

@@ -17,8 +17,7 @@
     "rules": "apps/storage/storage.rules"
   },
   "functions": {
-    "source": "dist/apps/functions",
-    "predeploy": ["node tools/scripts/build-firebase-functions-package-json.js"]
+    "source": "dist/apps/functions"
   },
   "emulators": {
     "firestore": {
