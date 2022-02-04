@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {  } from 'firebase/app'
+import {} from 'firebase/app';
 import { getAuth, signOut } from 'firebase/auth';
-
+import logo from '../../assets/icons/cuarentrivia-logo.png';
 import './index.scss';
 
 interface Nav {
@@ -22,7 +22,9 @@ const Nav = ({ children, notShowLogout }: Nav) => {
   return (
     <>
       <nav className="nav">
-        <Link to="/"></Link>
+        <Link to="/">
+          <img src={logo} alt="Logo" className="nav-logo" />
+        </Link>
         {!notShowLogout && (
           <a
             role="button"
