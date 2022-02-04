@@ -6,6 +6,7 @@ import Nav from '../nav';
 import { useQuery } from '../shared/use-query.hook';
 import useTitle from '../shared/use-title.hook';
 import { environment } from '../../environments/environment';
+import './index.scss';
 
 const Login = () => {
   const navigate = useNavigate();
