@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
 import { Button, TextField } from '@material-ui/core';
@@ -18,39 +18,36 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
 
   const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
-  const [questions, setQuestions] = useState<Question[]>([buildDefaultQuestion()]);
-  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+  const [questions, setQuestions] = useState<Question[]>([
+    buildDefaultQuestion(),
+  ]);
 
-  useEffect(() => {
-    setIsDisabled(
-      !name || !questions ||
-        questions.some(
-          ({ possibleAnswers, correctAnswerIndex, question }: Question) =>
-            !question ||
-            !possibleAnswers ||
-            (correctAnswerIndex && correctAnswerIndex < 0) ||
-            possibleAnswers.some((answer) => !answer)
-        )
-    );
-  }, [name, questions]);
+  const isDisabled = useMemo(
+    () =>
+      !name ||
+      !questions ||
+      questions.some(
+        ({ possibleAnswers, correctAnswerIndex, question }: Question) =>
+          !question ||
+          !possibleAnswers ||
+          (correctAnswerIndex && correctAnswerIndex < 0) ||
+          possibleAnswers.some((answer) => !answer)
+      ),
+    [name, questions]
+  );
 
   const handleAdd = () =>
-    setQuestions((questions) => questions.concat(buildDefaultQuestion()));
+    setQuestions(questions.concat(buildDefaultQuestion()));
 
-  const handleRemove = (index: number) => {
-    setQuestions((questions) => [
-      ...questions.slice(0, index),
-      ...questions.slice(index + 1),
-    ]);
-  };
+  const handleRemove = (index: number) =>
+    setQuestions([...questions.slice(0, index), ...questions.slice(index + 1)]);
 
-  const handleSetQuestion = (question: Question, index: number) => {
-    setQuestions((questions) => [
+  const handleSetQuestion = (question: Question, index: number) =>
+    setQuestions([
       ...questions.slice(0, index),
       question,
       ...questions.slice(index + 1),
     ]);
-  };
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
