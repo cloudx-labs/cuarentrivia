@@ -15,7 +15,12 @@
         "main": "apps/www/src/main.tsx",
         "polyfills": "apps/www/src/polyfills.ts",
         "tsConfig": "apps/www/tsconfig.app.json",
-        "assets": ["apps/www/src/favicon.ico", "apps/www/src/assets"],
+        "assets": [
+          "apps/www/src/favicon.ico",
+          "apps/www/src/assets",
+          "apps/www/src/cuarentrivia.webmanifest",
+          "apps/www/src/browserconfig.xml"
+        ],
         "styles": ["apps/www/src/styles.scss"],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack"
@@ -33,7 +38,14 @@
           "sourceMap": false,
           "namedChunks": false,
           "extractLicenses": true,
-          "vendorChunk": false
+          "vendorChunk": false,
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "5mb"
+            }
+          ]
         }
       }
     },
@@ -63,6 +75,24 @@
       "options": {
         "jestConfig": "apps/www/jest.config.js",
         "passWithNoTests": true
+      }
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "envFile": ".env",
+        "args": "--firebaseProject=default",
+        "commands": [
+          "npx nx run www:build",
+          "npx workbox generateSW apps/www/workbox-config.js",
+          "npx firebase deploy --only=hosting --project={args.firebaseProject}"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "args": "--firebaseProject=production"
+        }
       }
     }
   },

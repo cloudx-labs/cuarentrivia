@@ -5,7 +5,15 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "affected:build": "nx affected:build",
+    "affected:build:ci": "nx affected:build --base=origin/main",
+    "affected:e2e": "nx affected:e2e",
+    "affected:e2e:ci": "nx affected:e2e --base=origin/main",
+    "affected:test": "nx affected:test",
+    "affected:test:ci": "nx affected:test --base=origin/main",
+    "affected:lint": "nx affected:lint",
+    "affected:lint:ci": "nx affected:lint --base=origin/main"
   },
   "private": true,
   "dependencies": {
@@ -13,7 +21,7 @@
     "@material-ui/icons": "^4.11.2",
     "@use-it/interval": "^1.0.0",
     "core-js": "^3.6.5",
-    "dotenv": "^14.2.0",
+    "dotenv": "^14.3.0",
     "firebase": "^9.6.4",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.16.0",
@@ -24,7 +32,9 @@
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.2.1",
     "regenerator-runtime": "0.13.7",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "unique-names-generator": "^4.6.0",
+    "workbox-window": "^6.4.2"
   },
   "devDependencies": {
     "@nrwl/cli": "13.4.6",
@@ -32,6 +42,7 @@
     "@nrwl/eslint-plugin-nx": "13.4.6",
     "@nrwl/jest": "13.4.6",
     "@nrwl/linter": "13.4.6",
+    "@nrwl/node": "^13.7.2",
     "@nrwl/react": "13.4.6",
     "@nrwl/tao": "13.4.6",
     "@nrwl/web": "13.4.6",
@@ -57,6 +68,7 @@
     "prettier": "^2.3.1",
     "react-test-renderer": "17.0.2",
     "ts-jest": "27.0.5",
-    "typescript": "~4.4.3"
+    "typescript": "~4.4.3",
+    "workbox-cli": "^6.4.2"
   }
 }

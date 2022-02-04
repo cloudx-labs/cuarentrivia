@@ -1,6 +1,9 @@
 {
   "version": 2,
   "projects": {
+    "db": "apps/db",
+    "functions": "apps/functions",
+    "storage": "apps/storage",
     "www": "apps/www",
     "www-e2e": "apps/www-e2e"
   }

@@ -4,7 +4,9 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import initFirebase from './app/shared/init-firebase';
 import App from './app/app';
 import buildMaterialTheme from './app/shared/build-material-theme';
+import initServiceWorker from './app/shared/init-service-worker';
 
+initServiceWorker();
 initFirebase();
 const theme = buildMaterialTheme();
 
