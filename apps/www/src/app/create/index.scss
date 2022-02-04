@@ -1,51 +1,50 @@
 .create {
-    color: var(--cloudx-black);
-    height: 100%;
+  color: var(--cloudx-black);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: -15px;
+  &-form {
+    padding: 0 1.5rem;
+    width: 100%;
     display: flex;
-    justify-content: center;
-    margin-top: -15px;
-    &-form {
-      padding: 0 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    min-width: 700px;
+    .container {
+      max-width: 900px;
       width: 100%;
+    }
+    .title {
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    div {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      min-width: 700px;
-      .container {
-        max-width: 900px;
-        width: 100%;
+      margin-bottom: 1rem;
+      label {
+        margin-bottom: 0.5rem;
       }
-      .title {
-        width: 100%;
-        margin-bottom: 1.5rem;
+      input {
+        border-radius: 0.25rem;
+        height: 2rem;
       }
-  
-      div {
+
+      .action-buttons {
         display: flex;
-        flex-direction: column;
-        margin-bottom: 1rem;
-        label {
-          margin-bottom: 0.5rem;
+        justify-content: flex-end;
+        flex-direction: row;
+        margin-top: 1rem;
+        .add {
+          max-width: 148px;
+          margin-right: 1rem;
         }
-        input {
-          border-radius: 0.25rem;
-          height: 2rem;
-        }
-  
-        .action-buttons {
-          display: flex;
-          justify-content: flex-end;
-          flex-direction: row;
-          margin-top: 1rem;
-          .add {
-            max-width: 148px;
-            margin-right: 1rem;
-          }
-          .submit {
-            max-width: 148px;
-          }
+        .submit {
+          max-width: 148px;
         }
       }
     }
   }
-  
+}

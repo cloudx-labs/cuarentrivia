@@ -17,8 +17,6 @@ const Login = () => {
       return false;
     }
 
-    console.log('authResult', authResult);
-
     const redirectTo = query.get('redirectTo') || '/';
 
     navigate(redirectTo);

@@ -81,9 +81,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
       correctAnswerIndex: selectedAnswer.isCorrectAnswer ? answerIndex : question.correctAnswerIndex,
     });
 
-  /** TODO
-   * Fix attaching file bug.
-   *  */    
+  // TODO: Fix attaching file bug.
   const handleChangeAttachment = async ({
     target: { files },
   }: ChangeEvent<HTMLInputElement>) => {
