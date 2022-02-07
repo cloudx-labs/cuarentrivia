@@ -1,22 +1,41 @@
-import React, { useEffect, useRef } from 'react';
-import { TriviaComponentProps } from '../symbols';
-import { buildAnswer } from '../../shared/question';
+import React, { useEffect, useState } from 'react';
+import { TriviaQuestionResultProps } from '../symbols';
 import Nav from '../../nav';
+import alien from '../../../assets/icons/alien.png';
+import cigarette from '../../../assets/icons/cigarette.png';
 import './index.scss';
 
-const QuestionResult = ({ trivia, user }: TriviaComponentProps) => {
-  const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
-  const currentParticipant = (trivia.participants || {})[user.uid];
-  const currentUserAnswer =
-    (currentParticipant || { answers: [] }).answers[
-    trivia.currentQuestionIndex
-    ] || buildAnswer();
+const QuestionResult = ({
+  trivia: { questions, participants, currentQuestionIndex },
+  user,
+}: TriviaQuestionResultProps) => {
+  const [message, setMessage] = useState<string | null>(null);
+  const [answerIndex, setAnswerIndex] = useState<number | null>(null);
 
-  const answerIsCorrect = currentQuestion.correctAnswerIndex === currentUserAnswer.selectedAnswerIndex;
-  const message =
-    answerIsCorrect
-      ? 'Acertaste!'
-      : 'No Acertaste!';
+  useEffect(() => {
+    if (currentQuestionIndex || currentQuestionIndex === 0) {
+      const question = questions[currentQuestionIndex];
+      setAnswerIndex(question ? question.correctAnswerIndex : null);
+    }
+  }, [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    const participantUser = participants[user.uid];
+    const selectedAnswer =
+      currentQuestionIndex || currentQuestionIndex === 0
+        ? participantUser.answers[currentQuestionIndex]
+        : null;
+    const newMessage =
+      selectedAnswer && (answerIndex || answerIndex === 0)
+        ? 'No Acertaste!'
+        : null;
+    setMessage(
+      answerIndex === selectedAnswer?.selectedAnswerIndex
+        ? 'Acertaste!'
+        : newMessage
+    );
+  }, [answerIndex, participants, user, currentQuestionIndex]);
+
   return (
     <Nav>
       <main className="result">
@@ -25,9 +44,8 @@ const QuestionResult = ({ trivia, user }: TriviaComponentProps) => {
           Espera un momento a que el host inicie la proxima pregunta
         </p>
         <div className="AreYouHere">
-
-          <img src="../../../assets/icons/alien.png" alt="Alien Img" className="ImTony" />
-          <img src="../../../assets/icons/cigarette.png" alt="Cigarette Img" className="SmokingForYou" />
+          <img src={alien} alt="Alien Img" className="ImTony" />
+          <img src={cigarette} alt="Cigarette Img" className="SmokingForYou" />
         </div>
       </main>
     </Nav>

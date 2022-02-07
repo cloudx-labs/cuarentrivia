@@ -1,17 +1,17 @@
 {
-  "npmScope": "trivia",
+  "npmScope": "trivia-upgrade",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
   },
   "implicitDependencies": {
-    "workspace.json": "*",
     "package.json": {
       "dependencies": "*",
       "devDependencies": "*"
     },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
+    ".eslintrc.json": "*"
   },
   "tasksRunnerOptions": {
     "default": {
@@ -21,22 +21,29 @@
       }
     }
   },
-  "projects": {
-    "www": {
-      "tags": []
-    },
-    "www-e2e": {
-      "tags": [],
-      "implicitDependencies": ["www"]
-    },
-    "functions": {
-      "tags": []
-    },
-    "db": {
-      "tags": []
-    },
-    "storage": {
-      "tags": []
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "scss",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "scss"
+      },
+      "library": {
+        "style": "scss",
+        "linter": "eslint"
+      }
     }
-  }
+  },
+  "defaultProject": "www"
 }

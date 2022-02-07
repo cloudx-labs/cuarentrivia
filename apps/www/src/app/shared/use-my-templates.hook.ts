@@ -1,25 +1,27 @@
-import firebase, { User } from 'firebase/app';
+import { collection, SnapshotListenOptions } from 'firebase/firestore';
+import { User } from 'firebase/auth';
 import { Loading } from './symbols';
-import { TriviaTemplateBase } from './trivia';
+import { TriviaTemplateBase } from './common';
 import { useCollection } from 'react-firebase-hooks/firestore';
+import { getDb } from './get-db';
 
 const firestoreOptions: {
-  snapshotListenOptions: firebase.firestore.SnapshotListenOptions;
+  snapshotListenOptions: SnapshotListenOptions;
 } = { snapshotListenOptions: { includeMetadataChanges: true } };
 
 const useMyTemplates = (
   user: User
-): [[string, TriviaTemplateBase][], Loading, Error] => {
-  const templatesRef = firebase
-    .firestore()
-    .collection(`/templates/${user.uid}/trivias`);
+): [[string, TriviaTemplateBase][], Loading, Error | null] => {
+  const db = getDb();
+
+  const templatesRef = collection(db, `/templates/${user.uid}/trivias`);
 
   const [snapshot, loading, error] = useCollection(
     templatesRef,
     firestoreOptions
   );
 
-  let data: [string, TriviaTemplateBase][];
+  let data: [string, TriviaTemplateBase][] = [];
 
   if (!!snapshot && !loading && !error) {
     data = snapshot.docs.map((templateSnapshot) => [
@@ -28,7 +30,7 @@ const useMyTemplates = (
     ]);
   }
 
-  return [data, loading, error];
+  return [data, loading, error || null];
 };
 
 export default useMyTemplates;

@@ -1,31 +1,34 @@
-import { Trivia, TriviaParticipant, Participants } from './trivia';
-import firebase from 'firebase/app';
+import { Trivia, TriviaParticipant, Participants, Question } from './common';
+import { collection, doc, SnapshotListenOptions } from 'firebase/firestore';
 import {
   useDocumentData,
   useCollectionData,
   useCollection,
 } from 'react-firebase-hooks/firestore';
-import { Question } from './question';
 import { Loading } from './symbols';
 import { getDb } from './get-db';
 
 const firestoreOptions: {
-  snapshotListenOptions: firebase.firestore.SnapshotListenOptions;
+  snapshotListenOptions: SnapshotListenOptions;
 } = { snapshotListenOptions: { includeMetadataChanges: true } };
 
-const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
+const useTrivia = (
+  triviaId: string
+): [Trivia | null, Loading, Error | null] => {
   const db = getDb();
-  const triviaRef = db.doc(`/trivias/${triviaId}`);
-  const questionsRef = triviaRef.collection('questions');
-  const triviaParticipantsRef = triviaRef.collection('participants');
+  const triviaRef = doc(db, `/trivias/${triviaId}`);
+  const questionsRef = collection(triviaRef, 'questions');
+  const triviaParticipantsRef = collection(triviaRef, 'participants');
 
-  const [triviaBase, triviaBaseLoading, triviaBaseError] = useDocumentData<
-    Omit<Trivia, 'questions' | 'participants'>
-  >(triviaRef, firestoreOptions);
+  const [triviaBase, triviaBaseLoading, triviaBaseError] = useDocumentData(
+    triviaRef,
+    firestoreOptions
+  );
 
-  const [questions, questionsLoading, questionsError] = useCollectionData<
-    Question
-  >(questionsRef, firestoreOptions);
+  const [questions, questionsLoading, questionsError] = useCollectionData(
+    questionsRef,
+    firestoreOptions
+  );
 
   const [
     triviaParticipants,
@@ -33,7 +36,7 @@ const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
     triviaParticipantsError,
   ] = useCollection(triviaParticipantsRef, firestoreOptions);
 
-  let trivia: Trivia | undefined;
+  let trivia: Trivia | null = null;
 
   if (
     !!triviaBase &&
@@ -50,27 +53,32 @@ const useTrivia = (triviaId: string): [Trivia, Loading, Error] => {
       (prev, curr) => {
         const data = curr.data();
         const triviaParticipant: TriviaParticipant = {
-          displayName: data.displayName || null,
-          email: data.email || null,
-          photoURL: data.photoURL || null,
-          score: data.score || null,
-          answers: data.answers || [],
+          displayName: data['displayName'] || null,
+          email: data['email'] || null,
+          photoURL: data['photoURL'] || null,
+          score: data['score'] || null,
+          answers: data['answers'] || [],
         };
         return { ...prev, [curr.id]: triviaParticipant };
       },
       {} as Participants
     );
+    const fixedQuestions = questions as Question[];
+    const fixedTrivia = triviaBase as Trivia;
     trivia = {
-      ...triviaBase,
+      ...fixedTrivia,
       participants,
-      questions,
+      questions: fixedQuestions,
     };
   }
 
   return [
     trivia,
     triviaBaseLoading || questionsLoading || triviaParticipantsLoading,
-    triviaBaseError || questionsError || triviaParticipantsError,
+    (triviaBaseError as Error) ||
+      (questionsError as Error) ||
+      (triviaParticipantsError as Error) ||
+      null,
   ];
 };
 

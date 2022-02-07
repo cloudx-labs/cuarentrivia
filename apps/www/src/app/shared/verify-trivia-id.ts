@@ -5,14 +5,14 @@ const verifyTriviaId = (triviaId: string): TriviaIdType => {
     throw new Error('Trivia ID is empty');
   }
 
-  const [firstTriviaWord, secondTriviaWord, thirdTriviaWord] = triviaId.split(
-    '_'
-  );
+  const [firstTriviaWord, secondTriviaWord, thirdTriviaWord] =
+    triviaId.split('_');
+
   if (!!firstTriviaWord && !!secondTriviaWord && !!thirdTriviaWord) {
     return 'friendlyName';
-  } else {
-    return 'uid';
   }
+
+  return 'uid';
 };
 
 export default verifyTriviaId;

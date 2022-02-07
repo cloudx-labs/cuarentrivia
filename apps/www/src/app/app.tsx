@@ -1,26 +1,17 @@
-import React from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import './app.scss';
-
+import Home from './home';
 import Login from './login';
 import Play from './play';
-import Home from './home';
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/play/:triviaId">
-          <Play />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="/*" element={<Home />} />
+        <Route path="play/:triviaId" element={<Play />} />
+      </Routes>
     </BrowserRouter>
   );
 };

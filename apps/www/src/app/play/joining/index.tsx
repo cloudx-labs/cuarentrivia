@@ -1,51 +1,49 @@
-import React from 'react';
+import React, { Fragment, ReactElement } from 'react';
 import {
+  Avatar,
+  Button,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Avatar,
-  Button,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
-import { TriviaParticipant } from '../../shared/trivia';
-import { goToNextQuestion } from '../../shared/trivias.service';
-import { TriviaComponentProps } from '../symbols';
+import { TriviaJoiningProps } from '../symbols';
 import CopyUrlButton from '../../shared/copy-url-button';
+import { TriviaParticipant } from '../../shared/common';
+import { goToNextQuestion } from '../../shared/trivias.service';
 import useTriviaUrl from '../../shared/use-trivia-url.hook';
 import Nav from '../../nav';
 import './index.scss';
 
+interface ListItemTriviaParticipantProps {
+  participant: TriviaParticipant;
+}
+
 const ListItemTriviaParticipantAvatar = ({
   participant,
-}: {
-  participant: TriviaParticipant;
-}) => {
-  if (participant.photoURL) {
-    return (
-      <Avatar
-        alt={participant.displayName || participant.email}
-        src={participant.photoURL}
-        className="avatar"
-      />
-    );
-  } else {
-    return (
-      <Avatar
-        alt={participant.displayName || participant.email}
-        className="avatar"
-      >
-        <PersonIcon />
-      </Avatar>
-    );
-  }
+}: ListItemTriviaParticipantProps) => {
+  const avatarProps = participant.photoURL
+    ? {
+        alt: (participant.displayName || participant.email)?.toString(),
+        src: participant.photoURL.toString(),
+      }
+    : {};
+
+  const children: ReactElement | null = participant.photoURL ? null : (
+    <PersonIcon />
+  );
+
+  return (
+    <Avatar {...avatarProps} className="avatar">
+      {children}
+    </Avatar>
+  );
 };
 
 const ListItemTriviaParticipant = ({
   participant,
-}: {
-  participant: TriviaParticipant;
-}) => (
+}: ListItemTriviaParticipantProps) => (
   <ListItem className="avatar-list">
     <ListItemAvatar className="avatar-item">
       <ListItemTriviaParticipantAvatar participant={participant} />
@@ -56,15 +54,14 @@ const ListItemTriviaParticipant = ({
   </ListItem>
 );
 
-const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
+const Joining = ({ trivia, user, triviaId }: TriviaJoiningProps) => {
   const url = useTriviaUrl(trivia.friendlyName);
 
   const isHost = trivia.createdBy === user.uid;
-  const participantsCount = Object.values(trivia.participants).length;
 
-  const startGame = () => {
-    goToNextQuestion(triviaId, trivia);
-  };
+  const participants = Object.values(trivia.participants);
+
+  const startGame = () => goToNextQuestion(triviaId, trivia);
 
   return (
     <Nav>
@@ -83,27 +80,25 @@ const Joining = ({ trivia, user, triviaId }: TriviaComponentProps) => {
         </section>
         <aside className="participants">
           <h3 className="title">
-            You'll be playing with ({participantsCount}):
+            You'll be playing with ({participants.length}):
           </h3>
           <List>
-            {Object.values(trivia.participants).map((participant) => (
+            {participants.map((participant) => (
               <ListItemTriviaParticipant participant={participant} />
             ))}
           </List>
         </aside>
         <footer className="buttons-contaners">
           <CopyUrlButton url={url}></CopyUrlButton>
-
           <Button
             variant="contained"
             color="primary"
-            disabled={isHost ? false : true}
+            disabled={!isHost}
             onClick={startGame}
           >
             {isHost ? (
               <>
-                {' '}
-                Start!{' '}
+                {` Start! `}
                 <span role="img" aria-label="race flag">
                   🏁
                 </span>

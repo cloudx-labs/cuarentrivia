@@ -1,16 +1,16 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { ChangeEvent } from 'react';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import {
-  TextField,
-  Divider,
   Checkbox,
+  Divider,
   IconButton,
+  TextField,
   Tooltip,
 } from '@material-ui/core';
-import { AttachFile, Delete } from '@material-ui/icons';
-import { Question } from '../../shared/question';
+import { Question } from '../../shared/common';
 import { updatePrimitiveItemAt } from '../../shared/update-item';
 import './index.scss';
-import * as firebase from 'firebase/app';
+import { AttachFile, Delete } from '@material-ui/icons';
 
 export interface QuestionFormProps {
   question: Question;
@@ -18,12 +18,13 @@ export interface QuestionFormProps {
   remove: () => void;
 }
 
-interface PossibleAnswerControlProps {
+interface PossibleAnswerProps {
   possibleAnswer: string;
   isCorrectAnswer: boolean;
-  setPossibleAnswer: (
-    possibleAnswer: Omit<PossibleAnswerControlProps, 'setPossibleAnswer'>
-  ) => void;
+}
+
+interface PossibleAnswerControlProps extends PossibleAnswerProps {
+  setPossibleAnswer: (possibleAnswer: PossibleAnswerProps) => void;
 }
 
 const PossibleAnswerControl = ({
@@ -31,60 +32,70 @@ const PossibleAnswerControl = ({
   isCorrectAnswer,
   setPossibleAnswer,
 }: PossibleAnswerControlProps) => {
+  const handleChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) =>
+    setPossibleAnswer({
+      possibleAnswer: value.toString(),
+      isCorrectAnswer,
+    });
+
+  const handleCheck = ({
+    target: { checked },
+  }: ChangeEvent<HTMLInputElement>) =>
+    setPossibleAnswer({
+      possibleAnswer,
+      isCorrectAnswer: !!checked,
+    });
+
   return (
     <div className="possible-answer">
       <TextField
         label="Answer"
-        className="answer"
         value={possibleAnswer}
-        onChange={(event) =>
-          setPossibleAnswer({
-            possibleAnswer: event.target.value,
-            isCorrectAnswer,
-          })
-        }
+        onChange={handleChange}
+        className="answer"
       />
       <Checkbox
-        color="primary"
-        className="check"
         checked={isCorrectAnswer}
-        onChange={(event) =>
-          setPossibleAnswer({
-            possibleAnswer,
-            isCorrectAnswer: event.target.checked,
-          })
-        }
+        color="primary"
+        onChange={handleCheck}
+        className="check"
       />
     </div>
   );
 };
 
 const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
+  const storage = getStorage();
+
   const handleSetPossibleAnswer = (
-    payload: Omit<PossibleAnswerControlProps, 'setPossibleAnswer'>,
-    index: number
-  ) => {
+    selectedAnswer: PossibleAnswerProps,
+    answerIndex: number
+  ) =>
     setQuestion({
       ...question,
       possibleAnswers: updatePrimitiveItemAt(
         question.possibleAnswers,
-        index,
-        payload.possibleAnswer
+        answerIndex,
+        selectedAnswer.possibleAnswer
       ),
-      correctAnswerIndex: payload.isCorrectAnswer
-        ? index
+      correctAnswerIndex: selectedAnswer.isCorrectAnswer
+        ? answerIndex
         : question.correctAnswerIndex,
     });
-  };
 
-  const handleAttachmentChange = async (event: any) => {
-    console.log(event.target.files);
-    const files: FileList = event.target.files;
-    if (files.length) {
-      const file = files.item(0);
-      const storageRef = firebase.storage().ref(`${Date.now()}_${file.name}`);
-      await storageRef.put(file);
-      const url = await storageRef.getDownloadURL();
+  // TODO: Fix attaching file bug.
+  const handleChangeAttachment = async ({
+    target: { files },
+  }: ChangeEvent<HTMLInputElement>) => {
+    const file = files?.length ? files.item(0) : null;
+
+    if (file?.name && file?.type) {
+      const storageRef = ref(storage, `${Date.now()}_${file.name || ''}`);
+
+      await uploadBytes(storageRef, file);
+
+      const url = await getDownloadURL(storageRef);
+
       setQuestion({
         ...question,
         attachment: {
@@ -96,6 +107,14 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
     }
   };
 
+  const handleChangeQuestion = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) =>
+    setQuestion({
+      ...question,
+      question: value,
+    });
+
   return (
     <section className="question-form">
       <section className="title-container">
@@ -104,12 +123,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
           label="Question"
           className="title"
           value={question.question}
-          onChange={(event) =>
-            setQuestion({
-              ...question,
-              question: event.target.value,
-            })
-          }
+          onChange={handleChangeQuestion}
         />
         <IconButton color="primary" onClick={remove} className="delete-button">
           <Delete />
@@ -117,11 +131,11 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
       </section>
       <section className="attachment-container">
         <input
-          accept="image/*"
-          className="attachment-container-input"
-          id="attachmentInput"
           type="file"
-          onChange={handleAttachmentChange}
+          accept="image/*"
+          id="attachmentInput"
+          onChange={handleChangeAttachment}
+          className="attachment-container-input"
         />
         <Tooltip title="Select Attachment">
           <label htmlFor="attachmentInput">
@@ -140,14 +154,13 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
         </label>
       </section>
       <section className="answer-container">
-        {' '}
-        {question.possibleAnswers.map((possibleAnswer, index) => (
+        {question.possibleAnswers.map((possibleAnswer, answerIndex) => (
           <PossibleAnswerControl
-            key={index}
+            key={answerIndex}
             possibleAnswer={possibleAnswer}
-            isCorrectAnswer={index === question.correctAnswerIndex}
-            setPossibleAnswer={(payload) =>
-              handleSetPossibleAnswer(payload, index)
+            isCorrectAnswer={question.correctAnswerIndex === answerIndex}
+            setPossibleAnswer={(selectedAnswer) =>
+              handleSetPossibleAnswer(selectedAnswer, answerIndex)
             }
           />
         ))}

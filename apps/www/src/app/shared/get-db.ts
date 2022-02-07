@@ -1,3 +1,3 @@
-import firebase from 'firebase/app';
+import { Firestore, getFirestore } from 'firebase/firestore';
 
-export const getDb = (): firebase.firestore.Firestore => firebase.firestore();
+export const getDb = (): Firestore => getFirestore();

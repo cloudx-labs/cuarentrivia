@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TriviaComponentProps } from './symbols';
+import { TriviaHostQuestionResultProps } from './symbols';
 import {
   List,
   ListItem,
@@ -14,70 +14,81 @@ import {
   Grade,
 } from '@material-ui/icons';
 
-import './host-in-progress.scss';
 import HostQuestionResult from './host-question-result';
 import { setQuestionStartTime } from '../shared/trivias.service';
 import Timer from './timer';
 import { Attachment } from './Attachment';
+import { buildQuestion } from '../shared/question';
+import { Question } from '../shared/common';
+import './host-in-progress.scss';
 
 const ListIcon = ({ index }: { index: number }) => {
-  if (index === 0) {
-    return <ChangeHistory />;
-  } else if (index === 1) {
-    return <CheckBoxOutlineBlank />;
-  } else if (index === 2) {
-    return <RadioButtonUnchecked />;
-  } else {
-    return <Grade />;
+  switch (index) {
+    case 0:
+      return <ChangeHistory />;
+    case 1:
+      return <CheckBoxOutlineBlank />;
+    case 2:
+      return <RadioButtonUnchecked />;
+    default:
+      return <Grade />;
   }
 };
 
-const HostInProgress = (props: TriviaComponentProps) => {
-  const { trivia, questionIndex, triviaId } = props;
-  const currentQuestion = trivia.questions[questionIndex];
-  const [completed, setCompleted] = useState(false);
+const HostInProgress = ({
+  trivia,
+  triviaId,
+}: TriviaHostQuestionResultProps) => {
+  const [completed, setCompleted] = useState<boolean>(false);
+  const [question, setQuestion] = useState<Question>(buildQuestion());
 
   useEffect(() => {
-    setCompleted(false);
-  }, [trivia.currentQuestionIndex, trivia.timePerQuestion]);
+    const newQuestion =
+      !trivia.currentQuestionIndex && trivia.currentQuestionIndex !== 0
+        ? buildQuestion()
+        : trivia.questions[trivia.currentQuestionIndex];
 
-  const handleSetHostStartTime = async (startTime: number) => {
-    await setQuestionStartTime(
+    setCompleted(false);
+    setQuestion(newQuestion);
+  }, [trivia]);
+
+  const handleSetHostStartTime = async (startTime: number) =>
+    trivia.currentQuestionIndex !== null &&
+    (await setQuestionStartTime(
       triviaId,
       trivia.currentQuestionIndex,
       startTime
-    );
-  };
+    ));
 
-  if (!completed) {
-    return (
-      <main className="trivia-in-progress">
-        <span className="question">{currentQuestion.question}</span>
-        <Attachment value={currentQuestion.attachment} />
-        <List>
-          {currentQuestion.possibleAnswers.map((possibleAnswer, index) => (
-            <ListItem key={index}>
-              <ListItemAvatar>
-                <Avatar className="question-avatar">
-                  <ListIcon index={index} />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText>{possibleAnswer}</ListItemText>
-            </ListItem>
-          ))}
-        </List>
+  return completed ? (
+    <HostQuestionResult {...{ trivia, triviaId }} />
+  ) : (
+    <main className="trivia-in-progress">
+      <span className="question">{question.question}</span>
+      {question.attachment && <Attachment value={question.attachment} />}
+      <List>
+        {question.possibleAnswers.map((possibleAnswer, index) => (
+          <ListItem key={index}>
+            <ListItemAvatar>
+              <Avatar className="question-avatar">
+                <ListIcon index={index} />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText>{possibleAnswer}</ListItemText>
+          </ListItem>
+        ))}
+      </List>
+      {trivia.currentQuestionIndex !== null && (
         <Timer
           questionIndex={trivia.currentQuestionIndex}
-          startTime={currentQuestion.startTime}
+          startTime={question.startTime}
           timePerQuestion={trivia.timePerQuestion}
           setCompleted={setCompleted}
           setStartTime={handleSetHostStartTime}
         />
-      </main>
-    );
-  } else {
-    return <HostQuestionResult {...props} />;
-  }
+      )}
+    </main>
+  );
 };
 
 export default HostInProgress;

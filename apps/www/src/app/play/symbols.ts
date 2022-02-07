@@ -1,9 +1,34 @@
-import { User } from 'firebase/app';
-import { Trivia } from '../shared/trivia';
+import { User } from 'firebase/auth';
+import { Trivia } from '../shared/common';
 
-export interface TriviaComponentProps {
-  user: User;
+/**
+ * trivia
+ */
+export interface TriviaCompletedProps {
   trivia: Trivia;
+}
+
+/**
+ * trivia
+ * triviaId
+ */
+export interface TriviaHostQuestionResultProps extends TriviaCompletedProps {
   triviaId: string;
-  questionIndex?: number;
+}
+
+/**
+ * trivia
+ * user
+ */
+export interface TriviaQuestionResultProps extends TriviaCompletedProps {
+  user: User;
+}
+
+/**
+ * trivia
+ * triviaId
+ * user
+ */
+export interface TriviaJoiningProps extends TriviaHostQuestionResultProps {
+  user: User;
 }

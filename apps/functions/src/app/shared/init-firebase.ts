@@ -1,5 +1,5 @@
-import * as firebaseAdmin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
 export const initFirebase = () => {
-  firebaseAdmin.initializeApp();
+  admin.initializeApp();
 };

@@ -1,13 +1,6 @@
-import * as firebase from 'firebase/app';
-import 'firebase/analytics';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/functions';
-import 'firebase/storage';
+import { initializeApp } from 'firebase/app';
 import { environment } from '../../environments/environment';
 
-const initFirebase = () => {
-  firebase.initializeApp(environment.firebase);
-};
+const initFirebase = () => initializeApp(environment.firebase);
 
 export default initFirebase;

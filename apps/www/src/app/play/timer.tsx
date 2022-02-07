@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
 import { LinearProgress } from '@material-ui/core';
 import './timer.scss';
+
 const SECOND = 1000;
 
 export interface TimerProps {
-  questionIndex: number;
+  questionIndex: number | null;
   startTime?: number;
   timePerQuestion: number;
   setCompleted: (value: boolean) => void;
@@ -20,14 +21,15 @@ const Timer = ({
   setStartTime,
 }: TimerProps) => {
   const [timer, setTimer] = useState(timePerQuestion);
+
   const timerInSeconds = Math.floor(timer / SECOND);
+
   const timerInPercentage = (timer / timePerQuestion) * 100;
 
   useEffect(() => {
-    const _timer = startTime
-      ? timePerQuestion - (new Date().getTime() - startTime)
-      : timePerQuestion;
-    setTimer(_timer);
+    setTimer(
+      timePerQuestion - (startTime ? new Date().getTime() - startTime : 0)
+    );
   }, [questionIndex, startTime, timePerQuestion]);
 
   useEffect(() => {
@@ -36,15 +38,15 @@ const Timer = ({
     }
   }, [timer, setCompleted]);
 
-  useInterval(() => {
-    setTimer((timer) => timer - SECOND);
-  }, SECOND);
-
   useEffect(() => {
     if (!startTime) {
       setStartTime(new Date().getTime());
     }
   }, [startTime, setStartTime]);
+
+  useInterval(() => {
+    setTimer((timer) => timer - SECOND);
+  }, SECOND);
 
   return !startTime ? null : (
     <div className="timer">

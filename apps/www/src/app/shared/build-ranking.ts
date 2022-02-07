@@ -1,6 +1,7 @@
-import { Trivia, TriviaParticipant, buildTriviaParticipant } from './trivia';
+import { Answer, Question, Trivia, TriviaParticipant } from './common';
+import { buildTriviaParticipant } from './trivia';
 import { TriviaRanking, TriviaRankingParticipant } from './trivia-ranking';
-import { Question, buildAnswer, Answer } from './question';
+import { buildAnswer } from './question';
 
 const SECOND = 1000;
 
@@ -10,13 +11,14 @@ const calculateScore = (
   question: Question,
   timePerQuestion: number
 ): number => {
-  const defaultAnswer: Answer = buildAnswer({
-    time: timePerQuestion,
-  });
+  const defaultAnswer: Answer = buildAnswer({ time: timePerQuestion });
+
   const answer = participant.answers[questionIndex] || defaultAnswer;
+
   const answerTimeSeconds = Math.floor(
     (answer.time - answer.startTime) / SECOND
   );
+
   const timePerQuestionSeconds = Math.floor(timePerQuestion / SECOND);
 
   if (answer.selectedAnswerIndex !== question.correctAnswerIndex) {
@@ -65,9 +67,9 @@ const buildRanking = (trivia: Trivia): TriviaRanking => {
     .map(
       ([uid, { displayName, photoURL, email }]): TriviaRankingParticipant => ({
         uid,
-        displayName,
-        email,
-        photoURL,
+        displayName: displayName || '',
+        email: email || '',
+        photoURL: photoURL || '',
         score: calculateTotalScore(
           (trivia.participants || {})[uid] || buildTriviaParticipant(),
           trivia.questions,

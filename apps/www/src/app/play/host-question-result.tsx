@@ -1,55 +1,100 @@
-import React from 'react';
-import { TriviaComponentProps } from './symbols';
+import React, { useEffect, useState } from 'react';
+import { TriviaHostQuestionResultProps } from './symbols';
 import Chart from 'react-google-charts';
 import { goToNextQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
-import { buildAnswer } from '../shared/question';
+import { buildAnswer, buildQuestion } from '../shared/question';
+import {
+  Answer,
+  Participants,
+  Question,
+  Trivia,
+  TriviaParticipant,
+} from '../shared/common';
 
 type DataItem = [string, number];
 
-const HostQuestionResult = ({ trivia, triviaId }: TriviaComponentProps) => {
-  const currentQuestion = trivia.questions[trivia.currentQuestionIndex];
+type DataItems = [[string, string], ...DataItem[]] | null;
 
-  const amountAnswersPerPossibleAnswers: [[string, string], ...DataItem[]] = [
-    ['Answer', 'People who answered'],
-    ...currentQuestion.possibleAnswers.map(
-      (possibleAnswer, possibleAnswerIndex) => {
-        const answerChecks = Object.values(trivia.participants || {}).map(
-          (triviaParticipant) => {
-            const triviaParticipantAnswer =
-              triviaParticipant.answers[trivia.currentQuestionIndex] ||
-              buildAnswer();
-            return (
-              triviaParticipantAnswer.selectedAnswerIndex ===
-              possibleAnswerIndex
-            );
-          }
-        );
-        const answersAmount = answerChecks.reduce(
-          (prev, curr) => prev + (curr ? 1 : 0),
-          0
-        );
+const checkParticipantAnswer = (
+  participant: TriviaParticipant,
+  questionIndex: number,
+  answerIndex: number
+): boolean => {
+  const answer = participant.answers[questionIndex];
+  return answer?.selectedAnswerIndex === answerIndex;
+};
 
-        const result: DataItem = [possibleAnswer, answersAmount];
-        return result;
-      }
-    ),
-  ];
+const checkQuestionAnswers = (
+  answer: string,
+  answerIndex: number,
+  questionIndex: number,
+  participants: Participants
+): DataItem => {
+  const answerChecks = Object.values(participants).map((participant) =>
+    checkParticipantAnswer(participant, questionIndex, answerIndex)
+  );
+  return [
+    answer,
+    answerChecks.reduce((amount, check) => amount + (check ? 1 : 0), 0),
+  ] as DataItem;
+};
 
-  const handleGoToNextQuestion = () => goToNextQuestion(triviaId, trivia);
+const HostQuestionResult = ({
+  trivia: { questions, currentQuestionIndex, participants },
+  triviaId,
+}: TriviaHostQuestionResultProps) => {
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [chartData, setChartData] = useState<DataItems>(null);
+
+  useEffect(() => {
+    if (currentQuestionIndex !== null) {
+      const currentQuestion = questions[currentQuestionIndex];
+
+      const dataItems: DataItems = currentQuestion
+        ? [
+            ['Answer', 'People who answered'],
+            ...currentQuestion.possibleAnswers.map((answer, answerIndex) =>
+              checkQuestionAnswers(
+                answer,
+                answerIndex,
+                currentQuestionIndex,
+                participants
+              )
+            ),
+          ]
+        : null;
+
+      setChartData(dataItems);
+
+      setQuestion(currentQuestion);
+    }
+  }, [questions, currentQuestionIndex, participants]);
+
+  const handleGoToNextQuestion = () =>
+    goToNextQuestion(triviaId, {
+      questions,
+      currentQuestionIndex,
+      participants,
+    } as Trivia);
 
   return (
     <main className="trivia-in-progress">
-      <Chart
-        chartType="PieChart"
-        width={'500px'}
-        height={'300px'}
-        data={amountAnswersPerPossibleAnswers}
-      />
-      <h1>
-        Correct answer:{' '}
-        {currentQuestion.possibleAnswers[currentQuestion.correctAnswerIndex]}
-      </h1>
+      {!!chartData && (
+        <Chart
+          chartType="PieChart"
+          width={'500px'}
+          height={'300px'}
+          data={chartData}
+        />
+      )}
+      {question?.correctAnswerIndex && (
+        <h1>
+          {`Correct answer: ${
+            question.possibleAnswers[question.correctAnswerIndex]
+          }`}
+        </h1>
+      )}
       <Button
         variant="contained"
         color="primary"

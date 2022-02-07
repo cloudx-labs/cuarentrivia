@@ -1,45 +1,57 @@
-import React, { useState, FormEvent, ChangeEvent } from 'react';
-import Authenticate from '../shared/authenticate';
-import useTitle from '../shared/use-title.hook';
-import { User } from 'firebase/app';
+import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { User } from 'firebase/auth';
 import { Button, TextField } from '@material-ui/core';
-import { buildQuestion, Question } from '../shared/question';
-import { createTemplate } from '../shared/trivias.service';
 import SubmitError from './submit-error';
-import { useHistory } from 'react-router-dom';
 import QuestionForm from './question-form';
-
-import './index.scss';
-import { TriviaTemplate, buildTriviaTemplate } from '../shared/trivia';
 import Nav from '../nav';
+import Authenticate from '../shared/authenticate';
+import { Question, TriviaTemplate } from '../shared/common';
+import { buildDefaultQuestion } from '../shared/question';
+import { buildTriviaTemplate } from '../shared/trivia';
+import { createTemplate } from '../shared/trivias.service';
+import useTitle from '../shared/use-title.hook';
+import './index.scss';
 
 const CreateTriviaContent = ({ user }: { user: User }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
+
+  const [error, setError] = useState<Error | null>(null);
   const [name, setName] = useState<string>('');
-  const [questions, setQuestions] = useState<Question[]>([buildQuestion()]);
-  const [error, setError] = useState<Error>(null);
+  const [questions, setQuestions] = useState<Question[]>([
+    buildDefaultQuestion(),
+  ]);
 
-  const handleAdd = () => {
-    setQuestions((questions) => questions.concat([buildQuestion()]));
-  };
+  const isDisabled = useMemo(
+    () =>
+      !name ||
+      !questions ||
+      questions.some(
+        ({ possibleAnswers, correctAnswerIndex, question }: Question) =>
+          !question ||
+          !possibleAnswers ||
+          (correctAnswerIndex && correctAnswerIndex < 0) ||
+          possibleAnswers.some((answer) => !answer)
+      ),
+    [name, questions]
+  );
 
-  const handleRemove = (index: number) => {
-    setQuestions((questions) => [
-      ...questions.slice(0, index),
-      ...questions.slice(index + 1),
-    ]);
-  };
+  const handleAdd = () =>
+    setQuestions(questions.concat(buildDefaultQuestion()));
 
-  const handleSetQuestion = (question: Question, index: number) => {
-    setQuestions((questions) => [
+  const handleRemove = (index: number) =>
+    setQuestions([...questions.slice(0, index), ...questions.slice(index + 1)]);
+
+  const handleSetQuestion = (question: Question, index: number) =>
+    setQuestions([
       ...questions.slice(0, index),
       question,
       ...questions.slice(index + 1),
     ]);
-  };
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
     try {
       const triviaToCreate: TriviaTemplate = buildTriviaTemplate({
         friendlyName: name,
@@ -49,24 +61,15 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         questions,
       });
       await createTemplate(triviaToCreate, user);
-      history.push('/trivias');
+      navigate('trivias');
     } catch (error) {
-      setError(error);
+      setError(error as Error);
     }
   };
 
-  const isFormValid =
-    !!name &&
-    questions.every(
-      (question) =>
-        question.question &&
-        question.correctAnswerIndex > -1 &&
-        question.possibleAnswers.every((possibleAnswer) => !!possibleAnswer)
-    );
-
-  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+  const handleNameChange = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => setName(value.toString());
 
   return (
     <Nav>
@@ -79,28 +82,30 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
               onChange={handleNameChange}
               className="title"
             />
-            {questions.map((question, index) => (
+            {questions.map((question, questionIndex) => (
               <QuestionForm
-                key={index}
+                key={questionIndex}
                 question={question}
-                setQuestion={(question) => handleSetQuestion(question, index)}
-                remove={() => handleRemove(index)}
+                setQuestion={(questionUpdate) =>
+                  handleSetQuestion(questionUpdate, questionIndex)
+                }
+                remove={() => handleRemove(questionIndex)}
               />
             ))}
             <div className="action-buttons">
               <Button
                 variant="contained"
+                color="primary"
                 onClick={handleAdd}
                 className="add"
-                color="primary"
               >
                 Add question
               </Button>
               <Button
-                color="primary"
                 variant="contained"
+                color="primary"
                 type="submit"
-                disabled={!isFormValid}
+                disabled={isDisabled}
                 className="submit"
               >
                 Create
@@ -117,7 +122,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
 const Create = () => {
   useTitle('Create Trivia');
 
-  return <Authenticate component={CreateTriviaContent}></Authenticate>;
+  return <Authenticate component={CreateTriviaContent} />;
 };
 
 export default Create;

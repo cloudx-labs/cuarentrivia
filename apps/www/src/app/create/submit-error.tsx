@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface SubmitErrorProps {
-  error?: Error;
+  error: Error | null;
 }
 
 const SubmitError = ({ error }: SubmitErrorProps) =>
