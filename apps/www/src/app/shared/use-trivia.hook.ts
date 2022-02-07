@@ -1,14 +1,5 @@
-import {
-  Trivia,
-  TriviaParticipant,
-  Participants,
-  Question,
-} from './common';
-import {
-  collection,
-  doc,
-  SnapshotListenOptions,
-} from 'firebase/firestore';
+import { Trivia, TriviaParticipant, Participants, Question } from './common';
+import { collection, doc, SnapshotListenOptions } from 'firebase/firestore';
 import {
   useDocumentData,
   useCollectionData,
@@ -21,7 +12,9 @@ const firestoreOptions: {
   snapshotListenOptions: SnapshotListenOptions;
 } = { snapshotListenOptions: { includeMetadataChanges: true } };
 
-const useTrivia = (triviaId: string): [Trivia | null, Loading, Error | null] => {
+const useTrivia = (
+  triviaId: string
+): [Trivia | null, Loading, Error | null] => {
   const db = getDb();
   const triviaRef = doc(db, `/trivias/${triviaId}`);
   const questionsRef = collection(triviaRef, 'questions');
@@ -82,7 +75,10 @@ const useTrivia = (triviaId: string): [Trivia | null, Loading, Error | null] => 
   return [
     trivia,
     triviaBaseLoading || questionsLoading || triviaParticipantsLoading,
-    triviaBaseError as Error || questionsError as Error || triviaParticipantsError as Error || null,
+    (triviaBaseError as Error) ||
+      (questionsError as Error) ||
+      (triviaParticipantsError as Error) ||
+      null,
   ];
 };
 

@@ -12,7 +12,7 @@ export interface TriviaCompletedProps {
  * trivia
  * triviaId
  */
- export interface TriviaHostQuestionResultProps extends TriviaCompletedProps {
+export interface TriviaHostQuestionResultProps extends TriviaCompletedProps {
   triviaId: string;
 }
 
@@ -20,8 +20,8 @@ export interface TriviaCompletedProps {
  * trivia
  * user
  */
- export interface TriviaQuestionResultProps extends TriviaCompletedProps {
-  user: User;  
+export interface TriviaQuestionResultProps extends TriviaCompletedProps {
+  user: User;
 }
 
 /**
@@ -29,6 +29,6 @@ export interface TriviaCompletedProps {
  * triviaId
  * user
  */
- export interface TriviaJoiningProps extends TriviaHostQuestionResultProps {
+export interface TriviaJoiningProps extends TriviaHostQuestionResultProps {
   user: User;
 }

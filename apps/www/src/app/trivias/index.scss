@@ -13,7 +13,6 @@
       line-height: 2.6rem;
       font-weight: normal;
     }
-
   }
   .trivia-list {
     display: flex;
@@ -27,13 +26,12 @@
         display: grid;
         grid-template-columns: 36px 36px 36px;
         column-gap: 4px;
-        .MuiIconButton-edgeEnd{
-          margin: 0; 
-         }  
+        .MuiIconButton-edgeEnd {
+          margin: 0;
+        }
         .icon-button {
           padding: 0;
           height: 36px;
-
         }
       }
     }

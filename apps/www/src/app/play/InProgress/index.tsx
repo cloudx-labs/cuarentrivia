@@ -42,26 +42,46 @@ const AnswerButton = ({
 
 const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
   const [answerError, setAnswerError] = useState<Error | null>(null);
-  const [selectedAnswerStartTime, setSelectedAnswerStartTime] = useState<number | undefined>(undefined);
+  const [selectedAnswerStartTime, setSelectedAnswerStartTime] = useState<
+    number | undefined
+  >(undefined);
 
   const [completed, setCompleted] = useState<boolean>(false);
   const [question, setQuestion] = useState<Question | null>(null);
   const [answeredIndex, setAnsweredIndex] = useState<number | null>(null);
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number | null>(null);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<
+    number | null
+  >(null);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const participant = trivia.participants[user.uid];
-    const currentAnswer = participant && trivia.currentQuestionIndex !== null && participant.answers[trivia.currentQuestionIndex];
-    const answerIndex = (currentAnswer && currentAnswer.selectedAnswerIndex) || null;
-    const answerStartTime = (currentAnswer && currentAnswer.startTime) || undefined;
+    const currentAnswer =
+      participant &&
+      trivia.currentQuestionIndex !== null &&
+      participant.answers[trivia.currentQuestionIndex];
+    const answerIndex =
+      (currentAnswer && currentAnswer.selectedAnswerIndex) || null;
+    const answerStartTime =
+      (currentAnswer && currentAnswer.startTime) || undefined;
 
-    setQuestion(trivia.currentQuestionIndex !== null ? trivia.questions[trivia.currentQuestionIndex] : null);
+    setQuestion(
+      trivia.currentQuestionIndex !== null
+        ? trivia.questions[trivia.currentQuestionIndex]
+        : null
+    );
     setSelectedAnswerStartTime(answerStartTime);
     setCurrentQuestionIndex(trivia.currentQuestionIndex);
     setSelectedAnswerIndex(answerIndex);
-  }, [trivia.participants, trivia.currentQuestionIndex, trivia.questions, user.uid]);
+  }, [
+    trivia.participants,
+    trivia.currentQuestionIndex,
+    trivia.questions,
+    user.uid,
+  ]);
 
   useEffect(() => {
     setAnswerError(null);
@@ -73,7 +93,7 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
     setAnsweredIndex(index);
     try {
       if (!currentQuestionIndex && currentQuestionIndex !== 0) {
-        throw new Exception(500, "Question index is null.");
+        throw new Exception(500, 'Question index is null.');
       }
 
       await answerQuestion(
@@ -91,12 +111,12 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
 
   const handleSetAnswerStartTime = async (answerStartTime: number) =>
     currentQuestionIndex != null &&
-    await setAnswerStartTime(
+    (await setAnswerStartTime(
       triviaId,
       currentQuestionIndex,
       user,
       answerStartTime
-    );
+    ));
 
   return completed ? (
     <QuestionResult {...{ trivia, user }} />
@@ -117,18 +137,22 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
             )}
           </div>
         </section>
-        {!!question && question.attachment && <Attachment value={question.attachment} />}
+        {!!question && question.attachment && (
+          <Attachment value={question.attachment} />
+        )}
         <Error error={answerError} />
         <div className="options">
-          {!!question && currentQuestionIndex !== null && question.possibleAnswers.map((possibleAnswer, index) => (
-            <AnswerButton
-              key={index}
-              possibleAnswer={possibleAnswer}
-              answered={answeredIndex !== null}
-              selected={answeredIndex === index}
-              selectOption={() => selectOption(index)}
-            />
-          ))}
+          {!!question &&
+            currentQuestionIndex !== null &&
+            question.possibleAnswers.map((possibleAnswer, index) => (
+              <AnswerButton
+                key={index}
+                possibleAnswer={possibleAnswer}
+                answered={answeredIndex !== null}
+                selected={answeredIndex === index}
+                selectOption={() => selectOption(index)}
+              />
+            ))}
         </div>
       </main>
     </Nav>

@@ -16,9 +16,9 @@ const ParticipantAvatar = ({
   email,
   photoURL,
 }: TriviaRankingParticipantData) => {
-   const alt: string = displayName || email;
+  const alt: string = displayName || email;
 
-   const src: string = photoURL;
+  const src: string = photoURL;
 
   const avatarProps = src ? { alt, src } : {};
 
@@ -28,7 +28,9 @@ const ParticipantAvatar = ({
 
   const lastName = fullNameWords.pop();
 
-  const initials = src ? null : `${(firstName || '').charAt(0)}${(lastName || '')?.charAt(0)}`;
+  const initials = src
+    ? null
+    : `${(firstName || '').charAt(0)}${(lastName || '')?.charAt(0)}`;
 
   return <Avatar {...avatarProps}>{initials}</Avatar>;
 };
@@ -48,7 +50,9 @@ const HostCompleted = ({ trivia }: TriviaCompletedProps) => {
               </ListItemAvatar>
               <ParticipantAvatar {...participant} />
               <ListItemText className="name">
-                  {`${participant.score} - ${participant.displayName || participant.email}`}
+                {`${participant.score} - ${
+                  participant.displayName || participant.email
+                }`}
               </ListItemText>
             </ListItem>
           ))}

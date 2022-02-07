@@ -158,7 +158,8 @@ export const answerQuestion = async (
   user: User,
   selectedAnswerIndex: number,
   time: number
-) => await updateParticipantAnswers(triviaId, questionIndex, user, {
+) =>
+  await updateParticipantAnswers(triviaId, questionIndex, user, {
     selectedAnswerIndex,
     time,
   });
@@ -226,7 +227,7 @@ export const startTrivia = async ({
       possibleAnswers,
       correctAnswerIndex,
       value,
-//      startTime: null,
+      //      startTime: null,
       attachment,
     })
   );
@@ -303,7 +304,7 @@ export const updateParticipantAnswers = async (
   const participantSnapshot = await getDoc(participantRef);
   const participant = participantSnapshot.data() as TriviaParticipant;
   const originalAnswers = participant.answers;
-//  const answers = upsertAnswer(originalAnswers, questionIndex, answerPatch);
+  //  const answers = upsertAnswer(originalAnswers, questionIndex, answerPatch);
   const answers = mapAnswers(originalAnswers, questionIndex, answerPatch);
 
   await updateDoc(participantRef, { answers });

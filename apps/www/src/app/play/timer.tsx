@@ -27,7 +27,9 @@ const Timer = ({
   const timerInPercentage = (timer / timePerQuestion) * 100;
 
   useEffect(() => {
-    setTimer(timePerQuestion - (startTime ? (new Date().getTime() - startTime) : 0));
+    setTimer(
+      timePerQuestion - (startTime ? new Date().getTime() - startTime : 0)
+    );
   }, [questionIndex, startTime, timePerQuestion]);
 
   useEffect(() => {

@@ -33,32 +33,32 @@ export type QuestionTemplate = Pick<
 >;
 
 export interface Participants {
-    [key: string]: TriviaParticipant;
-  }
-  
-  export type TriviaStatus =
-    | 'joining'
-    | 'inProgress'
-    | 'questionResult'
-    | 'intermission'
-    | 'completed';
-  
-  export interface TriviaBase {
-    friendlyName: string;
-    createdBy: string;
-    createdByDisplayName: string | null;
-    createdByEmail: string | null;
-    status: TriviaStatus;
-    timePerQuestion: number;
-    currentQuestionIndex: number | null;
-  }
-  
-  export interface Trivia extends TriviaBase {
-    questions: Question[];
-    participants: Participants;
-  }
-  
-  export type TriviaTemplateBase = Pick<
+  [key: string]: TriviaParticipant;
+}
+
+export type TriviaStatus =
+  | 'joining'
+  | 'inProgress'
+  | 'questionResult'
+  | 'intermission'
+  | 'completed';
+
+export interface TriviaBase {
+  friendlyName: string;
+  createdBy: string;
+  createdByDisplayName: string | null;
+  createdByEmail: string | null;
+  status: TriviaStatus;
+  timePerQuestion: number;
+  currentQuestionIndex: number | null;
+}
+
+export interface Trivia extends TriviaBase {
+  questions: Question[];
+  participants: Participants;
+}
+
+export type TriviaTemplateBase = Pick<
   Trivia,
   | 'friendlyName'
   | 'createdBy'

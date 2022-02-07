@@ -25,6 +25,6 @@ export const environment = {
         provider: EmailAuthProvider.PROVIDER_ID,
         requireDisplayName: true,
       },
-    ]
-  }
+    ],
+  },
 };

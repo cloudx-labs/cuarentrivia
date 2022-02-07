@@ -1,8 +1,4 @@
-import {
-  ComponentType,
-  PropsWithChildren,
-  FunctionComponent,
-} from 'react';
+import { ComponentType, PropsWithChildren, FunctionComponent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAuth, User } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -26,17 +22,21 @@ const Authenticate = <T extends AuthenticatedProps>({
 
   const LoadingState = loading && <div>loading</div>;
 
-  const EmptyState = !error && !loading && !user && navigate(`/login?redirectTo=${location.pathname}`);
+  const EmptyState =
+    !error &&
+    !loading &&
+    !user &&
+    navigate(`/login?redirectTo=${location.pathname}`);
 
   const ComponentToRender = component as ComponentType<AuthenticatedProps>;
 
   return (
-      <>
-        {ErrorState}
-        {LoadingState}
-        {EmptyState}
-        {user && <ComponentToRender user={user} />}
-      </>
+    <>
+      {ErrorState}
+      {LoadingState}
+      {EmptyState}
+      {user && <ComponentToRender user={user} />}
+    </>
   );
 };
 

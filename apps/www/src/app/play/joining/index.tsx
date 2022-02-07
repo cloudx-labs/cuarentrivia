@@ -23,16 +23,22 @@ interface ListItemTriviaParticipantProps {
 const ListItemTriviaParticipantAvatar = ({
   participant,
 }: ListItemTriviaParticipantProps) => {
-  const avatarProps = participant.photoURL ? {
-    alt: (participant.displayName || participant.email)?.toString(),
-    src: participant.photoURL.toString()
-  } : {};
+  const avatarProps = participant.photoURL
+    ? {
+        alt: (participant.displayName || participant.email)?.toString(),
+        src: participant.photoURL.toString(),
+      }
+    : {};
 
-  const children: ReactElement | null = participant.photoURL ? null : <PersonIcon />;
+  const children: ReactElement | null = participant.photoURL ? null : (
+    <PersonIcon />
+  );
 
-  return <Avatar {...avatarProps} className="avatar">
+  return (
+    <Avatar {...avatarProps} className="avatar">
       {children}
-  </Avatar>;
+    </Avatar>
+  );
 };
 
 const ListItemTriviaParticipant = ({

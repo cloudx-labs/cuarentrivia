@@ -54,11 +54,11 @@ const HostInProgress = ({
 
   const handleSetHostStartTime = async (startTime: number) =>
     trivia.currentQuestionIndex !== null &&
-    await setQuestionStartTime(
+    (await setQuestionStartTime(
       triviaId,
       trivia.currentQuestionIndex,
       startTime
-    );
+    ));
 
   return completed ? (
     <HostQuestionResult {...{ trivia, triviaId }} />

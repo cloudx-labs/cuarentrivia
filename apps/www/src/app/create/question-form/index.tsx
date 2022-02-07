@@ -78,7 +78,9 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
         answerIndex,
         selectedAnswer.possibleAnswer
       ),
-      correctAnswerIndex: selectedAnswer.isCorrectAnswer ? answerIndex : question.correctAnswerIndex,
+      correctAnswerIndex: selectedAnswer.isCorrectAnswer
+        ? answerIndex
+        : question.correctAnswerIndex,
     });
 
   // TODO: Fix attaching file bug.
@@ -105,24 +107,27 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
     }
   };
 
-  const handleChangeQuestion = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => setQuestion({
-    ...question,
-    question: value,
-  });
+  const handleChangeQuestion = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) =>
+    setQuestion({
+      ...question,
+      question: value,
+    });
 
   return (
     <section className="question-form">
       <section className="title-container">
-          <TextField
-            id="question"
-            label="Question"
-            className="title"
-            value={question.question}
-            onChange={handleChangeQuestion}
-          />
-          <IconButton color="primary" onClick={remove} className="delete-button">
-              <Delete />
-          </IconButton>
+        <TextField
+          id="question"
+          label="Question"
+          className="title"
+          value={question.question}
+          onChange={handleChangeQuestion}
+        />
+        <IconButton color="primary" onClick={remove} className="delete-button">
+          <Delete />
+        </IconButton>
       </section>
       <section className="attachment-container">
         <input
@@ -145,7 +150,7 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
           </label>
         </Tooltip>
         <label>
-            {question.attachment ? question.attachment.name : 'Select File'}
+          {question.attachment ? question.attachment.name : 'Select File'}
         </label>
       </section>
       <section className="answer-container">

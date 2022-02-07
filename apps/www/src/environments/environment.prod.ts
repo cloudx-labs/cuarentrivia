@@ -21,6 +21,6 @@ export const environment = {
           hd: 'cloudx.com',
         },
       },
-    ]
+    ],
   },
 };

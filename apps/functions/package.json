@@ -1,6 +1,6 @@
 {
-    "name": "@cuarentrivia/functions",
-    "engines": {
-        "node": "16"
-    }
+  "name": "@cuarentrivia/functions",
+  "engines": {
+    "node": "16"
+  }
 }
