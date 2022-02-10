@@ -22,7 +22,7 @@ const QuestionResult = ({
   useEffect(() => {
     const participantUser = participants[user.uid];
     const selectedAnswer =
-      currentQuestionIndex || currentQuestionIndex === 0
+      (currentQuestionIndex !== null && participantUser)
         ? participantUser.answers[currentQuestionIndex]
         : null;
     const newMessage =
