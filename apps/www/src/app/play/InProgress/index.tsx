@@ -1,19 +1,17 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
+import { Button } from '@material-ui/core';
+import { Attachment } from '../Attachment';
 import { TriviaJoiningProps } from '../symbols';
+import QuestionResult from '../QuestionResult';
+import Timer from '../timer';
+import Nav from '../../nav';
 import {
   answerQuestion,
   setAnswerStartTime,
 } from '../../shared/trivias.service';
-import { Button } from '@material-ui/core';
-import './index.scss';
-import Nav from '../../nav';
-import QuestionResult from '../QuestionResult';
 import Error from '../../shared/error';
-import Timer from '../timer';
-import { Attachment } from '../Attachment';
+import { buildAnswer, buildDefaultQuestion } from '../../shared/question';
+import './index.scss';
 
 const Answer = ({
   possibleAnswer,
@@ -41,30 +39,37 @@ const Answer = ({
   );
 };
 
-const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
-  const currentQuestion = trivia.questions[trivia.currentQuestionIndex || 0];
-  const participant = trivia.participants[user.uid];
-  const currentAnswer = participant && participant.answers[trivia.currentQuestionIndex || 0];
-  const answerStartTime = currentAnswer?.startTime || undefined;
-  const selectedAnswerIndex = currentAnswer?.selectedAnswerIndex || null;
-
+const InProgress = (params: TriviaJoiningProps) => {
   const [completed, setCompleted] = useState(false);
   const [answerError, setAnswerError] = useState<Error>();
-
   const [clickedAnswer, setClickedAnswer] = useState<number | null>(null);
+
+  const { trivia, user, triviaId } = params;
+  const { questions, currentQuestionIndex, timePerQuestion } = trivia;
+  const { question, attachment, possibleAnswers } =
+    questions[currentQuestionIndex || 0] || buildDefaultQuestion();
+  const participant = trivia.participants[user.uid];
+  const currentAnswer =
+    (participant && participant.answers[trivia.currentQuestionIndex || 0]) || buildAnswer();
+  const questionAnswered =
+    clickedAnswer !== null || currentAnswer.selectedAnswerIndex !== null;
+  const selectionIndex =
+    currentAnswer.selectedAnswerIndex !== null
+      ? currentAnswer.selectedAnswerIndex
+      : clickedAnswer;
 
   useEffect(() => {
     setCompleted(false);
     setAnswerError(undefined);
     setClickedAnswer(null);
-  }, [trivia.currentQuestionIndex, selectedAnswerIndex, clickedAnswer]);
+  }, [currentQuestionIndex, currentAnswer.selectedAnswerIndex]);
 
   const selectOption = async (index: number) => {
     try {
       setClickedAnswer(index);
       await answerQuestion(
         triviaId,
-        trivia.currentQuestionIndex || 0,
+        currentQuestionIndex || 0,
         user,
         index,
         new Date().getTime()
@@ -74,50 +79,42 @@ const InProgress = ({ trivia, triviaId, user }: TriviaJoiningProps) => {
     }
   };
 
-  const handleSetAnswerStartTime = async (answerStartTime: number) => {
-    await setAnswerStartTime(
-      triviaId,
-      trivia.currentQuestionIndex || 0,
-      user,
-      answerStartTime
-    );
-  };
+  const handleSetAnswerStartTime = async (time: number) =>
+    await setAnswerStartTime(triviaId, currentQuestionIndex || 0, user, time);
 
-  if (!completed) {
-    return (
-      <Nav>
-        <main className="question">
-          <section className="header">
-            <h1 className="title">{currentQuestion?.question}</h1>
-            <div className="in-progress-timer">
-              <Timer
-                questionIndex={trivia.currentQuestionIndex}
-                startTime={answerStartTime}
-                timePerQuestion={trivia.timePerQuestion}
-                setCompleted={setCompleted}
-                setStartTime={handleSetAnswerStartTime}
-              />
-            </div>
-          </section>
-          {currentQuestion?.attachment && <Attachment value={currentQuestion.attachment} />}
-          <Error error={answerError || null} />
-          <div className="options">
-            {currentQuestion?.possibleAnswers.map((possibleAnswer, index) => (
-              <Answer
-                key={index}
-                possibleAnswer={possibleAnswer}
-                answered={clickedAnswer !== null || selectedAnswerIndex !== null}
-                selected={(selectedAnswerIndex !== null ? selectedAnswerIndex : clickedAnswer) === index}
-                selectOption={() => selectOption(index)}
-              />
-            ))}
+  return completed ? (
+    <QuestionResult {...params} />
+  ) : (
+    <Nav>
+      <main className="question">
+        <section className="header">
+          <h1 className="title">{question}</h1>
+          <div className="in-progress-timer">
+            <Timer
+              questionIndex={currentQuestionIndex}
+              startTime={currentAnswer.startTime}
+              timePerQuestion={timePerQuestion}
+              setCompleted={setCompleted}
+              setStartTime={handleSetAnswerStartTime}
+            />
           </div>
-        </main>
-      </Nav>
-    );
-  } else {
-    return <QuestionResult {...{ trivia, triviaId, user }} />;
-  }
+        </section>
+        {attachment && <Attachment value={attachment} />}
+        <Error error={answerError || null} />
+        <div className="options">
+          {possibleAnswers.map((possibleAnswer, index) => (
+            <Answer
+              key={index}
+              possibleAnswer={possibleAnswer}
+              answered={questionAnswered}
+              selected={selectionIndex === index}
+              selectOption={() => selectOption(index)}
+            />
+          ))}
+        </div>
+      </main>
+    </Nav>
+  );
 };
 
 export default InProgress;
