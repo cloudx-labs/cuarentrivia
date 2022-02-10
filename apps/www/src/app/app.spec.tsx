@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+
 import App from './app';
 import initFirebase from './shared/init-firebase';
 import { Auth } from 'firebase/auth'
@@ -20,8 +21,6 @@ describe('App', () => {
     });
 
     mockAuth.mockReturnValue([{ uid: 'uuid'}, true, false]);
-
-    initFirebase();
   });
 
   it('should render successfully', () => {
