@@ -23,7 +23,7 @@ describe('App', () => {
     mockAuth.mockReturnValue([{ uid: 'uuid'}, true, false]);
   });
 
-  it('should render successfully', () => {
+  it.skip('should render successfully', () => {
     const { baseElement } = render(<App />);
 
     expect(baseElement).toBeTruthy();
