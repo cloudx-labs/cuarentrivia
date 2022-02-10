@@ -83,14 +83,13 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
         : question.correctAnswerIndex,
     });
 
-  // TODO: Fix attaching file bug.
   const handleChangeAttachment = async ({
     target: { files },
   }: ChangeEvent<HTMLInputElement>) => {
     const file = files?.length ? files.item(0) : null;
 
     if (file?.name && file?.type) {
-      const storageRef = ref(storage, `${Date.now()}_${file.name || ''}`);
+      const storageRef = ref(storage, `${Date.now()}_${file.name}`);
 
       await uploadBytes(storageRef, file);
 
