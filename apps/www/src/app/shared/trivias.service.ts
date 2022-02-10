@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   DocumentReference,
+  DocumentData,
   getDoc,
   getDocs,
   limit,
@@ -33,26 +34,45 @@ const mapAnswers = (
   questionIndex: number,
   answerPatch: Partial<Answer>
 ): Answer[] => {
-  const answers: Answer[] = [];
+  const defaultAnswer: Answer = {
+    selectedAnswerIndex: null,
+    time: 0,
+    startTime: 0,
+  };
 
-  for (let i = 0; i <= questionIndex; i++) {
-    let answer: Answer;
-    const originalAnswer = originalAnswers[i];
+  const answers: Answer[] = new Array<Answer>(questionIndex + 1).fill(
+    defaultAnswer
+  );
 
-    if (i === questionIndex) {
-      answer = { ...originalAnswer, ...answerPatch };
-    } else {
-      if (!originalAnswer) {
-        answer = { selectedAnswerIndex: null, time: 0, startTime: 0 };
-      } else {
-        answer = originalAnswer;
-      }
-    }
+  const originalAnswer: Answer =
+    originalAnswers[questionIndex] || defaultAnswer;
 
-    answers[i] = answer;
-  }
+  answers[questionIndex] = { ...originalAnswer, ...answerPatch };
 
   return answers;
+};
+
+export const getParticipant = async (
+  participantRef: DocumentReference<DocumentData>,
+  user: User
+): Promise<TriviaParticipant> => {
+  const participant = await getDoc(participantRef);
+
+  if (participant.exists()) {
+    return participant.data() as TriviaParticipant;
+  }
+
+  const triviaParticipant = buildTriviaParticipant({
+    displayName: user.displayName,
+    email: user.email,
+    photoURL: user.photoURL,
+  });
+
+  await setDoc(participantRef, triviaParticipant);
+
+  const newParticipant = await getDoc(participantRef);
+
+  return newParticipant.data() as TriviaParticipant;
 };
 
 export const joinTrivia = async (
@@ -90,19 +110,7 @@ export const joinTrivia = async (
 
   const participantRef = doc(collection(triviaRef, 'participants'), user.uid);
 
-  const participant = await getDoc(participantRef);
-
-  if (participant.exists()) {
-    return triviaSnapshot.id;
-  }
-
-  const triviaParticipant = buildTriviaParticipant({
-    displayName: user.displayName,
-    email: user.email,
-    photoURL: user.photoURL,
-  });
-
-  await setDoc(participantRef, triviaParticipant);
+  await getParticipant(participantRef, user);
 
   return triviaSnapshot.id;
 };
@@ -301,13 +309,20 @@ export const updateParticipantAnswers = async (
     db,
     `/trivias/${triviaId}/participants/${user.uid}`
   );
-  const participantSnapshot = await getDoc(participantRef);
-  const participant = participantSnapshot.data() as TriviaParticipant;
-  const originalAnswers = participant.answers;
-  //  const answers = upsertAnswer(originalAnswers, questionIndex, answerPatch);
-  const answers = mapAnswers(originalAnswers, questionIndex, answerPatch);
+  const participant = await getParticipant(participantRef, user);
+  const originalAnswers = participant?.answers || [];
 
-  await updateDoc(participantRef, { answers });
+  const currentAnswer = originalAnswers[questionIndex];
+
+  const answerAvailable =
+    currentAnswer?.selectedAnswerIndex === null ||
+    answerPatch?.selectedAnswerIndex === undefined;
+
+  if (answerAvailable) {
+    const answers = mapAnswers(originalAnswers, questionIndex, answerPatch);
+
+    await updateDoc(participantRef, { answers });
+  }
 };
 
 export const setQuestionStartTime = async (
