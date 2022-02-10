@@ -5,6 +5,7 @@ import { getAuth, UserCredential } from 'firebase/auth';
 import Nav from '../nav';
 import { useQuery } from '../shared/use-query.hook';
 import useTitle from '../shared/use-title.hook';
+import logo from '../../assets/icons/android-icon-36x36.png';
 import { environment } from '../../environments/environment';
 import './index.scss';
 
@@ -39,7 +40,7 @@ const Login = () => {
     <Nav notShowLogout={true}>
       <main className="login">
         <section className="login-content">
-          <img src="" alt="Logo" className="login-content-logo" />
+          <img src={logo} alt="Logo" className="login-content-logo" />
           <h1 className="login-content-title">Sign In</h1>
           <FirebaseAuth {...authProps} />
         </section>
