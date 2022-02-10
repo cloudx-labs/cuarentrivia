@@ -6,7 +6,7 @@ import { Auth } from 'firebase/auth'
 
 const mockAuth = jest.fn();
 
-describe('App', () => {
+describe.skip('App', () => {
   beforeAll(() => {
     jest.mock('firebase/auth', () => {
       return {
