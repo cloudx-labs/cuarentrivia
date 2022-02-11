@@ -2,36 +2,56 @@ import { render } from '@testing-library/react';
 
 import App from './app';
 import initFirebase from './shared/init-firebase';
-import { Auth } from 'firebase/auth'
 
-const mockAuth = jest.fn();
+jest.mock('./home', () => ({
+  __esModule: true,
+  default: () => <div>Home</div>,
+}));
 
-describe.skip('App', () => {
+jest.mock('./login', () => ({
+  __esModule: true,
+  default: () => <div>Login</div>,
+}));
+
+jest.mock('./play', () => ({
+  __esModule: true,
+  default: () => <div>Play</div>,
+}));
+
+describe('App', () => {
+  const initialPathname = '/';
+
   beforeAll(() => {
-    jest.mock('firebase/auth', () => {
-      return {
-        getAuth: jest.fn()
-      }
-    });
-
-    jest.mock('react-firebase-hooks/auth', () => {
-      return jest.fn().mockImplementation(() => {
-        return { useAuthState: mockAuth };
-      });
-    });
-
-    mockAuth.mockReturnValue([{ uid: 'uuid'}, true, false]);
+    initFirebase();
   });
 
-  it.skip('should render successfully', () => {
+  beforeEach(() => {
+    window.history.pushState({}, document.title, initialPathname);
+  });
+
+  it('should render successfully', () => {
     const { baseElement } = render(<App />);
 
     expect(baseElement).toBeTruthy();
   });
 
-  it.skip('should have "Sign In" as title', () => {
+  it('should route to "login" successfully', () => {
+    const loginPath = 'login';
+
+    window.history.pushState({}, document.title, loginPath);
+
     const { getByText } = render(<App />);
 
-    expect(getByText(/Sign In/gi)).toBeTruthy();
+    expect(getByText(/Login/gi)).toBeTruthy();
+  });
+
+  it('should route to "play" successfully', () => {
+    const playPath = 'play/fake-id';
+
+    window.history.pushState({}, document.title, playPath);
+
+    const { getByText } = render(<App />);
+
+    expect(getByText(/Play/gi)).toBeTruthy();
   });
 });
