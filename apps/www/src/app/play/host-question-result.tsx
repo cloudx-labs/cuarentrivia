@@ -3,9 +3,7 @@ import { TriviaHostQuestionResultProps } from './symbols';
 import Chart from 'react-google-charts';
 import { goToNextQuestion } from '../shared/trivias.service';
 import { Button } from '@material-ui/core';
-import { buildAnswer, buildQuestion } from '../shared/question';
 import {
-  Answer,
   Participants,
   Question,
   Trivia,
@@ -88,7 +86,7 @@ const HostQuestionResult = ({
           data={chartData}
         />
       )}
-      {question?.correctAnswerIndex && (
+      {!!question && question.correctAnswerIndex !== null && (
         <h1>
           {`Correct answer: ${
             question.possibleAnswers[question.correctAnswerIndex]
