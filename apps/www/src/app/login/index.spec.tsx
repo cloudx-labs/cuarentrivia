@@ -1,68 +1,35 @@
 import { BrowserRouter } from 'react-router-dom';
-import { User } from 'firebase/auth';
 import { render } from '@testing-library/react';
 import Login from './index';
-import initFirebase from '../shared/init-firebase';
-import { environment } from '../../environments/environment';
 
-const mockedUsedNavigate = jest.fn();
-
-const mockedUseLocation = jest.fn();
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: () => mockedUsedNavigate,
-  useLocation: () => mockedUseLocation,
+jest.mock('firebase/auth', () => ({
+  getAuth: jest.fn().mockReturnValue([{ uid: 'uuid' }, true, false]),
+  GoogleAuthProvider: { PROVIDER_ID: '' },
+  EmailAuthProvider: { PROVIDER_ID: '' },
 }));
 
-const user: User = {
-  displayName: 'user',
-  email: 'user',
-  phoneNumber: '',
-  photoURL: '',
-  providerId: '',
-  uid: 'uuid',
-  emailVerified: true,
-  isAnonymous: true,
-  metadata: {},
-  providerData: [],
-  refreshToken: '',
-  tenantId: null,
-  delete: () => new Promise(() => null),
-  getIdToken: () => new Promise(() => ''),
-  getIdTokenResult: () => new Promise(() => null),
-  reload: () => new Promise(() => null),
-  toJSON: () => ({}),
-};
+interface UiConfig {
+  callbacks: {
+    signInSuccessWithAuthResult(authResult: { user: { uid: string } }): boolean;
+  };
+}
 
-const getAuth = jest.fn();
+jest.mock('react-firebaseui', () => ({
+  FirebaseAuth: (props: { uiConfig: UiConfig }) => (
+    <button
+      name="login-button"
+      onClick={() =>
+        props.uiConfig.callbacks.signInSuccessWithAuthResult({
+          user: { uid: 'uuid' },
+        })
+      }
+    >
+      Login
+    </button>
+  ),
+}));
 
 describe('Login', () => {
-  beforeAll(() => {
-    initFirebase();
-
-    jest.mock('firebase/auth', () => ({
-      getAuth,
-    }));
-
-    jest.mock('react-firebase-hooks/auth', () =>
-      jest.fn().mockImplementation(() => ({
-        useAuthState: getAuth,
-      }))
-    );
-
-    jest.mock('react-firebaseui/FirebaseAuth', () => ({
-      ...jest.requireActual('react-firebaseui/FirebaseAuth'),
-      uiConfig: {
-        signInOptions: environment.firebaseUi.signInOptions,
-        callbacks: { signInSuccessWithAuthResult: jest.fn() },
-      },
-      firebaseAuth: () => getAuth,
-    }));
-
-    getAuth.mockReturnValue([user, true, false]);
-  });
-
   it('should render successfully', () => {
     const { baseElement } = render(
       <BrowserRouter>
