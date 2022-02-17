@@ -41,5 +41,3 @@ jobs:
         run: npm run affected:build:ci
       - name: Test
         run: npm run affected:test:ci
-      - name: Format
-        run: npm run format:write:ci --all
