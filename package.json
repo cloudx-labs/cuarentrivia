@@ -13,7 +13,9 @@
     "affected:test": "nx affected:test",
     "affected:test:ci": "nx affected:test --base=origin/main",
     "affected:lint": "nx affected:lint",
-    "affected:lint:ci": "nx affected:lint --base=origin/main"
+    "affected:lint:ci": "nx affected:lint --base=origin/main",
+    "precommit": "nx format:write --all",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -64,8 +66,9 @@
     "eslint-plugin-react": "7.27.0",
     "eslint-plugin-react-hooks": "^4.2.1-rc.0-next-848e802d2-20220204",
     "firebase-tools": "^10.1.2",
+    "husky": "^7.0.4",
     "jest": "27.2.3",
-    "prettier": "^2.3.1",
+    "prettier": "^2.5.1",
     "react-test-renderer": "17.0.2",
     "ts-jest": "27.0.5",
     "typescript": "~4.4.3",

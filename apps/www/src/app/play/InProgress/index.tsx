@@ -50,7 +50,8 @@ const InProgress = (params: TriviaJoiningProps) => {
     questions[currentQuestionIndex || 0] || buildDefaultQuestion();
   const participant = trivia.participants[user.uid];
   const currentAnswer =
-    (participant && participant.answers[trivia.currentQuestionIndex || 0]) || buildAnswer();
+    (participant && participant.answers[trivia.currentQuestionIndex || 0]) ||
+    buildAnswer();
   const questionAnswered =
     clickedAnswer !== null || currentAnswer.selectedAnswerIndex !== null;
   const selectionIndex =
