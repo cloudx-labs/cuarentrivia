@@ -84,7 +84,10 @@ const Joining = ({ trivia, user, triviaId }: TriviaJoiningProps) => {
           </h3>
           <List>
             {participants.map((participant) => (
-              <ListItemTriviaParticipant key={participant.email} participant={participant} />
+              <ListItemTriviaParticipant
+                key={participant.email}
+                participant={participant}
+              />
             ))}
           </List>
         </aside>
