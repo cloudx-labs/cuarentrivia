@@ -35,6 +35,8 @@ jobs:
       # TODO: Find a way to allow firebase to be e2e tested
       # - name: Run e2e tests
       #   run: npm run affected:e2e:ci
+      - name: Check formatting
+        run: npx nx format:check
       - name: Lint
         run: npm run affected:lint:ci
       - name: Build
