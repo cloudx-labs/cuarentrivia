@@ -1,7 +1,7 @@
 on:
   pull_request:
     branches:
-      - master
+      - main
 jobs:
   validate:
     name: Validate
@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: git fetch --no-tags --prune --depth=10 origin master
+      - run: git fetch --no-tags --prune --depth=10 origin main
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -35,6 +35,8 @@ jobs:
       # TODO: Find a way to allow firebase to be e2e tested
       # - name: Run e2e tests
       #   run: npm run affected:e2e:ci
+      - name: Check formatting
+        run: npx nx format:check
       - name: Lint
         run: npm run affected:lint:ci
       - name: Build
