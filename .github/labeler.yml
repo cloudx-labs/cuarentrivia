@@ -1,0 +1,31 @@
+repo:
+  - '*'
+  - .github/*
+  - .github/**/*
+  - .husky/*
+  - .husky/**/*
+
+tools:
+  - tools/**/*
+
+docs:
+  - docs/*
+  - docs/**/*
+  - '*/*.md'
+  - '**/*.md'
+
+apps/www:
+  - apps/www/*
+  - apps/www/**/*
+
+apps/functions:
+  - apps/functions/*
+  - apps/functions/**/*
+
+apps/db:
+  - apps/db/*
+  - apps/db/**/*
+
+apps/storage:
+  - apps/storage/*
+  - apps/storage/**/*
