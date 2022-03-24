@@ -39,7 +39,7 @@
     "workbox-window": "^6.4.2"
   },
   "devDependencies": {
-    "@nrwl/cli": "13.4.6",
+    "@nrwl/cli": "13.9.4",
     "@nrwl/cypress": "13.4.6",
     "@nrwl/eslint-plugin-nx": "13.4.6",
     "@nrwl/jest": "13.4.6",
