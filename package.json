@@ -33,7 +33,7 @@
     "react-firebaseui": "^6.0.0",
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.2.1",
-    "regenerator-runtime": "0.13.7",
+    "regenerator-runtime": "0.13.9",
     "tslib": "^2.0.0",
     "unique-names-generator": "^4.6.0",
     "workbox-window": "^6.5.1"
