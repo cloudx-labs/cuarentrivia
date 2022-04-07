@@ -33,7 +33,7 @@
     "react-firebaseui": "^6.0.0",
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.2.1",
-    "regenerator-runtime": "0.13.7",
+    "regenerator-runtime": "0.13.9",
     "tslib": "^2.0.0",
     "unique-names-generator": "^4.6.0",
     "workbox-window": "^6.5.1"
@@ -46,7 +46,7 @@
     "@nrwl/linter": "13.4.6",
     "@nrwl/node": "^13.7.2",
     "@nrwl/react": "13.4.6",
-    "@nrwl/tao": "13.4.6",
+    "@nrwl/tao": "13.9.7",
     "@nrwl/web": "13.4.6",
     "@nrwl/workspace": "13.4.6",
     "@testing-library/react": "12.1.4",
