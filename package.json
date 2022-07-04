@@ -42,7 +42,7 @@
     "@nrwl/cli": "13.9.4",
     "@nrwl/cypress": "13.4.6",
     "@nrwl/eslint-plugin-nx": "13.6.1",
-    "@nrwl/jest": "13.4.6",
+    "@nrwl/jest": "14.4.0",
     "@nrwl/linter": "13.4.6",
     "@nrwl/node": "^13.7.2",
     "@nrwl/react": "13.4.6",
