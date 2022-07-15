@@ -42,7 +42,7 @@ describe('App', () => {
 
     const { getByText } = render(<App />);
 
-    expect(getByText(/Login/gi)).toBeTruthy();
+    expect(getByText(/Login/i)).toBeTruthy();
   });
 
   it('should route to "play" successfully', () => {
@@ -52,6 +52,6 @@ describe('App', () => {
 
     const { getByText } = render(<App />);
 
-    expect(getByText(/Play/gi)).toBeTruthy();
+    expect(getByText(/Play/i)).toBeTruthy();
   });
 });

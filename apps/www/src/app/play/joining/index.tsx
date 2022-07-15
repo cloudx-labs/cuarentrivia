@@ -6,8 +6,8 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-} from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
+} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 import { TriviaJoiningProps } from '../symbols';
 import CopyUrlButton from '../../shared/copy-url-button';
 import { TriviaParticipant } from '../../shared/common';

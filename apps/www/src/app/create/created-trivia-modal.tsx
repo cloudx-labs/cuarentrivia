@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Trivia } from '../shared/common';
 import useTriviaUrl from '../shared/use-trivia-url.hook';
 import CopyUrlButton from '../shared/copy-url-button';

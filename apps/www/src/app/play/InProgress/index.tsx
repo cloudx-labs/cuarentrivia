@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { Attachment } from '../Attachment';
 import { TriviaJoiningProps } from '../symbols';
 import QuestionResult from '../QuestionResult';

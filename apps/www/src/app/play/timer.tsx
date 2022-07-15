@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useInterval from '@use-it/interval';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@mui/material';
 import './timer.scss';
 
 const SECOND = 1000;

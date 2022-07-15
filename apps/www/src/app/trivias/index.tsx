@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Divider, IconButton } from '@material-ui/core';
-import { PlayCircleFilledWhite, Edit, Delete } from '@material-ui/icons';
+import { Button, Divider, IconButton } from '@mui/material';
+import { PlayCircleFilledWhite, Edit, Delete } from '@mui/icons-material';
 import Nav from '../nav';
 import CreatedTriviaModal, {
   CreatedTriviaModalParams,

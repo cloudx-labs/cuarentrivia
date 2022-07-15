@@ -6,11 +6,11 @@ import {
   IconButton,
   TextField,
   Tooltip,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Question } from '../../shared/common';
 import { updatePrimitiveItemAt } from '../../shared/update-item';
 import './index.scss';
-import { AttachFile, Delete } from '@material-ui/icons';
+import { AttachFile, Delete } from '@mui/icons-material';
 
 export interface QuestionFormProps {
   question: Question;

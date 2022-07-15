@@ -6,13 +6,13 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   ChangeHistory,
   CheckBoxOutlineBlank,
   RadioButtonUnchecked,
   Grade,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import HostQuestionResult from './host-question-result';
 import { setQuestionStartTime } from '../shared/trivias.service';
