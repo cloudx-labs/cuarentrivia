@@ -1,5 +1,4 @@
 {
-  "root": "apps/www",
   "sourceRoot": "apps/www/src",
   "projectType": "application",
   "targets": {
@@ -46,6 +45,12 @@
               "maximumError": "5mb"
             }
           ]
+        },
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
         }
       }
     },
@@ -59,8 +64,12 @@
         "production": {
           "buildTarget": "www:build:production",
           "hmr": false
+        },
+        "development": {
+          "buildTarget": "www:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -73,7 +82,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/www"],
       "options": {
-        "jestConfig": "apps/www/jest.config.js",
+        "jestConfig": "apps/www/jest.config.ts",
         "passWithNoTests": true
       }
     },
