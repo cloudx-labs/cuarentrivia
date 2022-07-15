@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
-import { Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@mui/material';
 import SubmitError from './submit-error';
 import QuestionForm from './question-form';
 import Nav from '../nav';

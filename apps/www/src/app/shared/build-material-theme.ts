@@ -1,7 +1,7 @@
-import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
-const buildMaterialTheme = () => {
-  const theme = unstable_createMuiStrictModeTheme({
+export const buildMaterialTheme = () =>
+  createTheme({
     typography: { fontFamily: `"Montserrat Alternates", sans-serif` },
     palette: {
       primary: {
@@ -18,8 +18,3 @@ const buildMaterialTheme = () => {
       },
     },
   });
-
-  return theme;
-};
-
-export default buildMaterialTheme;

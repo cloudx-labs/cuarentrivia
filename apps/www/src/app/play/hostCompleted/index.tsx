@@ -5,7 +5,7 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { TriviaCompletedProps } from '../symbols';
 import buildRanking from '../../shared/build-ranking';
 import { TriviaRankingParticipantData } from '../../shared/trivia-ranking';

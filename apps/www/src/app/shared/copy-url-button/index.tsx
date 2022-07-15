@@ -1,6 +1,6 @@
 import React from 'react';
 import useCopyToClipboard from '../use-copy-to-clipboard';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 const CopyUrlButton = ({ url }: { url: string }) => {
   const [isUrlCopied, handleCopyUrl] = useCopyToClipboard();
