@@ -8,7 +8,7 @@ interface AttachmentProps {
 export const Attachment = ({ value }: AttachmentProps) => (
   <section className="attachment">
     {value.contentType.includes('image') && (
-      <img src={value.url} alt={value.name} />
+      <img className="img" src={value.url} alt={value.name} />
     )}
     {value.contentType.includes('video') && <video src={value.url} autoPlay />}
   </section>
