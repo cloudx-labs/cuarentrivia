@@ -1,5 +1,5 @@
 .trivia-in-progress {
-  flex: 1 0 auto; 
+  flex: 1 0 auto;
   height: 100%;
   padding: 2rem;
   .questions {
@@ -43,12 +43,12 @@
       }
     }
   }
-  .attachment{
+  .attachment {
     align-items: center;
     display: flex;
     justify-content: center;
-    .img{
-      max-width:100%;
+    .img {
+      max-width: 100%;
       height: 50vh;
     }
   }
