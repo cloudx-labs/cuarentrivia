@@ -61,7 +61,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         questions,
       });
       await createTemplate(triviaToCreate, user);
-      navigate('trivias');
+      navigate('/trivias');
     } catch (error) {
       setError(error as Error);
     }
