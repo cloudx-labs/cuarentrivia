@@ -1,4 +1,6 @@
-const getRandomString = async () => Math.random().toString(16).substring(2, 16);
+
+import { getFunctions, httpsCallable } from 'firebase/functions';
+// const getRandomString = async () => Math.random().toString(16).substring(2, 16).concat("_", "friendly").concat("_", "name");
 
 /** TODO
  * Solved adding async function returning random string.
@@ -14,9 +16,11 @@ const getRandomString = async () => Math.random().toString(16).substring(2, 16);
  *   return result.data;
  */
 const generateFriendlyName = async (): Promise<string> => {
-  const data = await getRandomString();
-
-  return data;
+  const functions = getFunctions();
+  const result = await httpsCallable(functions, 'generateFriendlyName')();
+  return typeof result.data === 'string'
+    ? result.data
+    : '';
 };
 
 export default generateFriendlyName;
