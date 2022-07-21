@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TriviaJoiningProps } from './symbols';
 import Joining from './joining';
 import Completed from './completed';
