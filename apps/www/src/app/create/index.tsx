@@ -90,6 +90,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
                   handleSetQuestion(questionUpdate, questionIndex)
                 }
                 remove={() => handleRemove(questionIndex)}
+                index={questionIndex}
               />
             ))}
             <div className="action-buttons">

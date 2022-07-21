@@ -16,6 +16,7 @@ export interface QuestionFormProps {
   question: Question;
   setQuestion: (question: Question) => void;
   remove: () => void;
+  index: number;
 }
 
 interface PossibleAnswerProps {
@@ -64,7 +65,12 @@ const PossibleAnswerControl = ({
   );
 };
 
-const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
+const QuestionForm = ({
+  question,
+  setQuestion,
+  remove,
+  index,
+}: QuestionFormProps) => {
   const storage = getStorage();
 
   const handleSetPossibleAnswer = (
@@ -132,12 +138,12 @@ const QuestionForm = ({ question, setQuestion, remove }: QuestionFormProps) => {
         <input
           type="file"
           accept="image/*"
-          id="attachmentInput"
+          id={`attachFile${index}`}
           onChange={handleChangeAttachment}
           className="attachment-container-input"
         />
         <Tooltip title="Select Attachment">
-          <label htmlFor="attachmentInput">
+          <label htmlFor={`attachFile${index}`}>
             <IconButton
               className="attachment-container-button"
               color="primary"

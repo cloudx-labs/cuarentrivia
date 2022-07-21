@@ -1,4 +1,5 @@
 .trivia-in-progress {
+  flex: 1 0 auto;
   height: 100%;
   padding: 2rem;
   .questions {
@@ -40,6 +41,15 @@
           background-color: var(--cloudx-green);
         }
       }
+    }
+  }
+  .attachment {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    .img {
+      max-width: 100%;
+      height: 50vh;
     }
   }
 }
