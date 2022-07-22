@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TriviaQuestionResultProps } from '../symbols';
 import Nav from '../../nav';
-import alien from '../../../assets/icons/alien.png';
-import cigarette from '../../../assets/icons/cigarette.png';
+import loading from '../../../assets/images/loading-brenda.gif';
 import './index.scss';
 
 const QuestionResult = ({
@@ -41,11 +40,10 @@ const QuestionResult = ({
       <main className="result">
         <h1 className="title">{message}</h1>
         <p className="message">
-          Espera un momento a que el host inicie la proxima pregunta
+          Espera un momento a que el host inicie la proxima pregunta...
         </p>
         <div className="AreYouHere">
-          <img src={alien} alt="Alien Img" className="ImTony" />
-          <img src={cigarette} alt="Cigarette Img" className="SmokingForYou" />
+          <img src={loading} />
         </div>
       </main>
     </Nav>
