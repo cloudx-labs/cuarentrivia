@@ -24,11 +24,9 @@
     0% {
       right: -1000px;
     }
-
     50% {
       right: 10px;
     }
-
     100% {
       right: -1000px;
     }
@@ -36,20 +34,10 @@
   .message {
     margin: 0;
     font-size: 1rem;
-    .ImTony,
-    .SmokingForYou {
-      height: 20px;
-      width: 20px;
-    }
   }
   .AreYouHere {
     margin-top: 1.5rem;
     display: flex;
     justify-content: center;
-    .ImTony,
-    .SmokingForYou {
-      height: 20px;
-      width: 20px;
-    }
   }
 }
