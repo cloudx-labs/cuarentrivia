@@ -25,9 +25,9 @@ const ListItemTriviaParticipantAvatar = ({
 }: ListItemTriviaParticipantProps) => {
   const avatarProps = participant.photoURL
     ? {
-      alt: (participant.displayName || participant.email)?.toString(),
-      src: participant.photoURL.toString(),
-    }
+        alt: (participant.displayName || participant.email)?.toString(),
+        src: participant.photoURL.toString(),
+      }
     : {};
 
   const children: ReactElement | null = participant.photoURL ? null : (
