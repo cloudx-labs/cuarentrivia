@@ -58,7 +58,5 @@ jobs:
         run: npm run affected:build -- --base=HEAD~1
       - name: Test
         run: npm run affected:test -- --base=HEAD~1
-      - name: Run e2e tests
-        run: npm run affected:e2e -- --base=HEAD~1
       - name: Deploy
         run: npm run nx -- affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
