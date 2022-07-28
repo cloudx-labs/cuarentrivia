@@ -59,4 +59,4 @@ jobs:
       - name: Test
         run: npm run affected:test -- --base=HEAD~1
       - name: Deploy
-        run: npx nx -- affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
+        run: npx nx affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
