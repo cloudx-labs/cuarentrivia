@@ -40,9 +40,7 @@ const mapAnswers = (
     startTime: 0,
   };
 
-  const answers: Answer[] = new Array<Answer>(questionIndex + 1).fill(
-    defaultAnswer
-  );
+  const answers = [...originalAnswers];
 
   const originalAnswer: Answer =
     originalAnswers[questionIndex] || defaultAnswer;
