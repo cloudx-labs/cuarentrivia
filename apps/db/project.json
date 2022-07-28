@@ -12,6 +12,7 @@
         "command": "npx firebase deploy --only=firestore --project={args.firebaseProject}"
       },
       "configurations": {
+        "dev": {},
         "production": {
           "args": "--firebaseProject=production"
         }

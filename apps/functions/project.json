@@ -59,6 +59,7 @@
         ]
       },
       "configurations": {
+        "dev": {},
         "production": {
           "args": "--firebaseProject=production"
         }

@@ -59,4 +59,62 @@ jobs:
       - name: Test
         run: npm run affected:test -- --base=HEAD~1
       - name: Deploy
+        run: npx nx affected --base=HEAD~1 --target=deploy --configuration=dev --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
+  deploy-prod:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: prod
+    env:
+      CI: true
+      FIREBASE_APP_API_KEY: ${{secrets.FIREBASE_APP_API_KEY}}
+      FIREBASE_APP_AUTH_DOMAIN: ${{secrets.FIREBASE_APP_AUTH_DOMAIN}}
+      FIREBASE_APP_DATABASE_URL: ${{secrets.FIREBASE_APP_DATABASE_URL}}
+      FIREBASE_APP_PROJECT_ID: ${{secrets.FIREBASE_APP_PROJECT_ID}}
+      FIREBASE_APP_STORAGE_BUCKET: ${{secrets.FIREBASE_APP_STORAGE_BUCKET}}
+      FIREBASE_APP_MESSAGING_SENDER_ID: ${{secrets.FIREBASE_APP_MESSAGING_SENDER_ID}}
+      FIREBASE_APP_APP_ID: ${{secrets.FIREBASE_APP_APP_ID}}
+      FIREBASE_APP_MEASUREMENT_ID: ${{secrets.FIREBASE_APP_MEASUREMENT_ID}}
+      FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: git fetch --no-tags --prune --depth=10 origin main
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - name: Setup env
+        run: |
+          echo "NX_FIREBASE_APP_API_KEY=${FIREBASE_APP_API_KEY}" >> .env
+          echo "NX_FIREBASE_APP_AUTH_DOMAIN=${FIREBASE_APP_AUTH_DOMAIN}" >> .env
+          echo "NX_FIREBASE_APP_DATABASE_URL=${FIREBASE_APP_DATABASE_URL}" >> .env
+          echo "NX_FIREBASE_APP_PROJECT_ID=${FIREBASE_APP_PROJECT_ID}" >> .env
+          echo "NX_FIREBASE_APP_STORAGE_BUCKET=${FIREBASE_APP_STORAGE_BUCKET}" >> .env
+          echo "NX_FIREBASE_APP_MESSAGING_SENDER_ID=${FIREBASE_APP_MESSAGING_SENDER_ID}" >> .env
+          echo "NX_FIREBASE_APP_APP_ID=${FIREBASE_APP_APP_ID}" >> .env
+          echo "NX_FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
+          echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}" >> .env
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run affected:lint -- --base=HEAD~1
+      - name: Build
+        run: npm run affected:build -- --base=HEAD~1
+      - name: Test
+        run: npm run affected:test -- --base=HEAD~1
+      - name: Deploy
         run: npx nx affected --base=HEAD~1 --target=deploy --configuration=production --exclude='$(npm run --silent nx -- affected:libs --all --plain)'
