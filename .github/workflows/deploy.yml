@@ -51,7 +51,7 @@ jobs:
           echo "NX_FIREBASE_APP_MEASUREMENT_ID=${FIREBASE_APP_MEASUREMENT_ID}" >> .env
           echo "FIREBASE_TOKEN=${FIREBASE_TOKEN}" >> .env
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Lint
         run: npm run affected:lint -- --base=HEAD~1
       - name: Build

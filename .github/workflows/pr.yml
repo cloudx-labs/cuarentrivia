@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       # TODO: Find a way to allow firebase to be e2e tested
       # - name: Run e2e tests
       #   run: npm run affected:e2e:ci
