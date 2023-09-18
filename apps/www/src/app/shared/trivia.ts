@@ -7,6 +7,7 @@ export const buildTriviaParticipant = buildObject<TriviaParticipant>({
   photoURL: '',
   score: 0,
   answers: [],
+  wildcards: [],
 });
 
 export const buildTrivia = buildObject<Trivia>({
@@ -19,6 +20,7 @@ export const buildTrivia = buildObject<Trivia>({
   timePerQuestion: 17000,
   questions: [],
   participants: {},
+  playWithWildcards: true,
 });
 
 export const buildTriviaTemplate = buildObject<TriviaTemplate>({
@@ -28,4 +30,5 @@ export const buildTriviaTemplate = buildObject<TriviaTemplate>({
   createdByEmail: '',
   timePerQuestion: 17000,
   questions: [],
+  playWithWildcards: true,
 });

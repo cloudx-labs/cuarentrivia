@@ -2,6 +2,7 @@ export interface Answer {
   selectedAnswerIndex: number | null;
   time: number;
   startTime: number;
+  isBoosted: boolean;
 }
 
 export interface QuestionAttachment {
@@ -25,6 +26,7 @@ export interface TriviaParticipant {
   photoURL: string | null;
   score: number;
   answers: Answer[];
+  wildcards: Wildcard[];
 }
 
 export type QuestionTemplate = Pick<
@@ -51,6 +53,7 @@ export interface TriviaBase {
   status: TriviaStatus;
   timePerQuestion: number;
   currentQuestionIndex: number | null;
+  playWithWildcards: boolean;
 }
 
 export interface Trivia extends TriviaBase {
@@ -65,6 +68,7 @@ export type TriviaTemplateBase = Pick<
   | 'createdByDisplayName'
   | 'createdByEmail'
   | 'timePerQuestion'
+  | 'playWithWildcards'
 >;
 
 export type TriviaTemplate = TriviaTemplateBase & {
@@ -72,3 +76,5 @@ export type TriviaTemplate = TriviaTemplateBase & {
 };
 
 export type Buildable = Answer | Question | TriviaParticipant | TriviaTemplate;
+
+export type Wildcard = 'booster' | 'halfChance' | 'poll';

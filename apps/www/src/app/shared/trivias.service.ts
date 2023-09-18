@@ -13,6 +13,7 @@ import {
   updateDoc,
   where,
   writeBatch,
+  onSnapshot,
 } from 'firebase/firestore';
 import { User } from 'firebase/auth';
 import verifyTriviaId from './verify-trivia-id';
@@ -25,6 +26,7 @@ import {
   TriviaBase,
   TriviaTemplateBase,
   TriviaParticipant,
+  Wildcard,
 } from './common';
 import { buildTriviaParticipant } from './trivia';
 import { getDb } from './get-db';
@@ -38,6 +40,7 @@ const mapAnswers = (
     selectedAnswerIndex: null,
     time: 0,
     startTime: 0,
+    isBoosted: false,
   };
 
   const answers = [...originalAnswers];
@@ -124,6 +127,7 @@ export const createTemplate = async (
     createdByDisplayName: trivia.createdByDisplayName,
     createdByEmail: trivia.createdByEmail,
     timePerQuestion: trivia.timePerQuestion,
+    playWithWildcards: trivia.playWithWildcards,
   };
   const { questions } = trivia;
   const createdTriviaRef = await addDoc(
@@ -163,12 +167,30 @@ export const answerQuestion = async (
   questionIndex: number,
   user: User,
   selectedAnswerIndex: number,
-  time: number
+  time: number,
+  isBoosted: boolean
 ) =>
   await updateParticipantAnswers(triviaId, questionIndex, user, {
     selectedAnswerIndex,
     time,
+    isBoosted,
   });
+
+export const selectWildcard = async (
+  triviaId: string,
+  user: User,
+  wildCard: Wildcard
+) => {
+  const db = getDb();
+  const participantRef = doc(
+    db,
+    `/trivias/${triviaId}/participants/${user.uid}`
+  );
+  const participant = await getParticipant(participantRef, user);
+  await updateDoc(participantRef, {
+    wildCards: [...participant.wildcards, wildCard],
+  });
+};
 
 export const finishCurrentQuestion = async (triviaId: string) => {
   const db = getDb();
@@ -205,6 +227,7 @@ export const startTrivia = async ({
   createdByEmail,
   timePerQuestion,
   questions,
+  playWithWildcards,
 }: TriviaTemplate): Promise<[string, Trivia]> => {
   const db = getDb();
   const triviasRef = collection(db, '/trivias');
@@ -216,6 +239,7 @@ export const startTrivia = async ({
     timePerQuestion,
     status: 'joining',
     currentQuestionIndex: null,
+    playWithWildcards,
   };
   const newTriviaRef = await addDoc(triviasRef, trivia);
 
@@ -334,4 +358,32 @@ export const setQuestionStartTime = async (
     `/trivias/${triviaId}/questions/${questionIndex}`
   );
   await updateDoc(questionRef, { startTime });
+};
+
+export const getAllSelectedAnswersIndexInRealTime = (
+  triviaId: string,
+  questionIndex: number,
+  onUpdate: (selectedAnswerIndexCounts: number[]) => void
+): (() => void) => {
+  const db = getDb();
+  const participantsRef = collection(db, `/trivias/${triviaId}/participants`);
+  const unsubscribe = onSnapshot(participantsRef, async (snapshot) => {
+    const participantsAnswers = await Promise.all(
+      snapshot.docs.map((doc) => {
+        const { answers } = doc.data();
+        return answers[questionIndex];
+      })
+    );
+    const selectedAnswerIndexCounts = participantsAnswers.reduce(
+      (counts, { selectedAnswerIndex }) => {
+        if (typeof selectedAnswerIndex === 'number') {
+          counts[selectedAnswerIndex]++;
+        }
+        return counts;
+      },
+      new Array(4).fill(0)
+    );
+    onUpdate(selectedAnswerIndexCounts);
+  });
+  return unsubscribe;
 };

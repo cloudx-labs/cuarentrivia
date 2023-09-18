@@ -58,6 +58,7 @@ const useTrivia = (
           photoURL: data['photoURL'] || null,
           score: data['score'] || null,
           answers: data['answers'] || [],
+          wildcards: data['wildCards'] || [],
         };
         return { ...prev, [curr.id]: triviaParticipant };
       },
