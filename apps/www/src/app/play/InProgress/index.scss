@@ -4,6 +4,9 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  max-width: 960px;
+  justify-content: center;
+  margin: auto;
   .progress {
     width: 90%;
     margin: auto;
@@ -26,10 +29,11 @@
   }
   .options {
     width: 100%;
-    height: 100%;
+    margin-bottom: 1rem;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(4, 1fr);
+    min-height: 400px;
     gap: 10px;
     .no-selected.option:nth-child(1),
     .no-selected.option:nth-child(2),
@@ -46,21 +50,37 @@
         font-weight: bold;
         color: var(--cloudx-white);
         background-color: var(--cloudx-red);
+
+        & .cardBadge.mostVoted {
+          color: var(--cloudx-red);
+        }
       }
       &:nth-child(2) {
         font-weight: bold;
         color: var(--cloudx-white);
         background-color: var(--cloudx-blue);
+
+        & .cardBadge.mostVoted {
+          color: var(--cloudx-blue);
+        }
       }
       &:nth-child(3) {
         font-weight: bold;
         color: var(--cloudx-white);
         background-color: var(--cloudx-yellow);
+
+        & .cardBadge.mostVoted {
+          color: var(--cloudx-yellow);
+        }
       }
       &:nth-child(4) {
         font-weight: bold;
         color: var(--cloudx-white);
         background-color: var(--cloudx-green);
+
+        & .cardBadge.mostVoted {
+          color: var(--cloudx-green);
+        }
       }
     }
   }
@@ -74,10 +94,61 @@
       height: 30vh;
     }
   }
+  .cardBadge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    line-height: 16px;
+    font-size: 15px;
+    top: 8px;
+    right: 10px;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0px 0px 14px -4px rgba(0, 0, 0, 0.75);
+    background-color: white;
+    color: black;
+  }
 }
 
 .in-progress-timer {
   width: 100%;
+}
+
+.stepper {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  position: relative;
+  height: 100%;
+  align-items: flex-end;
+
+  .step {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    color: var(--cloudx-blue);
+    font-weight: bold;
+    border: 1px solid var(--cloudx-blue);
+
+    &.active {
+      background-color: var(--cloudx-blue);
+      border: none;
+      color: white;
+    }
+
+    &.answered {
+      background-color: var(--cloudx-gray-darker);
+      border: none;
+      color: white;
+    }
+  }
 }
 
 @media screen and (min-width: $bp-l) {
