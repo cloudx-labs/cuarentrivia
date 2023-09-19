@@ -23,4 +23,5 @@ export const buildAnswer = buildObject<Answer>({
   selectedAnswerIndex: null,
   time: 0,
   startTime: 0,
+  isBoosted: false,
 });

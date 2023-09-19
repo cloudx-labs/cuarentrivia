@@ -21,8 +21,12 @@ const calculateScore = (
 
   const timePerQuestionSeconds = Math.floor(timePerQuestion / SECOND);
 
-  if (answer.selectedAnswerIndex !== question.correctAnswerIndex) {
-    return 0;
+  const isWrongAnswer =
+    answer.selectedAnswerIndex !== question.correctAnswerIndex ||
+    answer.time === 0;
+
+  if (isWrongAnswer) {
+    return answer.isBoosted ? -1000 : 0;
   }
 
   // By default, questions offer up to 1000 points when a player responds correctly. You can toggle this to 0 or 2000 if you'd prefer.
@@ -37,7 +41,9 @@ const calculateScore = (
   // Subtract that value from 1. For example, 1 minus 0.0333 is 0.9667.
   const subtractFromOne = 1 - dividedByTwo;
   // Multiply points possible by that value. For example, 1000 points possible multiplied by 0.9667 is 966.7.
-  const byPossiblePoint = subtractFromOne * question.value;
+  const byPossiblePoint = answer.isBoosted
+    ? 2000
+    : subtractFromOne * question.value;
   // Round to the nearest whole number. For example, 966.7 is 967 points.
   // For math wizards, this can be expressed as:
 

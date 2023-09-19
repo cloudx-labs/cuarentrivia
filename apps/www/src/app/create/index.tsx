@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from 'firebase/auth';
-import { Button, TextField } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import SubmitError from './submit-error';
 import QuestionForm from './question-form';
 import Nav from '../nav';
@@ -21,6 +21,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
   const [questions, setQuestions] = useState<Question[]>([
     buildDefaultQuestion(),
   ]);
+  const [playWithWildcards, setPlayWithWildcards] = useState<boolean>(true);
 
   const isDisabled = useMemo(
     () =>
@@ -59,6 +60,7 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
         createdByDisplayName: user.displayName,
         createdByEmail: user.email,
         questions,
+        playWithWildcards: playWithWildcards,
       });
       await createTemplate(triviaToCreate, user);
       navigate('/trivias');
@@ -81,6 +83,20 @@ const CreateTriviaContent = ({ user }: { user: User }) => {
               value={name}
               onChange={handleNameChange}
               className="title"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={playWithWildcards}
+                  color="primary"
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    setPlayWithWildcards(event.target.checked)
+                  }
+                  className="check"
+                />
+              }
+              label="Play with Wildcards"
             />
             {questions.map((question, questionIndex) => (
               <QuestionForm
