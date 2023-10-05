@@ -49,7 +49,7 @@
     "@nrwl/eslint-plugin-nx": "14.4.2",
     "@nrwl/jest": "14.4.2",
     "@nrwl/linter": "14.4.2",
-    "@nrwl/node": "14.4.2",
+    "@nrwl/node": "16.10.0",
     "@nrwl/react": "14.4.2",
     "@nrwl/web": "14.4.2",
     "@nrwl/workspace": "14.4.2",
