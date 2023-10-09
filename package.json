@@ -39,7 +39,7 @@
     "react-is": "18.0.0",
     "react-router-dom": "6.3.0",
     "regenerator-runtime": "0.13.7",
-    "tslib": "^2.5.0",
+    "tslib": "^2.6.2",
     "unique-names-generator": "^4.6.0",
     "workbox-window": "^6.4.2"
   },
