@@ -15,7 +15,13 @@
 
 ## 💡 Reference/Related Issues
 
-- #\*\*\*
+<!--
+  If this Pull Request is related to an issue, please link to the issue here.
+  Example
+  - closes #123
+ -->
+
+- ...
 
 ## 📝 Checklist
 
